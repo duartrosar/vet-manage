@@ -1,7 +1,16 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState, useContext, Fragment } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  useContext,
+  Fragment,
+  createContext,
+  SetStateAction,
+  Dispatch,
+} from "react";
 // import { useClickAway } from "react-use";
 // import SidebarContext from "./SidebarContext";
 // import profilePic from "../../public/profilepic.jpg";
@@ -22,6 +31,7 @@ import {
 
 import { Lalezar, Kanit } from "next/font/google";
 import { Dialog, Transition } from "@headlessui/react";
+import SidebarButton from "./button";
 import SidebarContext from "./context";
 // import ProfileMenu from "./ProfileMenu";
 
@@ -34,11 +44,15 @@ const kanit = Kanit({
 export default function SideBar() {
   const sidebarRef = useRef<HTMLDivElement>(null);
   const [windowWidth, setWindowWidth] = useState(0);
-  //   const { isOpen, setIsOpen } = useContext(SidebarContext);
+  const { isOpen, setIsOpen } = useContext(SidebarContext);
   // const { user } = props;
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
   const openMenu = () => setIsOpen(true);
   const closeMenu = () => setIsOpen(false);
+
+  useEffect(() => {
+    console.log(isOpen);
+  }, [isOpen]);
 
   useEffect(() => {
     setWindowWidth(window.innerWidth);
@@ -67,12 +81,11 @@ export default function SideBar() {
         <div className="h-full w-full bg-cerulean-950 shadow-2xl shadow-cerulean-950">
           <div className="flex h-full items-center justify-between gap-3 p-3">
             <div className="flex items-center gap-3">
+              {/* <SidebarButton /> */}
               <button
                 id="sidebarToggle"
                 data-sidebar-toggle={true}
-                onClick={() => {
-                  setIsOpen(!isOpen);
-                }}
+                onClick={() => setIsOpen(!isOpen)}
                 className="cursor-pointer rounded-lg p-3 hover:bg-cerulean-900"
               >
                 <CgMenuLeft

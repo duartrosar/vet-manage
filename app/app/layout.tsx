@@ -1,4 +1,5 @@
 import SideBar from "@/components/sidebar";
+import Providers from "@/components/sidebar/provider";
 import React from "react";
 
 export default function DashboardLayout({
@@ -8,8 +9,10 @@ export default function DashboardLayout({
 }) {
   return (
     <>
-      <SideBar />
-      {children}
+      <Providers>
+        <SideBar />
+        {children}
+      </Providers>
     </>
   );
 }
