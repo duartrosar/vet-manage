@@ -7,7 +7,13 @@ import { Transition } from "@headlessui/react";
 import { motion } from "framer-motion";
 import { easeInOut } from "framer-motion/dom";
 
-export default function Container({ children }: { children: React.ReactNode }) {
+export default function Container({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   const { isOpen, setIsOpen } = useContext(SidebarContext);
   return (
     <motion.div
@@ -16,7 +22,9 @@ export default function Container({ children }: { children: React.ReactNode }) {
       animate={{ paddingLeft: isOpen ? "280px" : "24px" }}
       transition={{ ease: "easeInOut", duration: isOpen ? 0.3 : 0.2 }}
     >
-      <div className="w-full h-full font-bold bg-cerulean-900 lg:rounded-lg lg:border-2 lg:border-cerulean-800/25 overflow-y-scroll p-4">
+      <div
+        className={`w-full h-full font-bold shadow-2xl bg-cerulean-900 lg:rounded-lg lg:border-2 lg:border-cerulean-800/25 ${className}`}
+      >
         {children}
       </div>
     </motion.div>
