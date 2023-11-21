@@ -13,7 +13,7 @@ export default async function OwnersHome() {
   console.log(owners);
   return (
     <Container>
-      <div className="relative px-4">
+      <div className="px-4">
         <div className="flex items-center justify-between py-4">
           <Link
             href="/app/owners/create"
@@ -35,9 +35,11 @@ export default async function OwnersHome() {
           />
         </div>
       </div>
-      <Suspense fallback={<div></div>}>
-        <EntitiesList owners={data} />
-      </Suspense>
+      <div className="h-full flex flex-col">
+        <Suspense fallback={<div></div>}>
+          <EntitiesList owners={data} />
+        </Suspense>
+      </div>
     </Container>
   );
 }

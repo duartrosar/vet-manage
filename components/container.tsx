@@ -1,11 +1,8 @@
 "use client";
 import React, { useContext, useState } from "react";
-import SidebarProvider from "./sidebar/provider";
-import Providers from "./sidebar/provider";
 import SidebarContext from "./sidebar/context";
-import { Transition } from "@headlessui/react";
 import { motion } from "framer-motion";
-import { easeInOut } from "framer-motion/dom";
+import { useWindowSize } from "@uidotdev/usehooks";
 
 export default function Container({
   children,
@@ -15,11 +12,26 @@ export default function Container({
   className?: string;
 }) {
   const { isOpen, setIsOpen } = useContext(SidebarContext);
+  const size = useWindowSize();
   return (
     <motion.div
       className={`flex w-full h-screen items-center justify-center pt-20 lg:pb-6 lg:pr-6 lg:pt-[104px]`}
-      style={{ paddingLeft: "280px" }}
-      animate={{ paddingLeft: isOpen ? "280px" : "24px" }}
+      style={{
+        paddingLeft:
+          isOpen && size.width! > 1024
+            ? "280px"
+            : size.width! < 1024
+            ? "0px"
+            : "24px",
+      }}
+      animate={{
+        paddingLeft:
+          isOpen && size.width! > 1024
+            ? "280px"
+            : size.width! < 1024
+            ? "0px"
+            : "24px",
+      }}
       transition={{ ease: "easeInOut", duration: isOpen ? 0.3 : 0.2 }}
     >
       <div
