@@ -1,6 +1,6 @@
 import Container from "@/components/container";
 import EntitiesList from "@/components/users/entities-list";
-import { getOwners } from "@/lib/data";
+import { createOwner, getOwners } from "@/lib/data";
 import { data } from "@/lib/mockup/mockup";
 import { randomFill } from "crypto";
 import Image from "next/image";
@@ -10,6 +10,7 @@ import { IoPencil, IoPersonAdd, IoSearch, IoTrash } from "react-icons/io5";
 
 export default async function OwnersHome() {
   const owners = await getOwners();
+  await createOwner();
   return (
     <Container>
       <div className="px-4">
