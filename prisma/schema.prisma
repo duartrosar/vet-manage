@@ -16,18 +16,41 @@ model Owner {
     firstName    String
     lastName     String
     dateOfBirth  DateTime
+    gender       String
     email        String
     mobileNumber String
     address      String
+    imageUrl     String
     pets         Pet[]
 }
 
 model Pet {
-    id      Int    @id @default(autoincrement())
-    name    String
-    type    String
-    owner   Owner  @relation(fields: [ownerId], references: [id])
-    ownerId Int
+    id       Int    @id @default(autoincrement())
+    name     String
+    type     String
+    imageUrl String
+    owner    Owner  @relation(fields: [ownerId], references: [id])
+    ownerId  Int
 
     @@index([ownerId])
+}
+
+model Vet {
+    id           Int      @id @default(autoincrement())
+    firstName    String
+    lastName     String
+    dateOfBirth  DateTime
+    gender       String
+    email        String
+    mobileNumber String
+    address      String
+    imageUrl     String
+}
+
+model Appointment {
+    id          Int    @id @default(autoincrement())
+    subject     String
+    startTime   String
+    endTime     String
+    description String
 }

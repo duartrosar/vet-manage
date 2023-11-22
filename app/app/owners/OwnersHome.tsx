@@ -1,7 +1,7 @@
 import Container from "@/components/container";
 import Link from "next/link";
 import React from "react";
-import { IoPencil, IoPersonAdd, IoTrash } from "react-icons/io5";
+import { IoPencil, IoPersonAdd, IoSearch, IoTrash } from "react-icons/io5";
 
 export default function OwnersHome() {
   return (
