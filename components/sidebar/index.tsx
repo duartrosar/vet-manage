@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image";
+
 import Link from "next/link";
 import {
   useEffect,
@@ -14,9 +14,7 @@ import {
 // import { useClickAway } from "react-use";
 // import SidebarContext from "./SidebarContext";
 // import profilePic from "../../public/profilepic.jpg";
-
-import { GiSniffingDog, GiCrossedBones } from "react-icons/gi";
-import { HiOutlineMenuAlt2, HiMenuAlt2 } from "react-icons/hi";
+import { GiCrossedBones } from "react-icons/gi";
 import { CgMenuLeft } from "react-icons/cg";
 import {
   IoCalendar,
@@ -33,6 +31,8 @@ import { Lalezar, Kanit } from "next/font/google";
 import { Dialog, Transition } from "@headlessui/react";
 import SidebarButton from "./button";
 import SidebarContext from "./context";
+import { useLocalStorage } from "usehooks-ts";
+import { useWindowSize } from "@uidotdev/usehooks";
 // import ProfileMenu from "./ProfileMenu";
 
 const lalezar = Lalezar({ subsets: ["latin"], weight: "400" });
@@ -42,50 +42,39 @@ const kanit = Kanit({
 });
 
 export default function SideBar() {
-  const sidebarRef = useRef<HTMLDivElement>(null);
-  const [windowWidth, setWindowWidth] = useState(0);
+  const [sidebarExpanded, setSidebarExpanded] = useLocalStorage(
+    "sidebarExpanded",
+    true,
+  );
+
+  const size = useWindowSize();
+
   const { isOpen, setIsOpen } = useContext(SidebarContext);
-  // const { user } = props;
-  // const [isOpen, setIsOpen] = useState(false);
-  const openMenu = () => setIsOpen(true);
+  const setMenu = (value: boolean) => {
+    setIsOpen(value);
+    setSidebarExpanded(value);
+  };
   const closeMenu = () => setIsOpen(false);
 
   useEffect(() => {
-    console.log(isOpen);
-  }, [isOpen]);
-
-  useEffect(() => {
-    setWindowWidth(window.innerWidth);
-
-    function handleResize() {
-      setWindowWidth(window.innerWidth);
+    if (size.width !== null && size.width < 1024) {
+      console.log("ggel");
+      setIsOpen(false);
+      setSidebarExpanded(false);
     }
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  //   useClickAway(sidebarRef, (e) => {
-  //     const element = e.target as HTMLElement;
-
-  //     if (windowWidth >= 1024) return;
-
-  //     if (element.dataset.sidebarToggle) return;
-
-  //     setSidebarOpen(false);
-  //   });
+  }, [size.width]);
 
   return (
     <>
       <div className="fixed left-0 top-0 z-50 h-20 w-full">
-        <div className="h-full w-full bg-cerulean-950 shadow-2xl shadow-cerulean-950">
+        <div className="h-full w-full bg-cerulean-950 shadow-xl shadow-cerulean-950 border-b-2 border-cerulean-700/25">
           <div className="flex h-full items-center justify-between gap-3 p-3">
             <div className="flex items-center gap-3">
               {/* <SidebarButton /> */}
               <button
                 id="sidebarToggle"
                 data-sidebar-toggle={true}
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => setMenu(!isOpen)}
                 className="cursor-pointer rounded-lg p-3 hover:bg-cerulean-900"
               >
                 <CgMenuLeft
@@ -142,7 +131,7 @@ export default function SideBar() {
             leaveFrom="translate-x-0"
             leaveTo="-translate-x-full"
           >
-            <aside className="fixed bottom-0 left-0 top-0 w-64 bg-cerulean-900 border-r-2 border-cerulean-800/25">
+            <aside className="fixed bottom-0 left-0 top-0 w-64 bg-cerulean-950 border-r-2 border-cerulean-700/25">
               <div className="flex flex-col items-start justify-start gap-5 pt-28 px-3">
                 <ul
                   className={`${kanit.className} w-full space-y-3 text-base font-semibold`}

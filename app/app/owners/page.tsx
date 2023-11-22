@@ -10,7 +10,6 @@ import { IoPencil, IoPersonAdd, IoSearch, IoTrash } from "react-icons/io5";
 
 export default async function OwnersHome() {
   const owners = await getOwners();
-  console.log(owners);
   return (
     <Container>
       <div className="px-4">
@@ -36,9 +35,7 @@ export default async function OwnersHome() {
         </div>
       </div>
       <div className="h-full flex flex-col">
-        <Suspense fallback={<div></div>}>
-          <EntitiesList owners={data} />
-        </Suspense>
+        <EntitiesList owners={owners} />
       </div>
     </Container>
   );

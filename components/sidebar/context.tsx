@@ -6,7 +6,7 @@ interface SidebarContextValue {
 }
 
 const SidebarContext = createContext<SidebarContextValue>({
-  isOpen: false,
+  isOpen: true,
   setIsOpen: () => {},
 });
 
