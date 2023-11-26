@@ -1,3 +1,5 @@
+"use server";
+
 import { Owner, data } from "../mockup/mockup";
 import { PrismaClient } from "@prisma/client";
 
@@ -22,6 +24,6 @@ export async function createOwner() {
       },
     });
   } catch (error) {
-    throw error;
+    return "Error creating owner";
   }
 }

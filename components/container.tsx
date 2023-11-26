@@ -24,7 +24,7 @@ export default function Container({
       // }}
       animate={{
         paddingLeft:
-          isOpen && size.width! > 1024
+          isOpen && size.width! >= 1024
             ? "280px"
             : size.width! < 1024
             ? "0px"

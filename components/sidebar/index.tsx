@@ -54,7 +54,12 @@ export default function SideBar() {
     setIsOpen(value);
     setSidebarExpanded(value);
   };
-  const closeMenu = () => setIsOpen(false);
+
+  const closeMenu = () => {
+    if (size.width && size.width <= 1024) {
+      setIsOpen(false);
+    }
+  };
 
   useEffect(() => {
     if (size.width !== null && size.width < 1024) {
@@ -117,7 +122,7 @@ export default function SideBar() {
             leaveTo="opacity-0 backdrop-blur-none"
           >
             <div
-              onClick={closeMenu}
+              onClick={() => setMenu(!isOpen)}
               className="fixed inset-0 bg-cerulean-900/50 lg:hidden"
               aria-hidden="true"
             />
@@ -139,6 +144,7 @@ export default function SideBar() {
                   <li className="group w-full rounded-lg px-3 py-2 transition hover:bg-cerulean-800 hover:shadow-md ">
                     <Link
                       href="/app"
+                      onClick={closeMenu}
                       className="flex items-center justify-start gap-3 text-gray-400 group-hover:text-gray-200"
                     >
                       <span>
@@ -150,6 +156,7 @@ export default function SideBar() {
                   <li className="group w-full rounded-lg px-3 py-2 transition hover:bg-cerulean-800 hover:shadow-md">
                     <Link
                       href="/"
+                      onClick={closeMenu}
                       className="flex items-center justify-start gap-3 text-gray-400 group-hover:text-gray-200"
                     >
                       <span>
@@ -161,6 +168,7 @@ export default function SideBar() {
                   <li className="group w-full rounded-lg px-3 py-2 transition hover:bg-cerulean-800 hover:shadow-md">
                     <Link
                       href="/"
+                      onClick={closeMenu}
                       className="flex items-center justify-start gap-3 text-gray-400 group-hover:text-gray-200"
                     >
                       <span>
@@ -172,6 +180,7 @@ export default function SideBar() {
                   <li className="group w-full rounded-lg px-3 py-2 transition hover:bg-cerulean-800 hover:shadow-md">
                     <Link
                       href="/app/owners"
+                      onClick={closeMenu}
                       className="flex items-center justify-start gap-3 text-gray-400 group-hover:text-gray-200"
                     >
                       <span>
@@ -183,6 +192,7 @@ export default function SideBar() {
                   <li className="group w-full rounded-lg px-3 py-2 transition hover:bg-cerulean-800 hover:shadow-md">
                     <Link
                       href="/app/pets"
+                      onClick={closeMenu}
                       className="flex items-center justify-start gap-3 text-gray-400 group-hover:text-gray-200"
                     >
                       <span>
@@ -194,6 +204,7 @@ export default function SideBar() {
                   <li className="group w-full rounded-lg px-3 py-2 transition hover:bg-cerulean-800 hover:shadow-md">
                     <Link
                       href="/"
+                      onClick={closeMenu}
                       className="flex items-center justify-start gap-3 text-gray-400 group-hover:text-gray-200"
                     >
                       <span>
