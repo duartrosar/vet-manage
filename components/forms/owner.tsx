@@ -1,36 +1,68 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { createOwner } from "../../lib/data";
 import ImageSelector from "./image-selector";
 import Input from "./input";
 import Selector from "./selector";
 import DateSelector from "./date-selector";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Owner } from "@/lib/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ownerSchema } from "@/lib/zod/zodSchemas";
+import Address from "./address";
 
 export default function OwnerForm() {
   const [message, formAction] = useFormState(createOwner, null);
   const { pending } = useFormStatus();
+  const [data, setData] = useState<Owner>();
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Owner>({
+    defaultValues: {
+      id: 0,
+      firstName: "",
+      lastName: "",
+      dateOfBirth: undefined,
+      email: "",
+      mobileNumber: "",
+      address: "",
+    },
+    resolver: zodResolver(ownerSchema),
+  });
+
+  const processForm: SubmitHandler<Owner> = (data) => {
+    console.log(errors);
+    setData(data);
+  };
+
   return (
     <div className="h-full overflow-auto p-3">
-      <form action={formAction} className="relative flex flex-col gap-3">
+      <form
+        // action={formAction}
+        onSubmit={handleSubmit(processForm)}
+        className="relative flex flex-col gap-3"
+      >
         <ImageSelector />
         <div className="grid gap-3 md:grid-cols-2">
           <div className="flex flex-col gap-1">
-            <Input name="First Name" />
-            {/* {errors.firstName && (
-                <span className="text-right text-xs font-bold text-red-500">
-                  {errors.lastName.message}
-                </span>
-              )} */}
+            <Input<Owner>
+              name="First Name"
+              register={register}
+              error={errors.firstName}
+            />
           </div>
           <div className="flex flex-col gap-1">
-            <Input name="Last Name" />
-            {/* {errors.lastName && (
-                <span className="text-right text-xs font-bold text-red-500">
-                  {errors.lastName.message}
-                </span>
-              )} */}
+            <Input<Owner>
+              name="Last Name"
+              register={register}
+              error={errors.lastName}
+            />
           </div>
         </div>
         <div className="grid gap-3 md:grid-cols-2">
@@ -48,36 +80,23 @@ export default function OwnerForm() {
         </div>
         <div className="grid gap-3 md:grid-cols-2">
           <div className="flex flex-col gap-1">
-            <Input name="Email" type="email" />
-            {/* {errors.email && (
-                <span className="text-right text-xs font-bold text-red-500">
-                  {errors.email.message}
-                </span>
-              )} */}
+            <Input<Owner>
+              name="Email"
+              type="email"
+              register={register}
+              error={errors.email}
+            />
           </div>
           <div className="flex flex-col gap-1">
-            <Input name="Mobile Number" type="tel" />
-            {/* {errors.mobileNumber && (
-                <span className="text-right text-xs font-bold text-red-500">
-                  {errors.mobileNumber.message}
-                </span>
-              )} */}
+            <Input<Owner>
+              name="Mobile Number"
+              type="tel"
+              register={register}
+              error={errors.mobileNumber}
+            />
           </div>
         </div>
-        <div className="flex flex-col gap-1">
-          <Input name="Address Line 1" />
-        </div>
-        <div className="flex flex-col gap-1">
-          <Input name="Address Line 2" />
-        </div>
-        <div className="grid gap-3 md:grid-cols-2">
-          <div className="flex flex-col gap-1">
-            <Input name="Post Code" />
-          </div>
-          <div className="flex flex-col gap-1">
-            <Input name="County" />
-          </div>
-        </div>
+        <Address<Owner> register={register} error={errors.address} />
         <div className="flex flex-col gap-1">
           <button
             type="submit"
