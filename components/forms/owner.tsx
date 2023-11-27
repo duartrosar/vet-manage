@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormStatus } from "react-dom";
 import { createOwner } from "../../lib/data";
 import ImageSelector from "./image-selector";
 import Input from "./input";
@@ -14,7 +14,6 @@ import { ownerSchema } from "@/lib/zod/zodSchemas";
 import Address from "./address";
 
 export default function OwnerForm() {
-  const [message, formAction] = useFormState(createOwner, null);
   const { pending } = useFormStatus();
   const [data, setData] = useState<Owner>();
 

@@ -16,6 +16,7 @@ export default function ImageSelector() {
       };
     }
   };
+  console.log(image);
   return (
     <div className="relative flex flex-col gap-1">
       <div className="relative rounded-lg border-2 border-cerulean-100/25 p-3 hover:bg-cerulean-800">

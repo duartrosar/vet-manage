@@ -19,7 +19,7 @@ export async function createOwner(data: Owner) {
         data: {
           firstName: data.firstName,
           lastName: data.lastName,
-          dateOfBirth: data.dateOfBirth,
+          dateOfBirth: new Date(),
           address: "13, Flower Street",
           email: data.email,
           mobileNumber: data.mobileNumber,
