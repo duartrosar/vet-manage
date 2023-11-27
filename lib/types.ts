@@ -2,18 +2,18 @@
 //     name: string
 // }
 
-export type Owner = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  dateOfBirth: Date;
-  email: string;
-  mobileNumber: string;
-  address: string;
-  gender: string;
-  userId: string;
-  pets?: Pet[];
-};
+// export type Owner = {
+//   id: number;
+//   firstName: string;
+//   lastName: string;
+//   dateOfBirth?: Date;
+//   email: string;
+//   mobileNumber: string;
+//   address: string;
+//   gender?: string;
+//   userId: string;
+//   pets?: Pet[];
+// };
 
 export type Pet = {
   id: number;

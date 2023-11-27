@@ -8,7 +8,7 @@ import Input from "./input";
 import Selector from "./selector";
 import DateSelector from "./date-selector";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Owner } from "@/lib/types";
+import { Owner } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ownerSchema } from "@/lib/zod/zodSchemas";
 import Address from "./address";
@@ -22,6 +22,7 @@ export default function OwnerForm() {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm<Owner>({
     defaultValues: {
@@ -32,12 +33,25 @@ export default function OwnerForm() {
       email: "",
       mobileNumber: "",
       address: "",
+      imageUrl: "",
+      gender: "",
     },
     resolver: zodResolver(ownerSchema),
   });
 
-  const processForm: SubmitHandler<Owner> = (data) => {
-    console.log(errors);
+  const processForm: SubmitHandler<Owner> = async (data) => {
+    const result = await createOwner(data);
+    if (!result) {
+      console.log("Something went wrong");
+    }
+
+    if (result?.error) {
+      console.log(result.error);
+      return;
+    }
+
+    reset();
+    console.log(data);
     setData(data);
   };
 

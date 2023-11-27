@@ -14,7 +14,8 @@ export const ownerSchema = z.object({
     .refine((date) => new Date(date).toString() !== "Invalid Date", {
       message: "You must select a date of birth",
     })
-    .transform((date) => new Date(date)),
+    .transform((date) => new Date(date))
+    .optional(),
   email: z
     .string()
     .email({ message: "You must enter an email" })
@@ -25,8 +26,9 @@ export const ownerSchema = z.object({
     .max(50, "Max length is 20 characters"),
   address: z
     .string()
-    .min(1, { message: "You must enter a mobileNumber" })
-    .max(50, "Max length is 20 characters"),
+    .min(1, { message: "You must enter an address" })
+    .max(50, "Max length is 100 characters"),
+  imgUrl: z.string().optional(),
   // gender: z.enum(genders, {
   //   errorMap: () => ({ message: "Please select an option" }),
   // }),

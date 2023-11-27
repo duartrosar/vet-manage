@@ -15,11 +15,11 @@ model Owner {
   firstName    String
   lastName     String
   dateOfBirth  DateTime
-  gender       String
+  gender       String?
   email        String
   mobileNumber String
-  address      String
-  imageUrl     String
+  address      String?
+  imageUrl     String?
   pets         Pet[]
 }
 
