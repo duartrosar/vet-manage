@@ -1,5 +1,5 @@
 "use client";
-import { Owner } from "@/lib/mockup/mockup";
+import { Owner } from "@prisma/client";
 import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { IoCloseCircleOutline, IoPencil, IoTrash } from "react-icons/io5";
@@ -62,16 +62,16 @@ export default function EntitiesList({ owners }: { owners: Owner[] }) {
                 <div className="w-full flex items-center justify-between gap-10">
                   <Image
                     className="rounded-full flex-none"
-                    src={owner.imageurl}
+                    src={owner.imageUrl ? owner.imageUrl : "/"}
                     width={60}
                     height={60}
                     alt="Profile picture"
                   />
                   <div className="text-base font-normal text-cerulean-100 text-start flex-1">
-                    {owner.name}
+                    {owner.firstName}
                   </div>
                   <div className="text-base font-normal hidden text-cerulean-100 text-start flex-1 md:block">
-                    {owner.phoneNumber}
+                    {owner.mobileNumber}
                   </div>
                   <div className="flex gap-2">
                     <Link href={`/owners/edit/${owner.id}`} target="_blank">
