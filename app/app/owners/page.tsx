@@ -9,7 +9,7 @@ import React, { Suspense, useEffect, useRef, useState } from "react";
 import { IoPencil, IoPersonAdd, IoSearch, IoTrash } from "react-icons/io5";
 
 export default async function OwnersHome() {
-  const owners = await getOwners();
+  const { owners } = await getOwners();
   return (
     <Container>
       <div className="px-4">
@@ -19,7 +19,6 @@ export default async function OwnersHome() {
             className="flex items-center justify-start gap-2 px-3 py-2 transition rounded-lg shadow-md shadow-cerulean-950 hover:scale-105 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600"
           >
             <IoPersonAdd className="h-[20px] w-[20px] text-cerulean-400" />
-            {/* New */}
           </Link>
           <h1 className="text-2xl text-right text-gray-500">Owners</h1>
         </div>

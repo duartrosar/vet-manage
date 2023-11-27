@@ -16,7 +16,6 @@ import { PutBlobResult } from "@vercel/blob";
 
 export default function OwnerForm() {
   const { pending } = useFormStatus();
-  const [imageUrl, setImageUrl] = useState("");
   const [file, setFile] = useState<File>();
   const [data, setData] = useState<Owner>();
 
@@ -72,17 +71,15 @@ export default function OwnerForm() {
     const newBlob = (await response.json()) as PutBlobResult;
 
     return newBlob.url;
-    // setBlob(newBlob);
   };
 
   return (
     <div className="h-full overflow-auto p-3">
       <form
-        // action={formAction}
         onSubmit={handleSubmit(processForm)}
         className="relative flex flex-col gap-3"
       >
-        <ImageSelector isSubmitting={isSubmitting} setFile={setFile} />
+        <ImageSelector setFile={setFile} />
         <div className="grid gap-3 md:grid-cols-2">
           <div className="flex flex-col gap-1">
             <Input<Owner>

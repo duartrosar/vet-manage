@@ -7,8 +7,14 @@ import { put } from "@vercel/blob";
 
 const prisma = new PrismaClient();
 
-export async function getOwners(): Promise<Owner[]> {
-  return data;
+export async function getOwners() {
+  try {
+    const owners = await prisma.owner.findMany();
+    console.log(owners);
+    return { owners };
+  } catch (error) {
+    return { error };
+  }
 }
 
 export async function createOwner(data: Owner) {
@@ -40,16 +46,4 @@ export async function createOwner(data: Owner) {
   } catch (error) {
     return { success: false, error: error };
   }
-}
-
-export async function uploadBlob(fileName: string, file: string | ArrayBuffer) {
-  try {
-    const blob = await put(fileName, file, {
-      access: "public",
-    });
-
-    if (blob) {
-      return blob.url;
-    }
-  } catch {}
 }
