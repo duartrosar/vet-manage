@@ -1,11 +1,10 @@
 "use server";
 
 import { data } from "../mockup/mockup";
-import { Owner, PrismaClient } from "@prisma/client";
+import { Owner } from "@prisma/client";
 import { ownerSchema } from "../zod/zodSchemas";
 import { put } from "@vercel/blob";
-
-const prisma = new PrismaClient();
+import prisma from "../prisma";
 
 export async function getOwners() {
   try {
