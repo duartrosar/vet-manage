@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { createOwner } from "../../lib/data";
 import ImageSelector from "./image-selector";
@@ -12,9 +12,12 @@ import { Owner } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ownerSchema } from "@/lib/zod/zodSchemas";
 import Address from "./address";
+import { PutBlobResult } from "@vercel/blob";
 
 export default function OwnerForm() {
   const { pending } = useFormStatus();
+  const [imageUrl, setImageUrl] = useState("");
+  const [file, setFile] = useState<File>();
   const [data, setData] = useState<Owner>();
 
   const {
@@ -22,7 +25,7 @@ export default function OwnerForm() {
     handleSubmit,
     watch,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<Owner>({
     defaultValues: {
       id: 0,
@@ -38,10 +41,16 @@ export default function OwnerForm() {
     resolver: zodResolver(ownerSchema),
   });
 
+  useEffect(() => {
+    console.log(file);
+  }, [file]);
+
   const processForm: SubmitHandler<Owner> = async (data) => {
+    data.imageUrl = await blobUpload();
     const result = await createOwner(data);
     if (!result) {
       console.log("Something went wrong");
+      throw new Error("Something went wrong");
     }
 
     if (result?.error) {
@@ -54,6 +63,18 @@ export default function OwnerForm() {
     setData(data);
   };
 
+  const blobUpload = async () => {
+    const response = await fetch(`/api/blob/upload?filename=${file!.name}`, {
+      method: "POST",
+      body: file,
+    });
+
+    const newBlob = (await response.json()) as PutBlobResult;
+
+    return newBlob.url;
+    // setBlob(newBlob);
+  };
+
   return (
     <div className="h-full overflow-auto p-3">
       <form
@@ -61,7 +82,7 @@ export default function OwnerForm() {
         onSubmit={handleSubmit(processForm)}
         className="relative flex flex-col gap-3"
       >
-        <ImageSelector />
+        <ImageSelector isSubmitting={isSubmitting} setFile={setFile} />
         <div className="grid gap-3 md:grid-cols-2">
           <div className="flex flex-col gap-1">
             <Input<Owner>

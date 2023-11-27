@@ -3,6 +3,7 @@
 import { data } from "../mockup/mockup";
 import { Owner, PrismaClient } from "@prisma/client";
 import { ownerSchema } from "../zod/zodSchemas";
+import { put } from "@vercel/blob";
 
 const prisma = new PrismaClient();
 
@@ -13,6 +14,8 @@ export async function getOwners(): Promise<Owner[]> {
 export async function createOwner(data: Owner) {
   try {
     const result = ownerSchema.safeParse(data);
+
+    console.log(data.imageUrl);
 
     if (result.success) {
       const owner = await prisma.owner.create({
@@ -37,4 +40,16 @@ export async function createOwner(data: Owner) {
   } catch (error) {
     return { success: false, error: error };
   }
+}
+
+export async function uploadBlob(fileName: string, file: string | ArrayBuffer) {
+  try {
+    const blob = await put(fileName, file, {
+      access: "public",
+    });
+
+    if (blob) {
+      return blob.url;
+    }
+  } catch {}
 }

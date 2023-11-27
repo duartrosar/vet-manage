@@ -6,7 +6,7 @@ import {
   UseFormRegister,
   UseFormRegisterReturn,
 } from "react-hook-form";
-import { Owner } from "@/lib/types";
+import { Owner } from "@prisma/client";
 import { toCamelCase } from "@/lib/utils";
 
 interface InputProps<T extends FieldValues> {
