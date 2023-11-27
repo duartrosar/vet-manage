@@ -191,7 +191,7 @@ export default function SideBar() {
                   </li>
                   <li className="group w-full rounded-lg px-3 py-2 transition hover:bg-cerulean-800 hover:shadow-md">
                     <Link
-                      href="/app/pets"
+                      href="/"
                       onClick={closeMenu}
                       className="flex items-center justify-start gap-3 text-gray-400 group-hover:text-gray-200"
                     >
