@@ -1,6 +1,5 @@
 "use client";
 
-import { uploadBlob } from "@/lib/data";
 import { PutBlobResult } from "@vercel/blob";
 import React, {
   ChangeEvent,
