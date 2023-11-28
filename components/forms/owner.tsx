@@ -51,6 +51,8 @@ export default function OwnerForm() {
       data.imageUrl = await blobUpload();
     }
 
+    console.log(data);
+
     const result = await createOwner(data);
     if (!result) {
       // Todo: if couldn't create owner, but blob was created then delete blob
