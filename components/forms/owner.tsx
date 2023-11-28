@@ -46,16 +46,14 @@ export default function OwnerForm() {
     resolver: zodResolver(ownerSchema),
   });
 
-  useEffect(() => {
-    // console.log(da);
-  }, [errors]);
-
   const processForm: SubmitHandler<Owner> = async (data) => {
     if (file) {
       data.imageUrl = await blobUpload();
     }
+
     const result = await createOwner(data);
     if (!result) {
+      // Todo: if couldn't create owner, but blob was created then delete blob
       console.log("Something went wrong");
       throw new Error("Something went wrong");
     }

@@ -1,9 +1,7 @@
 "use server";
 
-import { data } from "../mockup/mockup";
 import { Owner } from "@prisma/client";
 import { ownerSchema } from "../zod/zodSchemas";
-import { put } from "@vercel/blob";
 import prisma from "../prisma";
 
 export async function getOwners() {
@@ -41,6 +39,7 @@ export async function createOwner(data: Owner) {
       return { success: false, error: result.error.format() };
     }
   } catch (error) {
+    console.log(error);
     return { success: false, error: error };
   }
 }

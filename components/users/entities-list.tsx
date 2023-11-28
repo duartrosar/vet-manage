@@ -13,6 +13,7 @@ export default function EntitiesList({ owners }: { owners?: Owner[] }) {
   const router = useRouter();
 
   useEffect(() => {
+    console.log(owners);
     setParentsHeight(ref.current?.clientHeight!);
 
     function setWindowHeight(this: Window, ev: UIEvent) {
