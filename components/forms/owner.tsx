@@ -6,7 +6,7 @@ import { createOwner } from "../../lib/data";
 import ImageSelector from "./image-selector";
 import Input from "./input";
 import Selector from "./selector";
-import DateSelector from "./date-selector";
+
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Owner } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,6 +15,7 @@ import Address from "./address";
 import { PutBlobResult } from "@vercel/blob";
 import { genderOptions } from "@/lib/constants";
 import { useRouter } from "next/navigation";
+import DatePicker from "./date-picker";
 
 export default function OwnerForm() {
   const { pending } = useFormStatus();
@@ -103,8 +104,8 @@ export default function OwnerForm() {
           </div>
         </div>
         <div className="grid gap-3 md:grid-cols-2">
-          <div className="flex w-full flex-col gap-1">
-            <DateSelector />
+          <div className="flex relative w-full flex-col gap-1">
+            <DatePicker />
             {/* {errors.dateOfBirth && (
                 <span className="text-right text-xs font-bold text-red-500">
                   {errors.dateOfBirth.message}
