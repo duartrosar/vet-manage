@@ -46,7 +46,7 @@ export default function Selector<T extends FieldValues>({
     setValue<Path<T>>(inputId as Path<T>, text as PathValue<T, Path<T>>, {
       shouldDirty: false,
     });
-    // clearErrors(inputId as Path<T>);
+    clearErrors(inputId as Path<T>);
   }
 
   useOnClickOutside(dropdownRef, (event: MouseEvent) => {

@@ -20,8 +20,6 @@ export async function createOwner(data: Owner) {
   try {
     const result = ownerSchema.safeParse(data);
 
-    console.log(data.imageUrl);
-
     if (result.success) {
       const owner = await prisma.owner.create({
         data: {

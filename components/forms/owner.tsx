@@ -14,11 +14,13 @@ import { ownerSchema } from "@/lib/zod/zodSchemas";
 import Address from "./address";
 import { PutBlobResult } from "@vercel/blob";
 import { genderOptions } from "@/lib/constants";
+import { useRouter } from "next/navigation";
 
 export default function OwnerForm() {
   const { pending } = useFormStatus();
   const [file, setFile] = useState<File>();
   const [data, setData] = useState<Owner>();
+  const router = useRouter();
   const options = genderOptions;
 
   const {
@@ -63,8 +65,7 @@ export default function OwnerForm() {
       return;
     }
 
-    reset();
-    setData(data);
+    router.push("/app/owners");
   };
 
   const blobUpload = async () => {
