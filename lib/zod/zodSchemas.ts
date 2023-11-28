@@ -29,7 +29,5 @@ export const ownerSchema = z.object({
     .min(1, { message: "You must enter an address" })
     .max(50, "Max length is 100 characters"),
   imgUrl: z.string().optional(),
-  // gender: z.enum(genders, {
-  //   errorMap: () => ({ message: "Please select an option" }),
-  // }),
+  gender: z.string().min(1, { message: "You must choose a value" }),
 });

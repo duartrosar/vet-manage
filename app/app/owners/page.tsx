@@ -10,6 +10,7 @@ import { IoPencil, IoPersonAdd, IoSearch, IoTrash } from "react-icons/io5";
 
 export default async function OwnersHome() {
   const { owners } = await getOwners();
+  console.log(owners);
   return (
     <Container>
       <div className="px-4">

@@ -5,10 +5,12 @@ import Image from "next/image";
 import { IoCloseCircleOutline, IoPencil, IoTrash } from "react-icons/io5";
 import { FaUser } from "react-icons/fa6";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function EntitiesList({ owners }: { owners?: Owner[] }) {
   const ref = useRef<HTMLDivElement>(null);
   const [parentsHeight, setParentsHeight] = useState(0);
+  const router = useRouter();
 
   useEffect(() => {
     setParentsHeight(ref.current?.clientHeight!);
@@ -53,9 +55,12 @@ export default function EntitiesList({ owners }: { owners?: Owner[] }) {
             {owners?.map((owner, index) => (
               <div
                 key={index}
-                className={`px-4 py-2 border-2 border-cerulean-800/50 rounded-xl shadow-xl hover:outline hover:outline-cerulean-800 hover:border-cerulean-800  ${
+                className={`px-4 py-2 border-2 cursor-pointer border-cerulean-800/50 rounded-xl shadow-xl hover:outline hover:outline-cerulean-800 hover:border-cerulean-800  ${
                   index % 2 === 0 ? "bg-cerulean-800/25" : "bg-cerulean-950"
                 }`}
+                onClick={() => {
+                  router.push(`/app/owners/edit/${owner.id}`);
+                }}
               >
                 <div className="w-full flex items-center justify-between gap-10">
                   <div className="rounded-full border-2 border-cerulean-800/50 w-20 h-20 flex items-center justify-center">
@@ -82,10 +87,7 @@ export default function EntitiesList({ owners }: { owners?: Owner[] }) {
                     {owner.email}
                   </div>
                   <div className="flex gap-2">
-                    <Link href={`/owners/edit/${owner.id}`} target="_blank">
-                      <IoPencil className="h-[20px] w-[20px] text-cerulean-500" />
-                    </Link>
-                    <Link href={`/owners/edit/${owner.id}`} target="_blank">
+                    <Link href={`/app/owners/edit/${owner.id}`} target="_blank">
                       <IoTrash className="h-[20px] w-[20px] text-cerulean-500" />
                     </Link>
                   </div>

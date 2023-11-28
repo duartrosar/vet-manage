@@ -13,18 +13,22 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ownerSchema } from "@/lib/zod/zodSchemas";
 import Address from "./address";
 import { PutBlobResult } from "@vercel/blob";
+import { genderOptions } from "@/lib/constants";
 
 export default function OwnerForm() {
   const { pending } = useFormStatus();
   const [file, setFile] = useState<File>();
   const [data, setData] = useState<Owner>();
+  const options = genderOptions;
 
   const {
     register,
     handleSubmit,
     watch,
     reset,
+    setValue,
     formState: { errors, isSubmitting },
+    clearErrors,
   } = useForm<Owner>({
     defaultValues: {
       id: 0,
@@ -41,11 +45,13 @@ export default function OwnerForm() {
   });
 
   useEffect(() => {
-    console.log(file);
-  }, [file]);
+    // console.log(da);
+  }, [errors]);
 
   const processForm: SubmitHandler<Owner> = async (data) => {
-    data.imageUrl = await blobUpload();
+    if (file) {
+      data.imageUrl = await blobUpload();
+    }
     const result = await createOwner(data);
     if (!result) {
       console.log("Something went wrong");
@@ -58,7 +64,6 @@ export default function OwnerForm() {
     }
 
     reset();
-    console.log(data);
     setData(data);
   };
 
@@ -106,7 +111,15 @@ export default function OwnerForm() {
               )} */}
           </div>
           <div className="relative flex flex-col gap-1">
-            <Selector />
+            <Selector
+              name="Gender"
+              type="text"
+              setValue={setValue}
+              register={register}
+              error={errors.gender}
+              clearErrors={clearErrors}
+              options={options}
+            />
           </div>
         </div>
         <div className="grid gap-3 md:grid-cols-2">
