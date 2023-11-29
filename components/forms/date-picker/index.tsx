@@ -19,11 +19,11 @@ export default function DatePicker() {
       >
         Date Of Birth
       </label>
-      {/* <input
+      <input
         name="dateOfBirth"
         type="date"
         className="w-full rounded-lg border-2 border-cerulean-100/25 bg-transparent px-3 py-2 font-semibold text-gray-200 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600"
-      /> */}
+      />
       <div
         id="toggler"
         onClick={() => setDropdownOpen(!dropdownOpen)}

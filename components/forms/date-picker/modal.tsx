@@ -1,62 +1,56 @@
 "use client";
 
-import React, { useState } from "react";
-import DaySelection from "./day-selection";
+import React, { useEffect, useState } from "react";
+import DaySelection from "./day/day-selection";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
-import MonthSelection from "./month-selection";
-import YearSelection from "./year-selection";
+import MonthSelection from "./month/month-selection";
+import YearSelection from "./year/year-selection";
+import Navigation from "./navigation/navigation";
+import { View } from "./types";
+import { MONTHS } from "./constants";
+
+export const views: string[] = ["day", "month", "year"];
 
 export default function DatePickerModal() {
-  enum Views {
-    DAY = "day",
-    MONTH = "month",
-    YEAR = "year",
-  }
-  const [selectedView, setSelectedView] = useState<Views>(Views.DAY);
+  const [selectedView, setSelectedView] = useState<string>("day");
+  const [selectedDay, setSelectedDay] = useState<number>(new Date().getDate());
+  const [selectedMonth, setSelectedMonth] = useState<number>(
+    new Date().getMonth(),
+  );
+  const [selectedYear, setSelectedYear] = useState<number>(
+    new Date().getFullYear(),
+  );
 
   return (
     <div className="absolute left-0 -top-[293px] w-full rounded-lg border-2 border-cerulean-100/25 bg-cerulean-900">
       <div className="w-full px-2 pt-2">
-        <div className="flex items-center justify-around py-2 text-cerulean-100 bg-cerulean-950 rounded-lg border border-cerulean-100/25 px-2">
-          {/* <div className="rounded-lg hover:bg-cerulean-800 hover:cursor-pointer px-4 py-2">
-            <GrFormPrevious className="text-sm" />
-          </div> */}
-          <div
-            className="rounded-lg hover:bg-cerulean-800 hover:cursor-pointer px-4 py-2 text-sm"
-            onClick={() => {
-              setSelectedView(Views.DAY);
-            }}
-          >
-            28
-          </div>
-          <div
-            className="rounded-lg hover:bg-cerulean-800 hover:cursor-pointer px-4 py-2 text-sm"
-            onClick={() => {
-              setSelectedView(Views.MONTH);
-            }}
-          >
-            November
-          </div>
-          <div
-            className="rounded-lg hover:bg-cerulean-800 hover:cursor-pointer px-4 py-2 text-sm"
-            onClick={() => {
-              setSelectedView(Views.YEAR);
-            }}
-          >
-            2023
-          </div>
-          {/* <div className="rounded-lg hover:bg-cerulean-800 hover:cursor-pointer px-4 py-2">
-            <GrFormNext className="text-sm" />
-          </div> */}
-        </div>
+        <Navigation
+          views={views}
+          selectedDay={selectedDay}
+          selectedMonth={selectedMonth}
+          selectedYear={selectedYear}
+          selectedView={selectedView}
+          setSelectedView={setSelectedView}
+        />
       </div>
       <div className="w-full p-2">
-        {selectedView === Views.DAY ? (
-          <DaySelection />
-        ) : selectedView === Views.MONTH ? (
-          <MonthSelection />
+        {selectedView === "day" ? (
+          <DaySelection
+            selectedDay={selectedDay}
+            setSelectedDay={setSelectedDay}
+            selectedMonth={selectedMonth}
+            selectedYear={selectedYear}
+          />
+        ) : selectedView === "month" ? (
+          <MonthSelection
+            selectedMonth={selectedMonth}
+            setSelectedMonth={setSelectedMonth}
+          />
         ) : (
-          <YearSelection />
+          <YearSelection
+            selectedYear={selectedYear}
+            setSelectedYear={setSelectedYear}
+          />
         )}
       </div>
     </div>
