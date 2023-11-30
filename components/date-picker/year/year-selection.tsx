@@ -3,7 +3,7 @@ import YearTile from "./year-tile";
 
 export default function YearSelection() {
   const years: number[] = [];
-  for (let i = 2013; i <= 2023; i++) {
+  for (let i = 2013; i < 2013 + 12; i++) {
     years.push(i);
   }
   return (

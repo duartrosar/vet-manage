@@ -3,6 +3,7 @@ import DayTile from "./day-tile";
 import { WEEKDAYS } from "../constants";
 import BlankDayTile from "./blank-day-tile";
 import DatePickerContext from "../context/context";
+import { getDays } from "../utils";
 
 export default function DaySelection() {
   const { currentDate } = useContext(DatePickerContext);
@@ -13,12 +14,8 @@ export default function DaySelection() {
   );
   const firstOfMonth = date.getDay();
 
-  // Get days in current month
-  let days = new Date(
-    currentDate.selectedYear,
-    currentDate.selectedMonth + 1,
-    0,
-  ).getDate();
+  // We pass selectedMonth + 1 because months are 0 indexed
+  let days = getDays(currentDate.selectedYear, currentDate.selectedMonth + 1);
 
   const dayTiles: number[] = [];
   const blankTilesBefore: number[] = [];
