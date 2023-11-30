@@ -1,16 +1,9 @@
-"use client";
-
-import React, { useState, useRef } from "react";
-import ReactCalendar from "react-calendar";
+import React, { useRef, useState } from "react";
 import DatePickerModal from "./modal";
 
-export default function DatePicker() {
+export default function DatePickerContainer() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const maxDate = new Date();
-  const maxDateNumber = maxDate.setFullYear(maxDate.getFullYear() - 18);
-
-  console.log();
   return (
     <>
       <label
@@ -22,7 +15,7 @@ export default function DatePicker() {
       <input
         name="dateOfBirth"
         type="date"
-        className="w-full rounded-lg border-2 border-cerulean-100/25 bg-transparent px-3 py-2 font-semibold text-gray-200 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600"
+        className="w-full rounded-lg border-2 border-cerulean-100/25 bg-transparent px-3 py-2 font-semibold text-gray-200 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600 hidden"
       />
       <div
         id="toggler"

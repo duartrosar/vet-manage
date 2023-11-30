@@ -1,32 +1,28 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useContext, useState } from "react";
 import DayTile from "./day-tile";
 import { WEEKDAYS } from "../constants";
 import BlankDayTile from "./blank-day-tile";
+import DatePickerContext from "../context/context";
 
-export default function DaySelection({
-  selectedDay,
-  selectedMonth,
-  selectedYear,
-  setSelectedDay,
-}: {
-  selectedDay: number;
-  selectedMonth: number;
-  selectedYear: number;
-  setSelectedDay: Dispatch<SetStateAction<number>>;
-}) {
+export default function DaySelection() {
+  const { currentDate } = useContext(DatePickerContext);
+
   // Get day of the week that is the fisrt of the month
-  let date = new Date(`${selectedMonth + 1}/${1}/${selectedYear}`);
+  let date = new Date(
+    `${currentDate.selectedMonth + 1}/${1}/${currentDate.selectedYear}`,
+  );
   const firstOfMonth = date.getDay();
 
   // Get days in current month
-  let days = new Date(selectedYear, selectedMonth + 1, 0).getDate();
-  console.log(date);
+  let days = new Date(
+    currentDate.selectedYear,
+    currentDate.selectedMonth + 1,
+    0,
+  ).getDate();
 
   const dayTiles: number[] = [];
   const blankTilesBefore: number[] = [];
   const blankTilesAfter: number[] = [];
-
-  let started = false;
 
   for (let i = 0; i < firstOfMonth; i++) {
     blankTilesBefore.push(0);
@@ -57,12 +53,7 @@ export default function DaySelection({
           <BlankDayTile key={index} />
         ))}
         {dayTiles.map((value, index) => (
-          <DayTile
-            day={value}
-            key={index}
-            selectedDay={selectedDay}
-            setSelectedDay={setSelectedDay}
-          />
+          <DayTile day={value} key={index} />
         ))}
         {blankTilesAfter.map((value, index) => (
           <BlankDayTile key={index} />

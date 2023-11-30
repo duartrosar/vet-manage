@@ -15,7 +15,7 @@ import Address from "./address";
 import { PutBlobResult } from "@vercel/blob";
 import { genderOptions } from "@/lib/constants";
 import { useRouter } from "next/navigation";
-import DatePicker from "./date-picker";
+import DatePicker from "../date-picker";
 
 export default function OwnerForm() {
   const { pending } = useFormStatus();
