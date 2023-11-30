@@ -104,7 +104,7 @@ export default function OwnerForm() {
           </div>
         </div>
         <div className="grid gap-3 md:grid-cols-2">
-          <div className="flex relative w-full flex-col gap-1">
+          <div className="flex w-full flex-col gap-1">
             <DatePicker />
             {/* {errors.dateOfBirth && (
                 <span className="text-right text-xs font-bold text-red-500">
@@ -142,6 +142,9 @@ export default function OwnerForm() {
             />
           </div>
         </div>
+        <Address<Owner> register={register} error={errors.address} />
+        <Address<Owner> register={register} error={errors.address} />
+        <Address<Owner> register={register} error={errors.address} />
         <Address<Owner> register={register} error={errors.address} />
         <div className="flex flex-col gap-1">
           <button

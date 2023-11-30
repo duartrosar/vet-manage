@@ -12,7 +12,6 @@ export default function YearTile({ year }: { year: number }) {
     // Make sure the user can't select a day that doesn't exist in the selected month
     if (!isLeapyear && currentDate.selectedMonth === 1) {
       const days = getDays(year, currentDate.selectedMonth + 1);
-
       newDay = currentDate.selectedDay > days ? days : currentDate.selectedDay;
     } else {
       newDay = currentDate.selectedDay;

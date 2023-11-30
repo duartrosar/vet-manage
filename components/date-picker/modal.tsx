@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import DaySelection from "./day/day-selection";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import MonthSelection from "./month/month-selection";
@@ -9,14 +9,19 @@ import Navigation from "./navigation/navigation";
 import { View } from "./types";
 import { MONTHS } from "./constants";
 import DatePickerContext from "./context/context";
+import { useWindowSize } from "@uidotdev/usehooks";
 
 export const views: string[] = ["day", "month", "year"];
 
-export default function DatePickerModal() {
+export default function DatePickerModal({ direction }: { direction: string }) {
   const { selectedView } = useContext(DatePickerContext);
 
   return (
-    <div className="absolute left-0 -top-[293px] w-full rounded-lg border-2 border-cerulean-100/25 bg-cerulean-900">
+    <div
+      className={`absolute left-0 w-full rounded-lg border-2 border-cerulean-100/25 bg-cerulean-900 ${
+        direction === "up" ? "-top-[293px]" : "top-20"
+      }`}
+    >
       <div className="w-full px-2 pt-2">
         <Navigation views={views} />
       </div>

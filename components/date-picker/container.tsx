@@ -1,15 +1,32 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import DatePickerModal from "./modal";
 import DatePickerContext from "./context/context";
 import { IoCalendarClearOutline } from "react-icons/io5";
 
 export default function DatePickerContainer() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [direction, setDirection] = useState("");
+  const containerRef = useRef<HTMLDivElement>(null);
+  const childRef = useRef<HTMLDivElement>(null);
   const { currentDate } = useContext(DatePickerContext);
 
+  useEffect(() => {
+    if (containerRef.current && childRef.current) {
+      const containerRect = containerRef.current.getBoundingClientRect();
+      const childRect = childRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      if (containerRect.y + 310 + 80 > windowHeight) {
+        setDirection("up");
+        console.log("it's bigger");
+      } else {
+        setDirection("down");
+      }
+    }
+  }, [dropdownOpen]);
+
   return (
-    <>
+    <div className="relative" ref={containerRef}>
       <label
         htmlFor="dateOfBirth"
         className="pl-3 text-sm font-bold text-gray-500"
@@ -37,7 +54,11 @@ export default function DatePickerContainer() {
           <IoCalendarClearOutline className="text-cerulean-100/25" />
         </span>
       </div>
-      {dropdownOpen && <DatePickerModal />}
-    </>
+      {dropdownOpen && (
+        <div ref={childRef}>
+          <DatePickerModal direction={direction} />
+        </div>
+      )}
+    </div>
   );
 }
