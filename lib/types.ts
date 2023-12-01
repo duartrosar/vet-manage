@@ -1,35 +1,20 @@
-// export type Inputs = {
-//     name: string
-// }
+import {
+  FieldError,
+  FieldValues,
+  UseFormClearErrors,
+  UseFormRegister,
+  UseFormSetValue,
+} from "react-hook-form";
 
-// export type Owner = {
-//   id: number;
-//   firstName: string;
-//   lastName: string;
-//   dateOfBirth?: Date;
-//   email: string;
-//   mobileNumber: string;
-//   address: string;
-//   gender?: string;
-//   userId: string;
-//   pets?: Pet[];
-// };
-
-export type Pet = {
-  id: number;
+export interface InputProps<T extends FieldValues> {
   name: string;
-  type: string;
-  ownerId: number;
-};
+  type?: string;
+  register: UseFormRegister<T>;
+  error: FieldError | undefined;
+}
 
-export type Login = {
-  username: string;
-  password: string;
-};
-
-export type User = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  mobileNumber: string;
-};
+export interface CustomInputProps<T extends FieldValues> extends InputProps<T> {
+  setValue: UseFormSetValue<T>;
+  clearErrors: UseFormClearErrors<T>;
+  options?: string[];
+}

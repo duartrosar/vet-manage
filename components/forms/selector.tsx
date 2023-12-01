@@ -1,3 +1,4 @@
+import { CustomInputProps } from "@/lib/types";
 import { toCamelCase } from "@/lib/utils";
 import React, { useState, useRef, MouseEvent as ReactMouseEvent } from "react";
 import {
@@ -13,16 +14,6 @@ import {
 import { IoChevronDown } from "react-icons/io5";
 import { useOnClickOutside } from "usehooks-ts";
 
-interface InputProps<T extends FieldValues> {
-  name: string;
-  type: string;
-  register: UseFormRegister<T>;
-  error: FieldError | undefined;
-  setValue: UseFormSetValue<T>;
-  clearErrors: UseFormClearErrors<T>;
-  options: string[];
-}
-
 export default function Selector<T extends FieldValues>({
   name,
   type,
@@ -31,7 +22,7 @@ export default function Selector<T extends FieldValues>({
   setValue,
   clearErrors,
   options,
-}: InputProps<T>) {
+}: CustomInputProps<T>) {
   const [selectedText, setSelectedText] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);

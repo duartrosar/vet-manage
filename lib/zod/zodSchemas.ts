@@ -9,13 +9,10 @@ export const ownerSchema = z.object({
     .string()
     .min(1, { message: "You must enter a last name" })
     .max(50, "Max length is 50 characters"),
-  dateOfBirth: z
-    .string()
-    .refine((date) => new Date(date).toString() !== "Invalid Date", {
-      message: "You must select a date of birth",
-    })
-    .transform((date) => new Date(date))
-    .optional(),
+  dateOfBirth: z.date({
+    required_error: "Please select a date and time",
+    invalid_type_error: "That's not a date!",
+  }),
   email: z
     .string()
     .email({ message: "You must enter an email" })

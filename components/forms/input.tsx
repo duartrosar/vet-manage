@@ -1,3 +1,4 @@
+import { InputProps } from "@/lib/types";
 import { toCamelCase } from "@/lib/utils";
 import React from "react";
 import {
@@ -7,13 +8,6 @@ import {
   UseFormRegister,
   UseFormRegisterReturn,
 } from "react-hook-form";
-
-interface InputProps<T extends FieldValues> {
-  name: string;
-  type?: string;
-  register: UseFormRegister<T>;
-  error: FieldError | undefined;
-}
 
 export default function Input<T extends FieldValues>({
   name,

@@ -54,19 +54,21 @@ export default function OwnerForm() {
 
     console.log(data);
 
-    const result = await createOwner(data);
-    if (!result) {
-      // Todo: if couldn't create owner, but blob was created then delete blob
-      console.log("Something went wrong");
-      throw new Error("Something went wrong");
-    }
+    return;
 
-    if (result?.error) {
-      console.log(result.error);
-      return;
-    }
+    // const result = await createOwner(data);
+    // if (!result) {
+    //   // Todo: if couldn't create owner, but blob was created then delete blob
+    //   console.log("Something went wrong");
+    //   throw new Error("Something went wrong");
+    // }
 
-    router.push("/app/owners");
+    // if (result?.error) {
+    //   console.log(result.error);
+    //   return;
+    // }
+
+    // router.push("/app/owners");
   };
 
   const blobUpload = async () => {
@@ -105,7 +107,14 @@ export default function OwnerForm() {
         </div>
         <div className="grid gap-3 md:grid-cols-2">
           <div className="flex w-full flex-col gap-1">
-            <DatePicker />
+            <DatePicker
+              name="Date Of Birth"
+              type="date"
+              setValue={setValue}
+              clearErrors={clearErrors}
+              register={register}
+              error={errors.dateOfBirth}
+            />
             {/* {errors.dateOfBirth && (
                 <span className="text-right text-xs font-bold text-red-500">
                   {errors.dateOfBirth.message}
