@@ -18,7 +18,7 @@ export default function DatePickerModal({ direction }: { direction: string }) {
 
   return (
     <div
-      className={`absolute left-0 w-full rounded-lg border-2 border-cerulean-100/25 bg-cerulean-900 ${
+      className={`absolute left-0 w-full rounded-lg border-2 border-cerulean-100/25 bg-cerulean-900 z-10 ${
         direction === "up" ? "-top-[293px]" : "top-20"
       }`}
     >

@@ -63,7 +63,7 @@ export default function Selector<T extends FieldValues>({
       <div
         id="toggler"
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className={`flex min-h-[44px] cursor-pointer items-center justify-between rounded-lg  border-2 border-cerulean-100/25 bg-transparent px-3 py-2 font-semibold text-gray-200 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600 z-0`}
+        className={`flex min-h-[44px] cursor-pointer items-center justify-between rounded-lg  border-2 border-cerulean-100/25 bg-transparent px-3 py-2 font-semibold text-gray-200 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600`}
       >
         <p className={selectedText ? "text-gray-200" : "text-gray-500"}>
           {selectedText ? selectedText : "Select an option"}

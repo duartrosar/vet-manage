@@ -10,6 +10,7 @@ import {
 } from "react-hook-form";
 import { CustomInputProps } from "@/lib/types";
 import { toCamelCase } from "@/lib/utils";
+import { useOnClickOutside } from "usehooks-ts";
 
 export default function DatePickerContainer<T extends FieldValues>({
   name,
@@ -24,6 +25,7 @@ export default function DatePickerContainer<T extends FieldValues>({
   const containerRef = useRef<HTMLDivElement>(null);
   const childRef = useRef<HTMLDivElement>(null);
   const { currentDate } = useContext(DatePickerContext);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
   const inputId = toCamelCase(name);
 
   useEffect(() => {
@@ -59,6 +61,17 @@ export default function DatePickerContainer<T extends FieldValues>({
     clearErrors(inputId as Path<T>);
   }, [currentDate]);
 
+  useOnClickOutside(dropdownRef, (event: MouseEvent) => {
+    const element = event.target as HTMLElement;
+    const id = element.id;
+
+    if (id === "toggler") return;
+    if (childRef.current && childRef.current.contains(event.target as Node))
+      return;
+
+    setDropdownOpen(false);
+  });
+
   return (
     <div className="relative" ref={containerRef}>
       <label htmlFor={inputId} className="pl-3 text-sm font-bold text-gray-500">
@@ -71,6 +84,7 @@ export default function DatePickerContainer<T extends FieldValues>({
         className="w-full rounded-lg border-2 border-cerulean-100/25 bg-transparent px-3 py-2 font-semibold text-gray-200 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600 hidden"
       />
       <div
+        ref={dropdownRef}
         id="toggler"
         onClick={() => setDropdownOpen(!dropdownOpen)}
         className={`flex min-h-[44px] cursor-pointer items-center justify-between rounded-lg  border-2 border-cerulean-100/25 bg-transparent px-3 py-2 font-semibold text-gray-200 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600`}
@@ -92,7 +106,7 @@ export default function DatePickerContainer<T extends FieldValues>({
         </span>
       )}
       {dropdownOpen && (
-        <div ref={childRef}>
+        <div ref={childRef} id="modal">
           <DatePickerModal direction={direction} />
         </div>
       )}

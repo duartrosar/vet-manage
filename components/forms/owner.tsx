@@ -115,11 +115,6 @@ export default function OwnerForm() {
               register={register}
               error={errors.dateOfBirth}
             />
-            {/* {errors.dateOfBirth && (
-                <span className="text-right text-xs font-bold text-red-500">
-                  {errors.dateOfBirth.message}
-                </span>
-              )} */}
           </div>
           <div className="relative flex flex-col gap-1">
             <Selector
