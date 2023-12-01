@@ -13,16 +13,25 @@ export default function DaySelection() {
     `${currentDate.selectedMonth + 1}/${1}/${currentDate.selectedYear}`,
   );
   const firstOfMonth = date.getDay();
+  console.log(firstOfMonth);
 
   // We pass selectedMonth + 1 because months are 0 indexed
   let days = getDays(currentDate.selectedYear, currentDate.selectedMonth + 1);
 
-  const dayTiles: number[] = [];
-  const blankTilesBefore: number[] = [];
-  const blankTilesAfter: number[] = [];
+  // Get how many the days the previous and next month have
+  let prevDays = getDays(currentDate.selectedYear, currentDate.selectedMonth);
+  let nextDays = getDays(
+    currentDate.selectedYear,
+    currentDate.selectedMonth + 2,
+  );
 
-  for (let i = 0; i < firstOfMonth; i++) {
-    blankTilesBefore.push(0);
+  const dayTiles: number[] = [];
+  const prevMonthDayTiles: number[] = [];
+  const nextMonthDayTiles: number[] = [];
+
+  for (let i = firstOfMonth - 1; i >= 0; i--) {
+    let day = prevDays - i;
+    prevMonthDayTiles.push(day);
   }
 
   for (let i = 1; i <= days; i++) {
@@ -30,7 +39,7 @@ export default function DaySelection() {
   }
 
   for (let i = 0; i < 42 - (days + firstOfMonth); i++) {
-    blankTilesAfter.push(0);
+    nextMonthDayTiles.push(i + 1);
   }
 
   return (
@@ -46,14 +55,14 @@ export default function DaySelection() {
         ))}
       </div>
       <div className="h-[200px] grid grid-cols-7 w-full gap-1">
-        {blankTilesBefore.map((value, index) => (
-          <BlankDayTile key={index} />
+        {prevMonthDayTiles.map((day, index) => (
+          <DayTile key={index} day={day} monthOffset={-1} />
         ))}
-        {dayTiles.map((value, index) => (
-          <DayTile day={value} key={index} />
+        {dayTiles.map((day, index) => (
+          <DayTile day={day} key={index} monthOffset={0} />
         ))}
-        {blankTilesAfter.map((value, index) => (
-          <BlankDayTile key={index} />
+        {nextMonthDayTiles.map((day, index) => (
+          <DayTile key={index} day={day} monthOffset={1} />
         ))}
       </div>
     </>

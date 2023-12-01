@@ -81,15 +81,16 @@ export default function Selector<T extends FieldValues>({
           className="absolute left-0 top-20 w-full rounded-lg border-2 border-cerulean-100/25 bg-cerulean-900"
         >
           <ul className="flex flex-col gap-3 py-2">
-            {options.map((value, index) => (
-              <li
-                key={index}
-                onClick={(e) => handleClick(e)}
-                className="w-full cursor-pointer px-3 py-2 text-gray-500 transition hover:bg-cerulean-800 hover:shadow-md"
-              >
-                {value}
-              </li>
-            ))}
+            {options &&
+              options.map((value, index) => (
+                <li
+                  key={index}
+                  onClick={(e) => handleClick(e)}
+                  className="w-full cursor-pointer px-3 py-2 text-gray-500 transition hover:bg-cerulean-800 hover:shadow-md"
+                >
+                  {value}
+                </li>
+              ))}
           </ul>
         </div>
       )}
