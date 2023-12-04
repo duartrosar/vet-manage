@@ -8,7 +8,8 @@ export default function DayTile({
   day: number;
   monthOffset: number;
 }) {
-  const { currentDate, setCurrentDate } = useContext(DatePickerContext);
+  const { currentDate, setCurrentDate, setDropdownOpen } =
+    useContext(DatePickerContext);
 
   const handleClick = () => {
     // make sure the months wrap around
@@ -31,6 +32,8 @@ export default function DayTile({
       selectedMonth: newMonth,
       selectedYear: newYear,
     });
+
+    setDropdownOpen(false);
   };
 
   return (

@@ -11,7 +11,8 @@ export default function DatePickerProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [selectedView, setSelectedView] = useState<string>("day");
+  const [selectedView, setSelectedView] = useState<string>("year");
+  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const selectedDay = new Date().getDate();
   const selectedMonth = new Date().getMonth();
   const selectedYear = new Date().getFullYear();
@@ -29,6 +30,8 @@ export default function DatePickerProvider({
         setSelectedView: setSelectedView,
         currentDate: currentDate,
         setCurrentDate: setCurrentDate,
+        dropdownOpen: dropdownOpen,
+        setDropdownOpen: setDropdownOpen,
       }}
     >
       {children}

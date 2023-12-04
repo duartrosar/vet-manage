@@ -4,7 +4,8 @@ import DatePickerContext from "../context/context";
 import { checkLeapYear, getDays } from "../utils";
 
 export default function MonthTile({ month }: { month: number }) {
-  const { currentDate, setCurrentDate } = useContext(DatePickerContext);
+  const { currentDate, setCurrentDate, setSelectedView } =
+    useContext(DatePickerContext);
 
   const handleClick = () => {
     // Make sure the user can't select a day that doesn't exist in the selected month
@@ -18,6 +19,8 @@ export default function MonthTile({ month }: { month: number }) {
       selectedMonth: month,
       selectedYear: currentDate.selectedYear,
     });
+
+    setSelectedView("day");
   };
 
   return (

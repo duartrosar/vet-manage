@@ -11,14 +11,14 @@ import { MONTHS } from "./constants";
 import DatePickerContext from "./context/context";
 import { useWindowSize } from "@uidotdev/usehooks";
 
-export const views: string[] = ["day", "month", "year"];
+export const views: string[] = ["year", "month", "day"];
 
 export default function DatePickerModal({ direction }: { direction: string }) {
   const { selectedView } = useContext(DatePickerContext);
 
   return (
     <div
-      className={`absolute left-0 w-full rounded-lg border-2 border-cerulean-100/25 bg-cerulean-900 z-10 ${
+      className={`absolute left-0 w-full min-h-[310px] rounded-lg border-2 border-cerulean-100/25 bg-cerulean-900 z-10 ${
         direction === "up" ? "-top-[293px]" : "top-20"
       }`}
     >

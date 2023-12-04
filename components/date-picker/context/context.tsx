@@ -11,10 +11,12 @@ export interface DatePickerContextValue {
   setSelectedView: Dispatch<SetStateAction<string>>;
   currentDate: CurrentDate;
   setCurrentDate: Dispatch<SetStateAction<CurrentDate>>;
+  dropdownOpen: boolean;
+  setDropdownOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const DatePickerContext = createContext<DatePickerContextValue>({
-  selectedView: "day",
+  selectedView: "year",
   setSelectedView: () => {},
   currentDate: {
     selectedDay: new Date().getMonth(),
@@ -22,6 +24,8 @@ const DatePickerContext = createContext<DatePickerContextValue>({
     selectedYear: new Date().getFullYear(),
   },
   setCurrentDate: () => {},
+  dropdownOpen: false,
+  setDropdownOpen: () => {},
 });
 
 export default DatePickerContext;

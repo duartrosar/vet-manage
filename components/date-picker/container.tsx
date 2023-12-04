@@ -20,11 +20,11 @@ export default function DatePickerContainer<T extends FieldValues>({
   setValue,
   clearErrors,
 }: CustomInputProps<T>) {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [direction, setDirection] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
   const childRef = useRef<HTMLDivElement>(null);
-  const { currentDate } = useContext(DatePickerContext);
+  const { currentDate, dropdownOpen, setDropdownOpen } =
+    useContext(DatePickerContext);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const inputId = toCamelCase(name);
 
@@ -92,7 +92,7 @@ export default function DatePickerContainer<T extends FieldValues>({
         <span>
           {`${currentDate.selectedDay < 10 ? "0" : ""}${
             currentDate.selectedDay
-          }/${currentDate.selectedMonth < 10 ? "0" : ""}${
+          }/${currentDate.selectedMonth < 9 ? "0" : ""}${
             currentDate.selectedMonth + 1
           }/${currentDate.selectedYear}`}
         </span>

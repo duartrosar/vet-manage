@@ -3,7 +3,8 @@ import DatePickerContext from "../context/context";
 import { checkLeapYear, getDays } from "../utils";
 
 export default function YearTile({ year }: { year: number }) {
-  const { currentDate, setCurrentDate } = useContext(DatePickerContext);
+  const { currentDate, setCurrentDate, setSelectedView } =
+    useContext(DatePickerContext);
 
   const handleClick = () => {
     // Check if year is a leap year
@@ -22,6 +23,8 @@ export default function YearTile({ year }: { year: number }) {
       selectedMonth: currentDate.selectedMonth,
       selectedYear: year,
     });
+
+    setSelectedView("month");
   };
 
   return (
