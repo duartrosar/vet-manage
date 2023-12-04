@@ -19,7 +19,7 @@ export default function Input<T extends FieldValues>({
   // console.log(error);
 
   return (
-    <>
+    <div className="flex flex-col gap-1">
       <label htmlFor={inputId} className="pl-3 text-sm font-bold text-gray-500">
         {name}
       </label>
@@ -34,6 +34,6 @@ export default function Input<T extends FieldValues>({
           {error.message}
         </span>
       )}
-    </>
+    </div>
   );
 }

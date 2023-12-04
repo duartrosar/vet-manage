@@ -31,8 +31,11 @@ export default function ImageSelector({
   };
 
   return (
-    <div className="relative flex flex-col gap-1">
-      <div className="relative rounded-lg border-2 border-cerulean-100/25 p-3 hover:bg-cerulean-800">
+    <div className="relative flex flex-col gap-1 lg:h-full">
+      <label className="pl-3 text-sm font-bold text-gray-500">
+        Owner Image
+      </label>
+      <div className="relative h-64 rounded-lg border-2 border-cerulean-100/25 p-3 hover:bg-cerulean-800 sm:h-96 lg:h-full">
         {image && (
           <img
             src={image.toString()}
@@ -42,7 +45,7 @@ export default function ImageSelector({
         )}
         <label
           htmlFor="picture"
-          className="flex h-96 w-full cursor-pointer flex-col items-center justify-center rounded-lg text-sm md:h-[640px]"
+          className="flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-lg text-sm"
         >
           <div className="flex flex-col items-center justify-center">
             <IoCloudUpload className="z-20 h-12 w-12 text-gray-500" />

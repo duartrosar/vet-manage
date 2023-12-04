@@ -47,7 +47,7 @@ export default function EntitiesList({ owners }: { owners?: Owner[] }) {
           </div>
         </div>
       </div> */}
-      <div className="w-full h-full" ref={ref}>
+      <div className="h-full w-full" ref={ref}>
         <div
           style={{ height: parentsHeight - 150 }}
           className="overflow-y-scroll"
@@ -56,35 +56,35 @@ export default function EntitiesList({ owners }: { owners?: Owner[] }) {
             {owners?.map((owner, index) => (
               <div
                 key={index}
-                className={`px-4 py-2 border-2 cursor-pointer border-cerulean-800/50 rounded-xl shadow-xl hover:outline hover:outline-cerulean-800 hover:border-cerulean-800  ${
+                className={`cursor-pointer rounded-xl border-2 border-cerulean-800/50 px-4 py-2 shadow-xl hover:border-cerulean-800 hover:outline hover:outline-cerulean-800  ${
                   index % 2 === 0 ? "bg-cerulean-800/25" : "bg-cerulean-950"
                 }`}
                 onClick={() => {
                   router.push(`/app/owners/edit/${owner.id}`);
                 }}
               >
-                <div className="w-full flex items-center justify-between gap-10">
-                  <div className="rounded-full border-2 border-cerulean-800/50 w-20 h-20 flex items-center justify-center">
+                <div className="flex w-full items-center justify-between gap-10">
+                  <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-cerulean-800/50">
                     {owner.imageUrl ? (
                       <Image
-                        className="rounded-full flex-none"
+                        className="flex-none rounded-full"
                         src={owner.imageUrl}
                         width={80}
                         height={80}
                         alt="Profile picture"
                       />
                     ) : (
-                      <FaUser className="w-[50px] h-[50px] text-cerulean-500/50" />
+                      <FaUser className="h-[50px] w-[50px] text-cerulean-500/50" />
                     )}
                   </div>
 
-                  <div className="text-base font-normal text-cerulean-100 text-start flex-1">
+                  <div className="flex-1 text-start text-base font-normal text-cerulean-100">
                     {owner.firstName} {owner.lastName}
                   </div>
-                  <div className="text-base font-normal hidden text-cerulean-100 text-start flex-1 md:block">
+                  <div className="hidden flex-1 text-start text-base font-normal text-cerulean-100 md:block">
                     {owner.mobileNumber}
                   </div>
-                  <div className="text-base font-normal hidden text-cerulean-100 text-start flex-1 lg:block">
+                  <div className="hidden flex-1 text-start text-base font-normal text-cerulean-100 lg:block">
                     {owner.email}
                   </div>
                   <div className="flex gap-2">

@@ -33,27 +33,27 @@ export default function YearSelection() {
   }
 
   return (
-    <div className="h-[228px] flex flex-col">
-      <div className="flex items-center justify-around text-cerulean-100 bg-cerulean-950 rounded-lg px-2 gap-2 mb-2">
+    <div className="flex h-[228px] flex-col">
+      <div className="mb-2 flex items-center justify-around gap-2 rounded-lg bg-cerulean-950 px-2 text-cerulean-100">
         <button
           type="button"
           onClick={() => handleClick("prev")}
-          className="flex justify-center rounded-lg flex-1 text-center hover:bg-cerulean-800 hover:cursor-pointer px-4 py-2 text-sm"
+          className="flex flex-1 justify-center rounded-lg px-4 py-2 text-center text-sm hover:cursor-pointer hover:bg-cerulean-800"
         >
           <GrFormPrevious className="text-2xl" />
         </button>
-        <div className="flex justify-center rounded-lg  text-cerulean-100 flex-1 hover:bg-cerulean-800 hover:cursor-pointer px-4 py-2 text-sm">
+        <div className="flex justify-center rounded-lg px-4 py-2 text-sm text-cerulean-100 hover:cursor-pointer hover:bg-cerulean-800">
           2013 - 2024
         </div>
         <button
           type="button"
           onClick={() => handleClick("next")}
-          className="flex justify-center rounded-lg flex-1 text-right hover:bg-cerulean-800 hover:cursor-pointer px-4 py-2 text-sm"
+          className="flex flex-1 justify-center rounded-lg px-4 py-2 text-right text-sm hover:cursor-pointer hover:bg-cerulean-800"
         >
           <GrFormNext className="text-2xl" />
         </button>
       </div>
-      <div className="grid grid-cols-4 w-full gap-1 flex-grow">
+      <div className="grid w-full flex-grow grid-cols-4 gap-1">
         {years.map((year, index) => (
           <YearTile key={index} year={year} />
         ))}

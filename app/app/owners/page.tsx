@@ -1,4 +1,5 @@
 import Container from "@/components/container";
+import OwnerForm from "@/components/forms/owner";
 import EntitiesList from "@/components/users/entities-list";
 import { createOwner, getOwners } from "@/lib/data";
 import { data } from "@/lib/mockup/mockup";
@@ -6,7 +7,7 @@ import { randomFill } from "crypto";
 import Image from "next/image";
 import Link from "next/link";
 import React, { Suspense, useEffect, useRef, useState } from "react";
-import { IoPencil, IoPersonAdd, IoSearch, IoTrash } from "react-icons/io5";
+import { IoPencil, IoAdd, IoSearch, IoTrash } from "react-icons/io5";
 
 export default async function OwnersHome() {
   const { owners } = await getOwners();
@@ -14,26 +15,21 @@ export default async function OwnersHome() {
     <Container>
       <div className="px-4">
         <div className="flex items-center justify-between py-4">
-          <Link
-            href="/app/owners/create"
-            className="flex items-center justify-start gap-2 px-3 py-2 transition rounded-lg shadow-md shadow-cerulean-950 hover:scale-105 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600"
-          >
-            <IoPersonAdd className="h-[20px] w-[20px] text-cerulean-400" />
-          </Link>
-          <h1 className="text-2xl text-right text-gray-500">Owners</h1>
+          <h1 className="text-right text-2xl text-gray-500">Owners</h1>
+          <OwnerForm />
         </div>
-        <div className="flex items-center pl-2 border-2 rounded-lg shadow-md border-cerulean-500/25 shadow-cerulean-950">
+        <div className="flex items-center rounded-lg border-2 border-cerulean-500/25 pl-2 shadow-md shadow-cerulean-950">
           <IoSearch className="h-[20px] w-[20px] text-gray-500" />
           <input
             //   onChange={handleSearch}
             placeholder="Search"
             name="search"
             type="text"
-            className="roundsed-lg hover:bg-cerulsean-800 w-full bg-transparent px-3 py-4 font-semibold text-gray-200 placeholder:text-gray-500 autofill:!bg-transparent focus:outline-none"
+            className="hover:bg-cerulsean-800 w-full rounded-lg bg-transparent px-3 py-4 font-semibold text-gray-200 placeholder:text-gray-500 autofill:!bg-transparent focus:outline-none"
           />
         </div>
       </div>
-      <div className="h-full flex flex-col">
+      <div className="flex h-full flex-col">
         <EntitiesList owners={owners} />
       </div>
     </Container>

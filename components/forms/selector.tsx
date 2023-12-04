@@ -50,7 +50,7 @@ export default function Selector<T extends FieldValues>({
   });
 
   return (
-    <>
+    <div className="relative gap-1">
       <label htmlFor={inputId} className="pl-3 text-sm font-bold text-gray-500">
         {name}
       </label>
@@ -94,6 +94,6 @@ export default function Selector<T extends FieldValues>({
           </ul>
         </div>
       )}
-    </>
+    </div>
   );
 }
