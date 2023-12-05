@@ -132,10 +132,10 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
           setIsOpen(!isOpen);
           reset();
         }}
-        className="text-xm flex items-center justify-start gap-2 rounded-lg bg-cerulean-600 px-3 py-2 text-sm font-normal text-white shadow-md shadow-cerulean-950 transition hover:bg-cerulean-700 "
+        className="text-xm flex items-center justify-start gap-2 rounded-lg bg-cerulean-600 px-3 py-2 text-sm font-normal text-white shadow-md shadow-cerulean-950 transition hover:bg-cerulean-700"
       >
         <IoAdd className="h-[20px] w-[20px]" />
-        <span className="">Add user</span>
+        <span className="hidden sm:block">Add user</span>
       </button>
       <Dialog
         className="relative z-50 "
