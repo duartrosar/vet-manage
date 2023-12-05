@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useContext } from "react";
-import DatePickerContext from "../context/context";
+import DatePickerContext from "../context/dp-context";
 import { checkLeapYear, getDays } from "../utils";
 
 export default function YearTile({ year }: { year: number }) {
@@ -29,7 +29,7 @@ export default function YearTile({ year }: { year: number }) {
 
   return (
     <div
-      className={`flex items-center justify-center rounded-lg border border-cerulean-100/25  text-cerulean-100 text-sm hover:bg-cerulean-800 hover:cursor-pointer py-2 ${
+      className={`flex items-center justify-center rounded-lg border border-cerulean-100/25  py-2 text-sm text-cerulean-100 hover:cursor-pointer hover:bg-cerulean-800 ${
         year === currentDate.selectedYear
           ? "bg-cerulean-800"
           : "bg-cerulean-950"

@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useContext, useEffect } from "react";
-import DatePickerContext from "../context/context";
+import DatePickerContext from "../context/dp-context";
 
 export default function DayTile({
   day,
@@ -38,12 +38,12 @@ export default function DayTile({
 
   return (
     <div
-      className={`flex items-center justify-center rounded-lg text-sm hover:bg-cerulean-800 hover:cursor-pointer  ${
+      className={`flex items-center justify-center rounded-lg text-sm hover:cursor-pointer hover:bg-cerulean-800  ${
         currentDate.selectedDay === day && monthOffset === 0
           ? "bg-cerulean-800"
           : "bg-cerulean-950"
       } ${
-        monthOffset !== 0 ? "opacity-50 text-cerulean-500" : "text-cerulean-100"
+        monthOffset !== 0 ? "text-cerulean-500 opacity-50" : "text-cerulean-100"
       }`}
       onClick={handleClick}
     >

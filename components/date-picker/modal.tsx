@@ -8,7 +8,7 @@ import YearSelection from "./year/year-selection";
 import Navigation from "./navigation/navigation";
 import { View } from "./types";
 import { MONTHS } from "./constants";
-import DatePickerContext from "./context/context";
+import DatePickerContext from "./context/dp-context";
 import { useWindowSize } from "@uidotdev/usehooks";
 
 export const views: string[] = ["year", "month", "day"];
@@ -18,7 +18,7 @@ export default function DatePickerModal({ direction }: { direction: string }) {
 
   return (
     <div
-      className={`absolute left-0 w-full min-h-[310px] rounded-lg border-2 border-cerulean-100/25 bg-cerulean-900 z-10 ${
+      className={`absolute left-0 z-10 min-h-[310px] w-full rounded-lg border-2 border-cerulean-100/25 bg-cerulean-900 ${
         direction === "up" ? "-top-[293px]" : "top-20"
       }`}
     >

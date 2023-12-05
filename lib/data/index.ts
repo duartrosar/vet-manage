@@ -7,8 +7,21 @@ import prisma from "../prisma";
 export async function getOwners() {
   try {
     const owners = await prisma.owner.findMany();
-    console.log(owners);
     return { owners };
+  } catch (error) {
+    return { error };
+  }
+}
+
+export async function getOwner(ownerId: number) {
+  try {
+    const owner = await prisma.owner.findUnique({
+      where: {
+        id: ownerId,
+      },
+    });
+
+    return { owner };
   } catch (error) {
     return { error };
   }
@@ -23,7 +36,7 @@ export async function createOwner(data: Owner) {
         data: {
           firstName: data.firstName,
           lastName: data.lastName,
-          dateOfBirth: new Date(),
+          dateOfBirth: data.dateOfBirth,
           address: "13, Flower Street",
           email: data.email,
           mobileNumber: data.mobileNumber,

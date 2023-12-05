@@ -1,6 +1,11 @@
 import { CustomInputProps } from "@/lib/types";
 import { toCamelCase } from "@/lib/utils";
-import React, { useState, useRef, MouseEvent as ReactMouseEvent } from "react";
+import React, {
+  useState,
+  useRef,
+  MouseEvent as ReactMouseEvent,
+  useEffect,
+} from "react";
 import {
   FieldError,
   FieldValues,
@@ -22,6 +27,7 @@ export default function Selector<T extends FieldValues>({
   setValue,
   clearErrors,
   options,
+  value,
 }: CustomInputProps<T>) {
   const [selectedText, setSelectedText] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -48,6 +54,12 @@ export default function Selector<T extends FieldValues>({
 
     setDropdownOpen(false);
   });
+
+  useEffect(() => {
+    if (value) {
+      setSelectedText(value);
+    }
+  }, [value]);
 
   return (
     <div className="relative gap-1">

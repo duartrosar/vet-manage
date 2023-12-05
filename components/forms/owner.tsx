@@ -1,26 +1,28 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { createOwner } from "../../lib/data";
-import ImageSelector from "./image-selector";
-import Input from "./input";
-import Selector from "./selector";
+import { createOwner, getOwner } from "../../lib/data";
+import ImageSelector from "./inputs/image-selector";
+import Input from "./inputs/input";
+import Selector from "./inputs/selector";
 import { IoMdClose } from "react-icons/io";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Owner } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ownerSchema } from "@/lib/zod/zodSchemas";
-import Address from "./address";
+import Address from "./inputs/address";
 import { PutBlobResult } from "@vercel/blob";
 import { genderOptions } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 import DatePicker from "../date-picker";
 import { Dialog } from "@headlessui/react";
 import { IoAdd } from "react-icons/io5";
+import FormStateContext from "./context/form-context";
 
-export default function OwnerForm() {
-  let [isOpen, setIsOpen] = useState(false);
+export default function OwnerForm({ ownerId }: { ownerId?: number }) {
+  const { isOpen, setIsOpen, entityId } = useContext(FormStateContext);
+  const [owner, setOwner] = useState<Owner | null>(null);
   const { pending } = useFormStatus();
   const [file, setFile] = useState<File>();
   const [data, setData] = useState<Owner>();
@@ -50,28 +52,55 @@ export default function OwnerForm() {
     resolver: zodResolver(ownerSchema),
   });
 
+  useEffect(() => {
+    reset();
+    (async () => {
+      const { owner } = await getOwner(entityId);
+      if (owner) {
+        setOwner(owner);
+        console.log(owner);
+        setValues(owner);
+      }
+    })();
+  }, [entityId]);
+
   const processForm: SubmitHandler<Owner> = async (data) => {
     if (file) {
       data.imageUrl = await blobUpload();
     }
 
     console.log(data);
+    await addOwner(data);
+  };
 
-    return;
+  const addOwner = async (data: any) => {
+    const result = await createOwner(data);
+    if (!result) {
+      // Todo: if couldn't create owner, but blob was created then delete blob
+      console.log("Something went wrong");
+      throw new Error("Something went wrong");
+    }
+    if (result?.error) {
+      console.log(result.error);
+      return;
+    }
+    router.push("/app/owners");
 
-    // const result = await createOwner(data);
-    // if (!result) {
-    //   // Todo: if couldn't create owner, but blob was created then delete blob
-    //   console.log("Something went wrong");
-    //   throw new Error("Something went wrong");
-    // }
+    // setIsOpen(false);
+  };
 
-    // if (result?.error) {
-    //   console.log(result.error);
-    //   return;
-    // }
-
-    // router.push("/app/owners");
+  const editOwner = async (data: any) => {
+    const result = await createOwner(data);
+    if (!result) {
+      // Todo: if couldn't create owner, but blob was created then delete blob
+      console.log("Something went wrong");
+      throw new Error("Something went wrong");
+    }
+    if (result?.error) {
+      console.log(result.error);
+      return;
+    }
+    router.push("/app/owners");
   };
 
   const blobUpload = async () => {
@@ -85,11 +114,25 @@ export default function OwnerForm() {
     return newBlob.url;
   };
 
+  const setValues = (owner: Owner) => {
+    setValue("firstName", owner.firstName);
+    setValue("lastName", owner.lastName);
+    setValue("dateOfBirth", owner.dateOfBirth);
+    setValue("email", owner.email);
+    setValue("mobileNumber", owner.mobileNumber);
+    setValue("gender", owner.gender);
+    setValue("address", owner.address);
+    setValue("imageUrl", owner.imageUrl);
+  };
+
   return (
     <>
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="text-xm flex items-center justify-start gap-2 rounded-lg bg-cerulean-600 px-3 py-2 text-sm font-normal text-white shadow-md shadow-cerulean-950 transition hover:scale-105 hover:bg-cerulean-400 "
+        onClick={() => {
+          setIsOpen(!isOpen);
+          reset();
+        }}
+        className="text-xm flex items-center justify-start gap-2 rounded-lg bg-cerulean-600 px-3 py-2 text-sm font-normal text-white shadow-md shadow-cerulean-950 transition hover:bg-cerulean-700 "
       >
         <IoAdd className="h-[20px] w-[20px]" />
         <span className="">Add user</span>
@@ -125,7 +168,10 @@ export default function OwnerForm() {
                 >
                   <div className="space-y-3 lg:grid lg:grid-cols-3 lg:gap-3 lg:space-y-0">
                     <div className="">
-                      <ImageSelector setFile={setFile} />
+                      <ImageSelector
+                        setFile={setFile}
+                        imageUrl={owner?.imageUrl}
+                      />
                     </div>
                     <div className="w-full md:space-y-3 lg:col-span-2">
                       <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
@@ -145,6 +191,7 @@ export default function OwnerForm() {
                           name="Date Of Birth"
                           type="date"
                           setValue={setValue}
+                          dateValue={owner?.dateOfBirth}
                           clearErrors={clearErrors}
                           register={register}
                           error={errors.dateOfBirth}
@@ -152,6 +199,7 @@ export default function OwnerForm() {
                         <Selector
                           name="Gender"
                           type="text"
+                          value={owner?.gender}
                           setValue={setValue}
                           register={register}
                           error={errors.gender}

@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useContext } from "react";
 import { MONTHS } from "../constants";
-import DatePickerContext from "../context/context";
+import DatePickerContext from "../context/dp-context";
 import { checkLeapYear, getDays } from "../utils";
 
 export default function MonthTile({ month }: { month: number }) {
@@ -25,7 +25,7 @@ export default function MonthTile({ month }: { month: number }) {
 
   return (
     <div
-      className={`flex items-center justify-center rounded-lg border border-cerulean-100/25  text-cerulean-100 text-sm hover:bg-cerulean-800 hover:cursor-pointer py-2 ${
+      className={`flex items-center justify-center rounded-lg border border-cerulean-100/25  py-2 text-sm text-cerulean-100 hover:cursor-pointer hover:bg-cerulean-800 ${
         month === currentDate.selectedMonth
           ? "bg-cerulean-800"
           : "bg-cerulean-950"

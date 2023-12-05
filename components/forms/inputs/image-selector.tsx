@@ -13,7 +13,9 @@ import { IoCloudUpload } from "react-icons/io5";
 
 export default function ImageSelector({
   setFile,
+  imageUrl,
 }: {
+  imageUrl?: string | null | undefined;
   setFile: Dispatch<SetStateAction<File | undefined>>;
 }) {
   const [image, setImage] = useState<string | ArrayBuffer | null>(null);
@@ -36,13 +38,20 @@ export default function ImageSelector({
         Owner Image
       </label>
       <div className="relative h-64 rounded-lg border-2 border-cerulean-100/25 p-3 hover:bg-cerulean-800 sm:h-96 lg:h-full">
-        {image && (
+        {imageUrl && (
+          <img
+            src={imageUrl}
+            alt="profile"
+            className="absolute left-0 top-0 h-full w-full rounded-lg object-contain object-top"
+          />
+        )}
+        {/* {image && (
           <img
             src={image.toString()}
             alt="profile"
             className="absolute left-0 top-0 h-full w-full rounded-lg object-contain object-top"
           />
-        )}
+        )} */}
         <label
           htmlFor="picture"
           className="flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-lg text-sm"

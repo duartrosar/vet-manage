@@ -7,6 +7,7 @@ import {
 } from "react-hook-form";
 
 export interface InputProps<T extends FieldValues> {
+  value?: string | null;
   name: string;
   type?: string;
   register: UseFormRegister<T>;
@@ -14,6 +15,7 @@ export interface InputProps<T extends FieldValues> {
 }
 
 export interface CustomInputProps<T extends FieldValues> extends InputProps<T> {
+  dateValue?: Date | null;
   setValue: UseFormSetValue<T>;
   clearErrors: UseFormClearErrors<T>;
   options?: string[];

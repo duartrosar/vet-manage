@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useContext, useState } from "react";
 import DayTile from "./day-tile";
 import { WEEKDAYS } from "../constants";
 import BlankDayTile from "./blank-day-tile";
-import DatePickerContext from "../context/context";
+import DatePickerContext from "../context/dp-context";
 import { getDays } from "../utils";
 
 export default function DaySelection() {
@@ -44,17 +44,17 @@ export default function DaySelection() {
 
   return (
     <>
-      <div className="grid grid-cols-7 w-full gap-1">
+      <div className="grid w-full grid-cols-7 gap-1">
         {WEEKDAYS.map((value, index) => (
           <div
             key={index}
-            className="flex items-center justify-center rounded-lg text-cerulean-100/50 text-sm mb-2"
+            className="mb-2 flex items-center justify-center rounded-lg text-sm text-cerulean-100/50"
           >
             {value}
           </div>
         ))}
       </div>
-      <div className="h-[200px] grid grid-cols-7 w-full gap-1">
+      <div className="grid h-[200px] w-full grid-cols-7 gap-1">
         {prevMonthDayTiles.map((day, index) => (
           <DayTile key={index} day={day} monthOffset={-1} />
         ))}

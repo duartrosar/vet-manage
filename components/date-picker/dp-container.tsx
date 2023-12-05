@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import DatePickerModal from "./modal";
-import DatePickerContext from "./context/context";
+import DatePickerContext from "./context/dp-context";
 import { IoCalendarClearOutline } from "react-icons/io5";
 import {
   FieldValues,
@@ -19,11 +19,12 @@ export default function DatePickerContainer<T extends FieldValues>({
   error,
   setValue,
   clearErrors,
+  dateValue,
 }: CustomInputProps<T>) {
   const [direction, setDirection] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
   const childRef = useRef<HTMLDivElement>(null);
-  const { currentDate, dropdownOpen, setDropdownOpen } =
+  const { currentDate, dropdownOpen, setDropdownOpen, setCurrentDate } =
     useContext(DatePickerContext);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const inputId = toCamelCase(name);
@@ -61,6 +62,16 @@ export default function DatePickerContainer<T extends FieldValues>({
     clearErrors(inputId as Path<T>);
   }, [currentDate]);
 
+  useEffect(() => {
+    if (dateValue) {
+      setCurrentDate({
+        selectedDay: dateValue.getDate(),
+        selectedMonth: dateValue.getMonth(),
+        selectedYear: dateValue.getFullYear(),
+      });
+    }
+  }, [dateValue]);
+
   useOnClickOutside(dropdownRef, (event: MouseEvent) => {
     const element = event.target as HTMLElement;
     const id = element.id;
@@ -81,7 +92,7 @@ export default function DatePickerContainer<T extends FieldValues>({
         {...(register(inputId as Path<T>) as UseFormRegisterReturn)}
         type={type}
         name={inputId}
-        className="w-full rounded-lg border-2 border-cerulean-100/25 bg-transparent px-3 py-2 font-semibold text-gray-200 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600 hidden"
+        className="hidden w-full rounded-lg border-2 border-cerulean-100/25 bg-transparent px-3 py-2 font-semibold text-gray-200 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600"
       />
       <div
         ref={dropdownRef}
