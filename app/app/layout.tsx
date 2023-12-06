@@ -1,5 +1,5 @@
 import SideBar from "@/components/sidebar";
-import Providers from "@/components/sidebar/provider";
+import { Providers } from "@/lib/providers";
 import React, { Suspense } from "react";
 
 export default function DashboardLayout({

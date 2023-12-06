@@ -6,6 +6,10 @@ import { FaUser } from "react-icons/fa6";
 import Image from "next/image";
 import FormStateContext from "@/components/forms/context/form-context";
 import { IoPencil, IoTrash } from "react-icons/io5";
+import { data } from "@/lib/mockup/mockup";
+import { format } from "date-fns";
+import { useAppDispatch } from "@/lib/hooks";
+import { removeOwner } from "@/lib/redux/slices/owners-slice";
 
 export default function ListItem({
   index,
@@ -17,9 +21,10 @@ export default function ListItem({
   ownersLength: number;
 }) {
   const { isOpen, setIsOpen, setEntityId } = useContext(FormStateContext);
+  const dispatch = useAppDispatch();
+
   return (
     <div
-      key={index}
       className={`cursor-pointer border-x-2 border-b-2 border-cerulean-800/50 px-4 py-2 shadow-xl hover:border-cerulean-800 hover:bg-cerulean-700/50 hover:outline-cerulean-800 ${
         index % 2 === 0 ? "bg-cerulean-800/25" : "bg-cerulean-950"
       } ${index === 0 ? "rounded-t-xl border-t-2" : ""} ${
@@ -43,7 +48,7 @@ export default function ListItem({
 
         <div className="flex w-28 flex-none flex-col text-base font-normal text-white sm:w-48">
           {owner.firstName} {owner.lastName}
-          <span className="xs:block hidden text-sm text-cerulean-100/50">
+          <span className="hidden text-sm text-cerulean-100/50 xs:block">
             {owner.email}
           </span>
         </div>
@@ -51,9 +56,9 @@ export default function ListItem({
           {owner.mobileNumber}
         </div>
         <div className="hidden w-48 flex-none text-base font-normal text-white lg:block">
-          {owner.dateOfBirth.toLocaleDateString()}
+          {format(owner.dateOfBirth, "dd/MM/yyyy")}
         </div>
-        <div className="xs:w-32 xs:flex-row flex w-9 flex-col justify-end gap-2 2xl:w-72">
+        <div className="flex w-9 flex-col justify-end gap-2 xs:w-32 xs:flex-row 2xl:w-72">
           <button
             onClick={() => {
               setEntityId(owner.id);
@@ -66,8 +71,7 @@ export default function ListItem({
           </button>
           <button
             onClick={() => {
-              setEntityId(owner.id);
-              setIsOpen(true);
+              dispatch(removeOwner(index));
             }}
             className="text-xm flex items-center justify-start gap-2 rounded-lg bg-red-600 px-2 py-1 text-sm font-normal text-white shadow-md shadow-cerulean-950 transition hover:bg-red-700 sm:px-3 sm:py-2 "
           >

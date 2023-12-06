@@ -10,13 +10,15 @@ import Link from "next/link";
 import List from "@/components/list";
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { IoPencil, IoAdd, IoSearch, IoTrash } from "react-icons/io5";
+import OwnersList from "@/components/list/owner/list";
 
 export default async function OwnersHome() {
   const { owners } = await getOwners();
+
   return (
     <Container>
       <FormStateProvider>
-        <List owners={owners} />
+        <OwnersList owners={owners} />
       </FormStateProvider>
     </Container>
   );

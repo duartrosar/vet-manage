@@ -45,13 +45,13 @@ export default function ImageSelector({
             className="absolute left-0 top-0 h-full w-full rounded-lg object-contain object-top"
           />
         )}
-        {/* {image && (
+        {image && (
           <img
             src={image.toString()}
             alt="profile"
             className="absolute left-0 top-0 h-full w-full rounded-lg object-contain object-top"
           />
-        )} */}
+        )}
         <label
           htmlFor="picture"
           className="flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-lg text-sm"

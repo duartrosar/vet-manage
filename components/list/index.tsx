@@ -25,9 +25,5 @@ export default function List({ owners }: { owners?: Owner[] }) {
     };
   }, []);
 
-  return (
-    <>
-      <OwnersList owners={owners} />
-    </>
-  );
+  return <>{/* <OwnersList owners={owners} /> */}</>;
 }

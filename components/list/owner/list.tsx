@@ -17,14 +17,21 @@ import FormBase from "@/components/forms/form-base";
 import SearchInput from "@/components/list/search-input";
 import OwnerListHeader from "./list-header";
 import ListItem from "./list-item";
+import { useDispatch } from "react-redux";
+import { setOwners } from "@/lib/redux/slices/owners-slice";
+import { useAppSelector } from "@/lib/hooks";
 
 export default function OwnersList({ owners }: { owners?: Owner[] }) {
   const ref = useRef<HTMLDivElement>(null);
+  const currentOwners = useAppSelector((state) => state.owners.owners);
+  const dispatch = useDispatch();
   const [parentsHeight, setParentsHeight] = useState(0);
 
   useEffect(() => {
-    console.log(owners);
     setParentsHeight(ref.current?.clientHeight!);
+    if (owners) {
+      dispatch(setOwners(owners));
+    }
 
     function setWindowHeight(this: Window, ev: UIEvent) {
       if (ref.current) {
@@ -38,6 +45,7 @@ export default function OwnersList({ owners }: { owners?: Owner[] }) {
       window.removeEventListener("resize", setWindowHeight);
     };
   }, []);
+
   return (
     <>
       <OwnerListHeader />
@@ -48,12 +56,12 @@ export default function OwnersList({ owners }: { owners?: Owner[] }) {
             className="overflow-y-scroll"
           >
             <div className="pl-6 pr-4 pt-4">
-              {owners?.map((owner, index) => (
+              {currentOwners?.map((owner, index) => (
                 <ListItem
                   key={index}
                   owner={owner}
                   index={index}
-                  ownersLength={owners.length}
+                  ownersLength={currentOwners.length}
                 />
               ))}
             </div>

@@ -3,13 +3,20 @@
 import { Owner } from "@prisma/client";
 import { ownerSchema } from "../zod/zodSchemas";
 import prisma from "../prisma";
+import { ModelName } from "@prisma/client";
 
-export async function getOwners() {
+export interface OwnersResponse {
+  owners?: Owner[];
+  success: boolean;
+}
+
+export async function getOwners(): Promise<OwnersResponse> {
   try {
     const owners = await prisma.owner.findMany();
-    return { owners };
+    console.log(owners);
+    return { owners: owners, success: true };
   } catch (error) {
-    return { error };
+    return { success: false };
   }
 }
 
@@ -33,16 +40,7 @@ export async function createOwner(data: Owner) {
 
     if (result.success) {
       const owner = await prisma.owner.create({
-        data: {
-          firstName: data.firstName,
-          lastName: data.lastName,
-          dateOfBirth: data.dateOfBirth,
-          address: "13, Flower Street",
-          email: data.email,
-          mobileNumber: data.mobileNumber,
-          gender: data.gender,
-          imageUrl: data.imageUrl,
-        },
+        data: data,
       });
 
       return { success: true, data: result.data };

@@ -19,15 +19,19 @@ import DatePicker from "../date-picker";
 import { Dialog, Transition } from "@headlessui/react";
 import { IoAdd } from "react-icons/io5";
 import FormStateContext from "./context/form-context";
+import { useAppDispatch } from "@/lib/hooks";
+import { addOwner } from "@/lib/redux/slices/owners-slice";
 
 export default function OwnerForm({ ownerId }: { ownerId?: number }) {
-  const { isOpen, setIsOpen, entityId } = useContext(FormStateContext);
+  const { isOpen, setIsOpen, entityId, setEntityId } =
+    useContext(FormStateContext);
   const [owner, setOwner] = useState<Owner | null>(null);
   const { pending } = useFormStatus();
   const [file, setFile] = useState<File>();
-  const [data, setData] = useState<Owner>();
+  const [imageUrl, setImageUrl] = useState<string>("");
   const router = useRouter();
   const options = genderOptions;
+  const dispatch = useAppDispatch();
 
   const {
     register,
@@ -52,7 +56,13 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
     resolver: zodResolver(ownerSchema),
   });
 
+  console.log(entityId);
+
   useEffect(() => {
+    if (owner?.imageUrl) {
+      setImageUrl(owner.imageUrl);
+    }
+
     reset();
     (async () => {
       const { owner } = await getOwner(entityId);
@@ -64,35 +74,37 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
     })();
   }, [entityId]);
 
-  const processForm: SubmitHandler<Owner> = async (data) => {
-    if (file) {
-      data.imageUrl = await blobUpload();
-    }
+  const processForm: SubmitHandler<Owner> = async (data: Owner) => {
+    // if (file) {
+    //   data.imageUrl = await blobUpload();
+    // }
 
-    console.log(data);
-    await addOwner(data);
+    console.log(owner);
+    // addOwner(data);
+    dispatch(addOwner(data));
+    setIsOpen(false);
   };
 
-  const addOwner = async (data: any) => {
-    const result = await createOwner(data);
-    if (!result) {
-      // Todo: if couldn't create owner, but blob was created then delete blob
-      console.log("Something went wrong");
-      throw new Error("Something went wrong");
-    }
-    if (result?.error) {
-      console.log(result.error);
-      return;
-    }
-    router.push("/app/owners");
-
+  const addOwnerAsync = async (data: Owner) => {
+    // TODO: Uncomment this
+    // const result = await createOwner(data);
+    // if (!result) {
+    //   // TODO: if couldn't create owner, but blob was created then delete blob
+    //   console.log("Something went wrong");
+    //   throw new Error("Something went wrong");
+    // }
+    // if (result?.error) {
+    //   console.log(result.error);
+    //   return;
+    // }
+    // router.push("/app/owners");
     // setIsOpen(false);
   };
 
   const editOwner = async (data: any) => {
     const result = await createOwner(data);
     if (!result) {
-      // Todo: if couldn't create owner, but blob was created then delete blob
+      // TODO: if couldn't create owner, but blob was created then delete blob
       console.log("Something went wrong");
       throw new Error("Something went wrong");
     }
@@ -130,6 +142,7 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
       <button
         onClick={() => {
           setIsOpen(!isOpen);
+          setOwner(null);
           reset();
         }}
         className="text-xm flex items-center justify-start gap-2 rounded-lg bg-cerulean-600 px-3 py-2 text-sm font-normal text-white shadow-md shadow-cerulean-950 transition hover:bg-cerulean-700"
@@ -269,6 +282,7 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
                             onClick={(
                               e: React.FormEvent<HTMLButtonElement>,
                             ) => {
+                              dispatch;
                               if (pending) e.preventDefault;
                             }}
                             className="rounded-lg border-2 border-cerulean-100/25 bg-cerulean-600 px-3 py-2 text-cerulean-100 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600"

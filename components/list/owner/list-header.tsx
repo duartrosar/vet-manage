@@ -27,7 +27,7 @@ export default function OwnerListHeader() {
             <div className="hidden w-48 text-base font-semibold text-gray-500 lg:block">
               Date of birth
             </div>
-            <div className="xs:w-32 pointer-events-none w-9 select-none text-start text-base font-semibold text-gray-500 text-transparent 2xl:w-72">
+            <div className="pointer-events-none w-9 select-none text-start text-base font-semibold text-gray-500 text-transparent xs:w-32 2xl:w-72">
               hello
             </div>
           </div>

@@ -1,19 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {
-  useEffect,
-  useRef,
-  useState,
-  useContext,
-  Fragment,
-  createContext,
-  SetStateAction,
-  Dispatch,
-} from "react";
-// import { useClickAway } from "react-use";
-// import SidebarContext from "./SidebarContext";
-// import profilePic from "../../public/profilepic.jpg";
+import { useEffect, Fragment } from "react";
 import { GiCrossedBones } from "react-icons/gi";
 import { CgMenuLeft } from "react-icons/cg";
 import {
@@ -28,12 +16,11 @@ import {
 } from "react-icons/io5";
 
 import { Lalezar, Kanit } from "next/font/google";
-import { Dialog, Transition } from "@headlessui/react";
-import SidebarButton from "./button";
-import SidebarContext from "./context";
+import { Transition } from "@headlessui/react";
 import { useLocalStorage } from "usehooks-ts";
 import { useWindowSize } from "@uidotdev/usehooks";
-// import ProfileMenu from "./ProfileMenu";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { setIsOpen } from "@/lib/redux/slices/sidebar-slice";
 
 const lalezar = Lalezar({ subsets: ["latin"], weight: "400" });
 const kanit = Kanit({
@@ -48,10 +35,11 @@ export default function SideBar() {
   );
 
   const size = useWindowSize();
+  const isOpen = useAppSelector((state) => state.sidebar.isOpen);
+  const dispatch = useAppDispatch();
 
-  const { isOpen, setIsOpen } = useContext(SidebarContext);
   const setMenu = (value: boolean) => {
-    setIsOpen(value);
+    dispatch(setIsOpen(value));
     setSidebarExpanded(value);
   };
 
@@ -72,7 +60,7 @@ export default function SideBar() {
   return (
     <>
       <div className="fixed left-0 top-0 z-50 h-20 w-full">
-        <div className="h-full w-full bg-cerulean-950 shadow-xl shadow-cerulean-950 border-b-2 border-cerulean-700/25">
+        <div className="h-full w-full border-b-2 border-cerulean-700/25 bg-cerulean-950 shadow-xl shadow-cerulean-950">
           <div className="flex h-full items-center justify-between gap-3 p-3">
             <div className="flex items-center gap-3">
               {/* <SidebarButton /> */}
@@ -136,8 +124,8 @@ export default function SideBar() {
             leaveFrom="translate-x-0"
             leaveTo="-translate-x-full"
           >
-            <aside className="fixed bottom-0 left-0 top-0 w-64 bg-cerulean-950 border-r-2 border-cerulean-700/25">
-              <div className="flex flex-col items-start justify-start gap-5 pt-28 px-3">
+            <aside className="fixed bottom-0 left-0 top-0 w-64 border-r-2 border-cerulean-700/25 bg-cerulean-950">
+              <div className="flex flex-col items-start justify-start gap-5 px-3 pt-28">
                 <ul
                   className={`${kanit.className} w-full space-y-3 text-base font-semibold`}
                 >
