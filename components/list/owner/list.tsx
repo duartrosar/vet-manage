@@ -16,7 +16,7 @@ import FormStateContext from "@/components/forms/context/form-context";
 import FormBase from "@/components/forms/form-base";
 import SearchInput from "@/components/list/search-input";
 import OwnerListHeader from "./list-header";
-import ListItem from "./list-item";
+import TrListItem from "./tr-list-item";
 import { useDispatch } from "react-redux";
 import { setOwners } from "@/lib/redux/slices/owners-slice";
 import { useAppSelector } from "@/lib/hooks";
@@ -50,20 +50,40 @@ export default function OwnersList({ owners }: { owners?: Owner[] }) {
     <>
       <OwnerListHeader />
       <div className="flex h-full flex-col">
-        <div className="h-full w-full" ref={ref}>
+        <div className="relative h-full w-full pt-[30px]" ref={ref}>
           <div
-            style={{ height: parentsHeight - 215 }}
-            className="overflow-y-scroll"
+            style={{ height: parentsHeight - 175 }}
+            className=" overflow-auto pl-6 pr-4"
           >
-            <div className="pl-6 pr-4 pt-4">
-              {currentOwners?.map((owner, index) => (
-                <ListItem
-                  key={index}
-                  owner={owner}
-                  index={index}
-                  ownersLength={currentOwners.length}
-                />
-              ))}
+            <div className="absolute left-6 right-6 top-4 z-10 h-5 rounded-t-xl border border-b-0 border-cerulean-800/50 bg-cerulean-950"></div>
+            <div className="rounded-b-xl border border-cerulean-800/50 bg-cerulean-950 pb-11">
+              <table className="relative w-full table-auto border-separate border-spacing-0 text-sm">
+                <thead className=" text-gray-500">
+                  <tr className="">
+                    <th className="sticky top-0 border-b-2 border-cerulean-800/50 bg-cerulean-950 pb-4 text-left shadow-xl"></th>
+                    <th className="sticky top-0 border-b-2 border-cerulean-800/50 bg-cerulean-950 pb-4 text-left shadow-xl">
+                      Name
+                    </th>
+                    <th className="sticky top-0 border-b-2 border-cerulean-800/50 bg-cerulean-950 pb-4 text-left shadow-xl">
+                      Phone Number
+                    </th>
+                    <th className="sticky top-0 border-b-2 border-cerulean-800/50 bg-cerulean-950 pb-4 text-left shadow-xl">
+                      Date of birth
+                    </th>
+                    <th className="sticky top-0 border-b-2 border-cerulean-800/50 bg-cerulean-950 pb-4 text-left shadow-xl"></th>
+                  </tr>
+                </thead>
+                <tbody className="text-white">
+                  {currentOwners?.map((owner, index) => (
+                    <TrListItem
+                      key={index}
+                      owner={owner}
+                      index={index}
+                      ownersLength={currentOwners.length}
+                    />
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
