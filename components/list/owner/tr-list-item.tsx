@@ -1,15 +1,14 @@
 "use client";
 
 import { Owner } from "@prisma/client";
-import React, { useContext } from "react";
+import React from "react";
 import { FaUser } from "react-icons/fa6";
 import Image from "next/image";
-import FormStateContext from "@/components/forms/context/form-context";
 import { IoPencil, IoTrash } from "react-icons/io5";
-import { data } from "@/lib/mockup/mockup";
 import { format } from "date-fns";
 import { useAppDispatch } from "@/lib/hooks";
 import { removeOwner } from "@/lib/redux/slices/owners-slice";
+import { setFormIsOpen, setFormOwner } from "@/lib/redux/slices/form-slice";
 
 export default function TrListItem({
   index,
@@ -20,7 +19,6 @@ export default function TrListItem({
   owner: Owner;
   ownersLength: number;
 }) {
-  const { isOpen, setIsOpen, setEntityId } = useContext(FormStateContext);
   const dispatch = useAppDispatch();
   return (
     <tr
@@ -49,18 +47,21 @@ export default function TrListItem({
           {owner.email}
         </span>
       </td>
-      <td className="border-b-2 border-cerulean-800/50">
+      <td className="hidden border-b-2 border-cerulean-800/50 sm:table-cell">
         {owner.mobileNumber}
       </td>
-      <td className="border-b-2 border-cerulean-800/50">
+      <td className="hidden border-b-2 border-cerulean-800/50 md:table-cell">
         {format(owner.dateOfBirth, "dd/MM/yyyy")}
       </td>
-      <td className="border-b-2 border-cerulean-800/50">
-        <span className="flex flex-row justify-end gap-2 pr-2">
+      <td className="hidden border-b-2 border-cerulean-800/50 lg:table-cell">
+        {owner.gender}
+      </td>
+      <td className=" border-b-2 border-cerulean-800/50">
+        <span className="flex max-w-xs flex-row justify-end gap-2 pr-2">
           <button
             onClick={() => {
-              setEntityId(owner.id);
-              setIsOpen(true);
+              dispatch(setFormIsOpen(true));
+              dispatch(setFormOwner(owner));
             }}
             className="text-xm flex items-center justify-start gap-2 rounded-lg bg-cerulean-600 px-2 py-1 text-sm font-normal text-white shadow-md shadow-cerulean-950 transition hover:bg-cerulean-700 sm:px-3 sm:py-2 "
           >

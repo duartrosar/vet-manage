@@ -1,8 +1,6 @@
 "use client";
 import { Owner } from "@prisma/client";
 import React, { useRef, useState, useEffect } from "react";
-import FormStateContext from "../forms/context/form-context";
-import OwnersList from "./owner/list";
 
 export default function List({ owners }: { owners?: Owner[] }) {
   const ref = useRef<HTMLDivElement>(null);

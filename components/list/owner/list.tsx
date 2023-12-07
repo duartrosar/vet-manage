@@ -1,20 +1,7 @@
 "use client";
 
 import { Owner } from "@prisma/client";
-import React, { useRef, useState, useEffect, useContext } from "react";
-import Image from "next/image";
-import {
-  IoCloseCircleOutline,
-  IoPencil,
-  IoSearch,
-  IoTrash,
-} from "react-icons/io5";
-import { FaUser } from "react-icons/fa6";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import FormStateContext from "@/components/forms/context/form-context";
-import FormBase from "@/components/forms/form-base";
-import SearchInput from "@/components/list/search-input";
+import React, { useRef, useState, useEffect } from "react";
 import OwnerListHeader from "./list-header";
 import TrListItem from "./tr-list-item";
 import { useDispatch } from "react-redux";
@@ -26,6 +13,7 @@ export default function OwnersList({ owners }: { owners?: Owner[] }) {
   const currentOwners = useAppSelector((state) => state.owners.owners);
   const dispatch = useDispatch();
   const [parentsHeight, setParentsHeight] = useState(0);
+  console.log(currentOwners.length);
 
   useEffect(() => {
     setParentsHeight(ref.current?.clientHeight!);
@@ -53,10 +41,12 @@ export default function OwnersList({ owners }: { owners?: Owner[] }) {
         <div className="relative h-full w-full pt-[30px]" ref={ref}>
           <div
             style={{ height: parentsHeight - 175 }}
-            className=" overflow-auto pl-6 pr-4"
+            className={`overflow-auto pl-6 ${
+              currentOwners.length === 0 ? "pr-6" : "pr-4"
+            }`}
           >
-            <div className="absolute left-6 right-6 top-4 z-10 h-5 rounded-t-xl border border-b-0 border-cerulean-800/50 bg-cerulean-950"></div>
-            <div className="rounded-b-xl border border-cerulean-800/50 bg-cerulean-950 pb-11">
+            <div className="absolute left-6 right-6 top-4 z-10 h-5 rounded-t-xl border border-b-0 border-cerulean-800/50 bg-cerulean-950 backdrop-blur-xl"></div>
+            <div className="rounded-b-xl border-x border-b border-cerulean-800/50 bg-cerulean-950 pb-11">
               <table className="relative w-full table-auto border-separate border-spacing-0 text-sm">
                 <thead className=" text-gray-500">
                   <tr className="">
@@ -64,11 +54,14 @@ export default function OwnersList({ owners }: { owners?: Owner[] }) {
                     <th className="sticky top-0 border-b-2 border-cerulean-800/50 bg-cerulean-950 pb-4 text-left shadow-xl">
                       Name
                     </th>
-                    <th className="sticky top-0 border-b-2 border-cerulean-800/50 bg-cerulean-950 pb-4 text-left shadow-xl">
+                    <th className="sticky top-0 hidden border-b-2 border-cerulean-800/50 bg-cerulean-950 pb-4 text-left shadow-xl sm:table-cell">
                       Phone Number
                     </th>
-                    <th className="sticky top-0 border-b-2 border-cerulean-800/50 bg-cerulean-950 pb-4 text-left shadow-xl">
+                    <th className="sticky top-0 hidden border-b-2 border-cerulean-800/50 bg-cerulean-950 pb-4 text-left shadow-xl md:table-cell">
                       Date of birth
+                    </th>
+                    <th className="sticky top-0 hidden border-b-2 border-cerulean-800/50 bg-cerulean-950 pb-4 text-left shadow-xl lg:table-cell">
+                      Gender
                     </th>
                     <th className="sticky top-0 border-b-2 border-cerulean-800/50 bg-cerulean-950 pb-4 text-left shadow-xl"></th>
                   </tr>

@@ -32,7 +32,7 @@ export default function Container({
       transition={{ ease: "easeInOut", duration: isOpen ? 0.3 : 0.2 }}
     >
       <div
-        className={`h-full w-full bg-cerulean-950 font-bold shadow-xl lg:rounded-lg lg:border-2 lg:border-cerulean-700/25 ${className}`}
+        className={`h-full w-full bg-cerulean-950 bg-gradient-to-bl from-cerulean-950 to-cerulean-800/10 font-bold shadow-xl lg:rounded-lg lg:border-2 lg:border-cerulean-700/25 ${className}`}
       >
         {children}
       </div>

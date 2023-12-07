@@ -1,12 +1,10 @@
 "use client";
 
 import { Owner } from "@prisma/client";
-import React, { useContext } from "react";
+import React from "react";
 import { FaUser } from "react-icons/fa6";
 import Image from "next/image";
-import FormStateContext from "@/components/forms/context/form-context";
 import { IoPencil, IoTrash } from "react-icons/io5";
-import { data } from "@/lib/mockup/mockup";
 import { format } from "date-fns";
 import { useAppDispatch } from "@/lib/hooks";
 import { removeOwner } from "@/lib/redux/slices/owners-slice";
@@ -20,7 +18,6 @@ export default function ListItem({
   owner: Owner;
   ownersLength: number;
 }) {
-  const { isOpen, setIsOpen, setEntityId } = useContext(FormStateContext);
   const dispatch = useAppDispatch();
 
   return (
@@ -60,10 +57,7 @@ export default function ListItem({
         </div>
         <div className="flex w-9 flex-col justify-end gap-2 xs:w-32 xs:flex-row 2xl:w-72">
           <button
-            onClick={() => {
-              setEntityId(owner.id);
-              setIsOpen(true);
-            }}
+            onClick={() => {}}
             className="text-xm flex items-center justify-start gap-2 rounded-lg bg-cerulean-600 px-2 py-1 text-sm font-normal text-white shadow-md shadow-cerulean-950 transition hover:bg-cerulean-700 sm:px-3 sm:py-2 "
           >
             <IoPencil className="h-[20px] w-[20px]" />
