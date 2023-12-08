@@ -14,15 +14,25 @@ const ownersSlice = createSlice({
     setOwners(state, action: PayloadAction<Owner[]>) {
       state.owners = action.payload;
     },
-    addOwner(state, action: PayloadAction<Owner>) {
+    addOwnerSlice(state, action: PayloadAction<Owner>) {
       state.owners.push(action.payload);
     },
-    removeOwner(state, action: PayloadAction<number>) {
+    removeOwnerSlice(state, action: PayloadAction<number>) {
       state.owners.splice(action.payload, 1);
+    },
+    updateOwnerSlice(state, action: PayloadAction<Owner>) {
+      const index = state.owners.findIndex(
+        (owner) => owner.id === action.payload.id,
+      );
+
+      if (index) {
+        state.owners[index] = action.payload;
+      }
     },
     // TODO: Add and edit reducer
   },
 });
 
-export const { setOwners, addOwner, removeOwner } = ownersSlice.actions;
+export const { setOwners, addOwnerSlice, removeOwnerSlice, updateOwnerSlice } =
+  ownersSlice.actions;
 export default ownersSlice.reducer;

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { createOwner } from "../../lib/data";
+import { createOwner, updateOwner } from "../../lib/data";
 import ImageSelector from "./inputs/image-selector";
 import Input from "./inputs/input";
 import Selector from "./inputs/selector";
@@ -16,7 +16,11 @@ import { genderOptions } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 import DatePicker from "../date-picker";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { addOwner } from "@/lib/redux/slices/owners-slice";
+import {
+  addOwnerSlice,
+  updateOwnerSlice,
+} from "@/lib/redux/slices/owners-slice";
+import { setFormIsOpen } from "@/lib/redux/slices/form-slice";
 
 export default function OwnerForm({ ownerId }: { ownerId?: number }) {
   const owner = useAppSelector((state) => state.form.owner);
@@ -58,43 +62,55 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
   }, []);
 
   const processForm: SubmitHandler<Owner> = async (data: Owner) => {
+    // TODO: Uncomment this
     // if (file) {
     //   data.imageUrl = await blobUpload();
     // }
-
-    console.log(owner);
-    // addOwner(data);
-    dispatch(addOwner(data));
+    if (owner) {
+      data.id = owner.id;
+      await updateOwnerAsync(data);
+    } else {
+      await addOwnerAsync(data);
+    }
   };
 
   const addOwnerAsync = async (data: Owner) => {
-    // TODO: Uncomment this
-    // const result = await createOwner(data);
-    // if (!result) {
-    //   // TODO: if couldn't create owner, but blob was created then delete blob
-    //   console.log("Something went wrong");
-    //   throw new Error("Something went wrong");
-    // }
-    // if (result?.error) {
-    //   console.log(result.error);
-    //   return;
-    // }
-    // router.push("/app/owners");
-    // setIsOpen(false);
-  };
-
-  const editOwner = async (data: any) => {
     const result = await createOwner(data);
-    if (!result) {
+
+    if (!result?.success) {
       // TODO: if couldn't create owner, but blob was created then delete blob
       console.log("Something went wrong");
       throw new Error("Something went wrong");
     }
+
     if (result?.error) {
       console.log(result.error);
       return;
     }
-    router.push("/app/owners");
+
+    dispatch(addOwnerSlice(data));
+    dispatch(setFormIsOpen(false));
+
+    // TODO: set toast message
+  };
+
+  const updateOwnerAsync = async (data: Owner) => {
+    const result = await updateOwner(data, data.id);
+    if (!result) {
+      // TODO: figure out a way to check if the image changed or not, or if the user had an image already
+      // TODO: If blob was create
+      console.log("Something went wrong");
+      throw new Error("Something went wrong");
+    }
+
+    if (result?.error) {
+      console.log(result.error);
+      return;
+    }
+
+    dispatch(updateOwnerSlice(data));
+    dispatch(setFormIsOpen(false));
+    // TODO: set toast message
   };
 
   const blobUpload = async () => {
@@ -109,6 +125,7 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
   };
 
   function setValues(owner: Owner) {
+    setValue("id", owner.id);
     setValue("firstName", owner.firstName);
     setValue("lastName", owner.lastName);
     setValue("dateOfBirth", owner.dateOfBirth);
@@ -175,6 +192,7 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
             />
           </div>
           <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
+            {/* TODO: Fix errors display */}
             <Address<Owner> register={register} error={errors.address} />
             <Address<Owner> register={register} error={errors.address} />
           </div>
@@ -183,16 +201,16 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
             <Address<Owner> register={register} error={errors.address} />
           </div>
         </div>
-        <div className="col-start-2 gap-1">
+        <div className="col-start-2 gap-1 text-end lg:text-start">
           <button
             type="submit"
             onClick={(e: React.FormEvent<HTMLButtonElement>) => {
               dispatch;
               if (pending) e.preventDefault;
             }}
-            className="rounded-lg border-2 border-cerulean-100/25 bg-cerulean-600 px-3 py-2 text-cerulean-100 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600"
+            className="w-full rounded-lg border-2 border-cerulean-100/25 bg-cerulean-600 px-6 py-2 text-cerulean-100 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600 lg:w-1/2"
           >
-            Create Owner
+            {owner ? "Save owner" : "Create owner"}
           </button>
         </div>
       </div>

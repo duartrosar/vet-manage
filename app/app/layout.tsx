@@ -1,3 +1,4 @@
+import ContainerSkeleton from "@/components/container-skeleton";
 import SideBar from "@/components/sidebar";
 import { Providers } from "@/lib/providers";
 import React, { Suspense } from "react";
@@ -10,7 +11,7 @@ export default function DashboardLayout({
   return (
     <Providers>
       <SideBar />
-      {children}
+      <Suspense fallback={<ContainerSkeleton />}>{children}</Suspense>
     </Providers>
   );
 }

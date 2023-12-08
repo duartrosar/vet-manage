@@ -3,7 +3,6 @@
 import { Owner } from "@prisma/client";
 import { ownerSchema } from "../zod/zodSchemas";
 import prisma from "../prisma";
-import { ModelName } from "@prisma/client";
 
 export interface OwnersResponse {
   owners?: Owner[];
@@ -46,6 +45,29 @@ export async function createOwner(data: Owner) {
       return { success: true, data: result.data };
     }
 
+    if (result.error) {
+      return { success: false, error: result.error.format() };
+    }
+  } catch (error) {
+    console.log(error);
+    return { success: false, error: error };
+  }
+}
+
+export async function updateOwner(data: Owner, ownerId: number) {
+  try {
+    const result = ownerSchema.safeParse(data);
+
+    if (result.success) {
+      const updatedOwner = await prisma.owner.update({
+        where: {
+          id: ownerId,
+        },
+        data: data,
+      });
+
+      return { success: true, data: result.data };
+    }
     if (result.error) {
       return { success: false, error: result.error.format() };
     }

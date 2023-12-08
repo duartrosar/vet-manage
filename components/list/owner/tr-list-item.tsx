@@ -7,7 +7,7 @@ import Image from "next/image";
 import { IoPencil, IoTrash } from "react-icons/io5";
 import { format } from "date-fns";
 import { useAppDispatch } from "@/lib/hooks";
-import { removeOwner } from "@/lib/redux/slices/owners-slice";
+import { removeOwnerSlice } from "@/lib/redux/slices/owners-slice";
 import { setFormIsOpen, setFormOwner } from "@/lib/redux/slices/form-slice";
 
 export default function TrListItem({
@@ -70,7 +70,7 @@ export default function TrListItem({
           </button>
           <button
             onClick={() => {
-              dispatch(removeOwner(index));
+              dispatch(removeOwnerSlice(index));
             }}
             className="text-xm flex items-center justify-start gap-2 rounded-lg bg-red-600 px-2 py-1 text-sm font-normal text-white shadow-md shadow-cerulean-950 transition hover:bg-red-700 sm:px-3 sm:py-2 "
           >

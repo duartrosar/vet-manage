@@ -18,7 +18,8 @@ export default function OwnersList({ owners }: { owners?: Owner[] }) {
   useEffect(() => {
     setParentsHeight(ref.current?.clientHeight!);
     if (owners) {
-      dispatch(setOwners(owners));
+      const sortedOwners = [...owners].sort((a, b) => a.id - b.id);
+      dispatch(setOwners(sortedOwners));
     }
 
     function setWindowHeight(this: Window, ev: UIEvent) {
