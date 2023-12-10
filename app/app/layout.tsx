@@ -1,6 +1,6 @@
 import ContainerSkeleton from "@/components/container-skeleton";
 import SideBar from "@/components/sidebar";
-import { Providers } from "@/lib/providers";
+import { Providers } from "@/components/providers";
 import React, { Suspense } from "react";
 
 export default function DashboardLayout({
