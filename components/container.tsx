@@ -2,7 +2,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useWindowSize } from "@uidotdev/usehooks";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { setIsOpen } from "@/lib/redux/slices/sidebar-slice";
 
 export default function Container({
   children,
@@ -12,7 +13,15 @@ export default function Container({
   className?: string;
 }) {
   const isOpen = useAppSelector((state) => state.sidebar.isOpen);
+  const dispatch = useAppDispatch();
   const size = useWindowSize();
+
+  useEffect(() => {
+    if (size?.width && size?.width < 1024) {
+      dispatch(setIsOpen(false));
+    }
+  }, []);
+
   return (
     <motion.div
       className={`flex h-screen w-full items-center justify-center pt-20 lg:pb-6 lg:pr-6 lg:pt-[104px] ${

@@ -38,6 +38,10 @@ export async function createOwner(data: Owner) {
     const result = ownerSchema.safeParse(data);
 
     if (result.success) {
+      // TODO: Fix this to get the actual associated user
+      // A user will have to be created in the cases that one doesn't exist
+      // eg. the user is being created by an employee
+      data.userId = 1;
       const owner = await prisma.owner.create({
         data: data,
       });

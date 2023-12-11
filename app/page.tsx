@@ -1,13 +1,15 @@
+import { LoginButton } from "@/components/auth/auth";
 import Link from "next/link";
 import React from "react";
 
 export default function Home() {
   return (
-    <div className="w-full h-screen flex justify-center items-center">
-      <div className="p-16 bg-cerulean-950 border border-cerulean-800 rounded-lg shadow-lg">
+    <div className="flex h-screen w-full items-center justify-center">
+      <div className="flex flex-col gap-3 rounded-lg border border-cerulean-800 bg-cerulean-950 p-16 shadow-lg">
+        <LoginButton />
         <Link
           href="/app"
-          className="text-3xl text-cerulean-500 hover:opacity-80 hover:scale-110"
+          className="text-3xl text-cerulean-500 hover:scale-110 hover:opacity-80"
         >
           GO TO APP
         </Link>
