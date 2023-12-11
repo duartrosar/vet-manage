@@ -12,6 +12,7 @@ export interface InputProps<T extends FieldValues> {
   type?: string;
   register: UseFormRegister<T>;
   error: FieldError | undefined;
+  placeholder?: string;
 }
 
 export interface CustomInputProps<T extends FieldValues> extends InputProps<T> {

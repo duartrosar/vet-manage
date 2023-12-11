@@ -14,6 +14,7 @@ export default function Input<T extends FieldValues>({
   type = "text",
   register,
   error,
+  placeholder,
 }: InputProps<T>) {
   const inputId = toCamelCase(name);
   // console.log(error);
@@ -27,6 +28,7 @@ export default function Input<T extends FieldValues>({
         {...(register(inputId as Path<T>) as UseFormRegisterReturn)}
         type={type}
         name={inputId}
+        placeholder={placeholder ? placeholder : name}
         className="rounded-lg border-2 border-cerulean-100/25 bg-transparent px-3 py-2 font-semibold text-gray-200 autofill:!bg-transparent hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600"
       />
       {error && (

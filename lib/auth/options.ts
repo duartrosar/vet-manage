@@ -19,7 +19,7 @@ export const options: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        console.log("Credentials: ", credentials);
+        // console.log("Credentials: ", credentials);
         if (!credentials?.email || !credentials.password) {
           return null;
         }
@@ -28,9 +28,12 @@ export const options: NextAuthOptions = {
           where: {
             email: credentials.email,
           },
+          include: {
+            roles: true,
+          },
         });
 
-        console.log("User: ", user);
+        // console.log("User: ", user);
 
         if (!user) {
           return null;
@@ -41,7 +44,7 @@ export const options: NextAuthOptions = {
           user.password,
         );
 
-        console.log("Password valid: ", isPasswordValid);
+        // console.log("Password valid: ", isPasswordValid);
 
         if (!isPasswordValid) {
           return null;
@@ -50,39 +53,37 @@ export const options: NextAuthOptions = {
         return {
           id: user.id + "",
           email: user.email,
-          randomKey: "Hey Cool",
+          roles: user.roles,
         };
       },
     }),
   ],
   callbacks: {
     session: ({ session, token }) => {
-      console.log("Session Callback", { session, token });
-      // TODO: This could be a good place return the roles
+      // console.log("Session Callback", { session, token });
       return {
         ...session,
         user: {
           ...session.user,
           id: token.id,
-          randomKey: token.randomKey,
+          roles: token.roles,
         },
       };
     },
     jwt: ({ token, user }) => {
-      console.log("JWT Callback", { token, user });
-      // TODO: This could be a good place to add the roles
+      // console.log("JWT Callback", { token, user });
       if (user) {
-        const u = user as unknown as any;
+        // const u = user as unknown as any;
         return {
           ...token,
-          id: u.id,
-          randomKey: u.randomKey,
+          id: user.id,
+          roles: user.roles,
         };
       }
       return token;
     },
     async redirect({ url, baseUrl }) {
-      return url.startsWith(baseUrl) ? url : `${baseUrl}/private`; // Specify your preferred page here
+      return url.startsWith(baseUrl) ? url : `${baseUrl}/app`; // Specify your preferred page here
     },
   },
 };

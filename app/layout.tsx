@@ -17,9 +17,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`bg-cerulean-900 bg-paw-pattern ${inter.className} overflow-hidden`}
+        className={`bg-gradient-to-tr from-cerulean-950 via-cerulean-800 to-cerulean-900 ${inter.className} overflow-hidden`}
       >
-        {children}
+        <div className="backdrop-blur-3xl">{children}</div>
       </body>
     </html>
   );

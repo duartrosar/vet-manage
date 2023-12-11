@@ -205,7 +205,6 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
           <button
             type="submit"
             onClick={(e: React.FormEvent<HTMLButtonElement>) => {
-              dispatch;
               if (pending) e.preventDefault;
             }}
             className="w-full rounded-lg border-2 border-cerulean-100/25 bg-cerulean-600 px-6 py-2 text-cerulean-100 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600 lg:w-1/2"
