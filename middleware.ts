@@ -9,11 +9,10 @@ export default withAuth(
   function middleware(request: NextRequestWithAuth) {
     console.log("NextUrl pahtname: ", request.nextUrl.pathname);
     console.log("NextAuth token", request.nextauth.token);
+
     const roles = request.nextauth.token?.roles.map((roles) =>
       roles.role.toString(),
     );
-
-    console.log(roles);
 
     // TODO: Need to this check per page/route and per role
     if (

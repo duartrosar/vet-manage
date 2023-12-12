@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { createOwner, updateOwner } from "../../lib/data";
+import { createOwner, updateOwner } from "../../lib/db";
 import ImageSelector from "./inputs/image-selector";
 import Input from "./inputs/input";
 import Selector from "./inputs/selector";

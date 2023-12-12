@@ -1,7 +1,7 @@
 import Container from "@/components/container";
 import FormBase from "@/components/forms";
 import OwnerForm from "@/components/forms/owner";
-import { createOwner, getOwners } from "@/lib/data";
+import { createOwner, getOwners } from "@/lib/db";
 import { data } from "@/lib/mockup/mockup";
 import { randomFill } from "crypto";
 import Image from "next/image";

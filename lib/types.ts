@@ -21,3 +21,14 @@ export interface CustomInputProps<T extends FieldValues> extends InputProps<T> {
   clearErrors: UseFormClearErrors<T>;
   options?: string[];
 }
+
+export interface LoginProps {
+  email: string;
+  password: string;
+}
+
+export interface RegisterProps {
+  email: string;
+  password: string;
+  confirmPassword: string;
+}

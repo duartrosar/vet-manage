@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import AuthProvider from "@/components/auth/auth-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,9 +18,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`bg-gradient-to-tr from-cerulean-950 via-cerulean-800 to-cerulean-900 ${inter.className} overflow-hidden`}
+        className={`bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-cerulean-950 via-pink-800 to-cerulean-800 ${inter.className} relative overflow-hidden`}
       >
-        <div className="backdrop-blur-3xl">{children}</div>
+        <div className="backdrop-blur-3xl">
+          <AuthProvider>{children}</AuthProvider>
+        </div>
       </body>
     </html>
   );

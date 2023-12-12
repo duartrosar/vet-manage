@@ -10,9 +10,10 @@ const config: Config = {
     extend: {
       backgroundImage: {
         "paw-pattern": "url('../public/pattern.svg')",
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
       },
       colors: {
-        cerulean: {
+        ceruleanOld: {
           100: "#CEE9F7",
           200: "#9CCFEA",
           300: "#6AB4DC",
@@ -23,6 +24,18 @@ const config: Config = {
           800: "#00283D",
           900: "#00121C",
           950: "#000D14",
+        },
+        cerulean: {
+          100: "#CDE3F8", // 5% more purple
+          200: "#97CAEB", // 5% more purple
+          300: "#65B0DD", // 5% more purple
+          400: "#4D97C3", // 5% more purple
+          500: "#357DAA", // 5% more purple
+          600: "#2F648E", // 5% more purple
+          700: "#2A4A72", // 5% more purple
+          800: "#001F3F", // 5% more purple
+          900: "#000E1E", // 5% more purple
+          950: "#000915", // 5% more purple
         },
         pink: {
           100: "#FFE0F3",

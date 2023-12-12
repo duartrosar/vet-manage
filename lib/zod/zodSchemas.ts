@@ -28,3 +28,20 @@ export const ownerSchema = z.object({
   imgUrl: z.string().optional(),
   gender: z.string().min(1, { message: "You must choose a value" }),
 });
+
+export const loginSchema = z.object({
+  email: z
+    .string()
+    .email({ message: "You must enter an email" })
+    .max(50, "Max length is 50 characters"),
+  password: z.string().min(1, { message: "You must enter a password." }),
+});
+
+export const registerSchema = z.object({
+  email: z
+    .string()
+    .email({ message: "You must enter an email" })
+    .max(50, "Max length is 50 characters"),
+  password: z.string(),
+  confirmPassword: z.string(),
+});

@@ -1,5 +1,5 @@
 import OwnersList from "@/components/list/owner/list";
-import { getOwners } from "@/lib/data";
+import { getOwners } from "@/lib/db";
 import React from "react";
 
 export default async function Testing() {

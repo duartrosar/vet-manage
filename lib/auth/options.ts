@@ -1,9 +1,10 @@
 import { compare } from "bcrypt";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import prisma from "../prisma";
+import prisma from "../db/prisma";
 
 export const options: NextAuthOptions = {
+  pages: { signIn: "/login" },
   session: {
     strategy: "jwt",
   },
@@ -60,7 +61,6 @@ export const options: NextAuthOptions = {
   ],
   callbacks: {
     session: ({ session, token }) => {
-      // console.log("Session Callback", { session, token });
       return {
         ...session,
         user: {
@@ -81,9 +81,6 @@ export const options: NextAuthOptions = {
         };
       }
       return token;
-    },
-    async redirect({ url, baseUrl }) {
-      return url.startsWith(baseUrl) ? url : `${baseUrl}/app`; // Specify your preferred page here
     },
   },
 };

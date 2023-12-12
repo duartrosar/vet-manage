@@ -15,16 +15,16 @@ export default function Logo() {
       className={`${lalezar.className} flex w-full items-center justify-center gap-3 pr-3`}
     >
       <div className="rounded-full">
-        <GiCrossedBones className="absolute h-8 w-8 rotate-45 text-cerulean-400" />
-        <GiCrossedBones className="h-8 w-8 scale-75 rounded-full text-cerulean-100" />
+        <GiCrossedBones className="absolute h-8 w-10 rotate-45 text-cerulean-400" />
+        <GiCrossedBones className="h-8 w-10 scale-75 rounded-full text-white" />
       </div>
       {/* <div className="w-[2px] h-12 bg-white border-x border-white ml-2"></div> */}
       <p
         className={`translate-y-[2px] text-3xl font-black lowercase shadow-2xl `}
         // style={pacifico.style}
       >
-        <span className="text-cerulean-100">Vet</span>
-        <span className="text-cerulean-400">Wise</span>
+        <span className="italic text-white">Vet</span>
+        <span className="italic text-cerulean-400">Wise</span>
       </p>
     </div>
   );

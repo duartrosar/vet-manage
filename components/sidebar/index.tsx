@@ -21,6 +21,7 @@ import { useLocalStorage } from "usehooks-ts";
 import { useWindowSize } from "@uidotdev/usehooks";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setIsOpen } from "@/lib/redux/slices/sidebar-slice";
+import Logo from "../logo";
 
 const lalezar = Lalezar({ subsets: ["latin"], weight: "400" });
 const kanit = Kanit({
@@ -60,7 +61,7 @@ export default function SideBar() {
   return (
     <>
       <div className="fixed left-0 top-0 z-50 h-20 w-full">
-        <div className="h-full w-full border-b-2 border-cerulean-700/25 bg-cerulean-950 shadow-xl shadow-cerulean-950">
+        <div className="h-full w-full border-b-2 border-cerulean-700/25 bg-cerulean-950 shadow-xl">
           <div className="flex h-full items-center justify-between gap-3 p-3">
             <div className="flex items-center gap-3">
               {/* <SidebarButton /> */}
@@ -75,24 +76,7 @@ export default function SideBar() {
                   className="h-6 w-6 text-gray-400"
                 />
               </button>
-              <Link href="/" className="">
-                <div
-                  className={`${lalezar.className} flex w-full items-center justify-start gap-3 py-3 pr-3`}
-                >
-                  <div className="rounded-full">
-                    <GiCrossedBones className="absolute h-8 w-8 rotate-45 text-cerulean-400" />
-                    <GiCrossedBones className="h-8 w-8 scale-75 rounded-full text-cerulean-100" />
-                  </div>
-                  {/* <div className="w-[2px] h-12 bg-white border-x border-white ml-2"></div> */}
-                  <p
-                    className={`translate-y-[2px] text-3xl font-black lowercase shadow-2xl `}
-                    // style={pacifico.style}
-                  >
-                    <span className="text-cerulean-100">Vet</span>
-                    <span className="text-cerulean-400">Wise</span>
-                  </p>
-                </div>
-              </Link>
+              <Logo />
             </div>
             {/* <ProfileMenu user={user} /> */}
           </div>

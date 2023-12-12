@@ -1,20 +1,47 @@
 "use server";
 
-import { Owner } from "@prisma/client";
+import { Owner, PrismaClient, User } from "@prisma/client";
 import { ownerSchema } from "../zod/zodSchemas";
-import prisma from "../prisma";
+import { RegisterProps } from "../types";
+import { hash } from "bcrypt";
 
-export interface OwnersResponse {
+const prisma = new PrismaClient();
+
+export interface Response {
   owners?: Owner[];
+  user?: User;
   success: boolean;
 }
 
-export async function getOwners(): Promise<OwnersResponse> {
+export async function registerCustomerUser(
+  userRegister: RegisterProps,
+): Promise<Response> {
+  try {
+    const password = await hash(userRegister.password, 12);
+
+    const user = await prisma.user.create({
+      data: {
+        email: userRegister.email,
+        password: password,
+        roles: {
+          create: { role: "CUSTOMER" },
+        },
+      },
+    });
+
+    return { user, success: true };
+  } catch (error) {
+    console.log("registerCustomerUser", error);
+    return { success: false };
+  }
+}
+
+export async function getOwners(): Promise<Response> {
   try {
     const owners = await prisma.owner.findMany();
-    console.log(owners);
-    return { owners: owners, success: true };
+    return { owners, success: true };
   } catch (error) {
+    console.log("getOwners", error);
     return { success: false };
   }
 }
@@ -29,6 +56,7 @@ export async function getOwner(ownerId: number) {
 
     return { owner };
   } catch (error) {
+    console.log("getOwner", error);
     return { error };
   }
 }
@@ -53,7 +81,7 @@ export async function createOwner(data: Owner) {
       return { success: false, error: result.error.format() };
     }
   } catch (error) {
-    console.log(error);
+    console.log("createOwner", error);
     return { success: false, error: error };
   }
 }
@@ -76,7 +104,7 @@ export async function updateOwner(data: Owner, ownerId: number) {
       return { success: false, error: result.error.format() };
     }
   } catch (error) {
-    console.log(error);
+    console.log("updateOwner", error);
     return { success: false, error: error };
   }
 }
