@@ -41,4 +41,5 @@ export interface SidebarItemsProp {
   title: string;
   urlPath: string;
   icon: IconType;
+  displayTitle?: boolean;
 }

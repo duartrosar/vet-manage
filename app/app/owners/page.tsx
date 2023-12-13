@@ -8,9 +8,5 @@ export default async function OwnersHome() {
   // TODO: Fix this to make it more safe
   // const owners = await prisma.owner.findMany();
 
-  return (
-    <Container>
-      <OwnersList owners={owners} />
-    </Container>
-  );
+  return <OwnersList owners={owners} />;
 }

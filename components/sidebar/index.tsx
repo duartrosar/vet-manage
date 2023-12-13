@@ -1,29 +1,15 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, Fragment } from "react";
-import { GiCrossedBones } from "react-icons/gi";
-import { CgMenuLeft } from "react-icons/cg";
 import { sidebarItems } from "@/lib/constants";
-import {
-  IoCalendar,
-  IoGrid,
-  IoChatbox,
-  IoPeople,
-  IoPaw,
-  IoSettings,
-  IoPerson,
-  IoLogOut,
-} from "react-icons/io5";
-
 import { Lalezar, Kanit } from "next/font/google";
 import { Transition } from "@headlessui/react";
 import { useLocalStorage } from "usehooks-ts";
 import { useWindowSize } from "@uidotdev/usehooks";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setIsOpen } from "@/lib/redux/slices/sidebar-slice";
-import Logo from "../logo";
 import SidebarItem from "./sidebar-item";
+import clsx from "clsx";
 
 const lalezar = Lalezar({ subsets: ["latin"], weight: "400" });
 const kanit = Kanit({
@@ -62,28 +48,6 @@ export default function SideBar() {
 
   return (
     <>
-      <div className="fixed left-0 top-0 z-50 h-20 w-full">
-        <div className="h-full w-full border-b-2 border-cerulean-700/25 bg-cerulean-950 shadow-xl">
-          <div className="flex h-full items-center justify-between gap-3 p-3">
-            <div className="flex items-center gap-3">
-              {/* <SidebarButton /> */}
-              <button
-                id="sidebarToggle"
-                data-sidebar-toggle={true}
-                onClick={() => setMenu(!isOpen)}
-                className="cursor-pointer rounded-lg p-3 hover:bg-cerulean-900"
-              >
-                <CgMenuLeft
-                  data-sidebar-toggle={true}
-                  className="h-6 w-6 text-gray-400"
-                />
-              </button>
-              <Logo />
-            </div>
-            {/* <ProfileMenu user={user} /> */}
-          </div>
-        </div>
-      </div>
       <Transition show={true}>
         <div className="relative z-40">
           <Transition.Child
@@ -101,32 +65,39 @@ export default function SideBar() {
               aria-hidden="true"
             />
           </Transition.Child>
-          <Transition.Child
-            as={Fragment}
-            enter="transition-all linear duration-[25ms]"
-            enterFrom="-translate-x-full translate-x-0 w-10"
-            enterTo="translate-x-0 w-64"
-            leave="transition-all linear duration-[10ms]"
-            leaveFrom="translate-x-0 w-64"
-            leaveTo="translate-x-0 w-10"
+          <aside
+            className={clsx(
+              "fixed bottom-0 left-0 top-0 border-r-2 border-cerulean-700/25 bg-cerulean-950",
+              isOpen ? "w-64" : "",
+            )}
           >
-            <aside className="fixed bottom-0 left-0 top-0 w-64 border-r-2 border-cerulean-700/25 bg-cerulean-950">
-              <div className="flex flex-col items-start justify-start gap-5 px-3 pt-28">
-                <ul
-                  className={`${kanit.className} w-full space-y-3 text-base font-semibold`}
-                >
-                  {sidebarItems.map((item, index) => (
-                    <SidebarItem
-                      key={index}
-                      title={item.title}
-                      urlPath={item.urlPath}
-                      icon={item.icon}
-                    />
-                  ))}
-                </ul>
-              </div>
-            </aside>
-          </Transition.Child>
+            <div className="h-full px-3 pt-28">
+              <ul
+                className={`${kanit.className} flex h-full w-full flex-col justify-between pb-3 text-base font-semibold`}
+              >
+                <span className="space-y-3">
+                  {sidebarItems.map(
+                    (item, index) =>
+                      index !== sidebarItems.length - 1 && (
+                        <SidebarItem
+                          key={index}
+                          title={item.title}
+                          urlPath={item.urlPath}
+                          icon={item.icon}
+                        />
+                      ),
+                  )}
+                </span>
+                <span>
+                  <SidebarItem
+                    title={sidebarItems[sidebarItems.length - 1].title}
+                    urlPath={sidebarItems[sidebarItems.length - 1].urlPath}
+                    icon={sidebarItems[sidebarItems.length - 1].icon}
+                  />
+                </span>
+              </ul>
+            </div>
+          </aside>
         </div>
       </Transition>
     </>

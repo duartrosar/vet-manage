@@ -7,8 +7,8 @@ import Form from "@/components/forms";
 
 export default function OwnerListHeader() {
   return (
-    <div className="px-6">
-      <div className="flex items-center justify-between py-4">
+    <div className="bg-cerulean-950 px-6 pt-[34px]">
+      <div className="flex items-center justify-between pb-4">
         <h1 className="text-right text-2xl text-white">Owners</h1>
       </div>
       <div className="space-y-2">

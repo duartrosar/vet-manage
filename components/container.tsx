@@ -24,29 +24,29 @@ export default function Container({
   }, []);
 
   return (
-    <motion.div
+    <div
       className={clsx(
-        `flex h-screen w-full items-center justify-center bg-cerulean-950 pl-64 pt-20 backdrop-blur-2xl lg:pb-0 lg:pr-0 lg:pt-20`,
-        isOpen ? "lg:pl-64" : "lg:pl-0",
+        `relative flex h-screen w-full items-center justify-center overflow-y-auto bg-cerulean-950 pl-64 pt-[78px] backdrop-blur-2xl lg:pb-0 lg:pr-0`,
+        isOpen ? "lg:pl-64" : "lg:pl-[68px]",
       )}
       // style={{
       //   paddingTop: "104px",
       // }}
-      animate={{
-        paddingLeft:
-          isOpen && size.width! >= 1024
-            ? "256px"
-            : size.width! < 1024
-              ? "0px"
-              : "0",
-      }}
-      transition={{ ease: "linear", duration: isOpen ? 0.025 : 0.01 }}
+      // animate={{
+      //   paddingLeft:
+      //     isOpen && size.width! >= 1024
+      //       ? "256px"
+      //       : size.width! < 1024
+      //         ? "0px"
+      //         : "68px",
+      // }}
+      // transition={{ ease: "linear", duration: isOpen ? 0.025 : 0.01 }}
     >
-      <div
+      <main
         className={`h-full w-full bg-cerulean-950 font-bold shadow-xl ${className}`}
       >
         {children}
-      </div>
-    </motion.div>
+      </main>
+    </div>
   );
 }

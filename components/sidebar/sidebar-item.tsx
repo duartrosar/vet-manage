@@ -12,6 +12,7 @@ export default function SidebarItem({
   title,
   urlPath,
   icon,
+  displayTitle = true,
 }: SidebarItemsProp) {
   const isOpen = useAppSelector((state) => state.sidebar.isOpen);
   const active = useAppSelector((state) => state.sidebar.active);
@@ -31,6 +32,7 @@ export default function SidebarItem({
       className={clsx(
         "group w-full rounded-lg transition duration-75 hover:bg-cerulean-800 hover:shadow-md",
         active === title && "bg-cerulean-800",
+        !displayTitle && "max-w-[44px]",
       )}
     >
       <Link
@@ -46,7 +48,7 @@ export default function SidebarItem({
             className: "h-[20px] w-[20px] text-cerulean-500",
           })}
         </span>
-        {isOpen && title}
+        {isOpen && displayTitle && title}
       </Link>
     </li>
   );
