@@ -2,7 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { createOwner, updateOwner } from "../../lib/db";
+import {
+  createOwner,
+  getUser,
+  registerCustomerUser,
+  updateOwner,
+} from "../../lib/db";
 import ImageSelector from "./inputs/image-selector";
 import Input from "./inputs/input";
 import Selector from "./inputs/selector";
@@ -21,6 +26,7 @@ import {
   updateOwnerSlice,
 } from "@/lib/redux/slices/owners-slice";
 import { setFormIsOpen } from "@/lib/redux/slices/form-slice";
+import { RegisterProps } from "@/lib/types";
 
 export default function OwnerForm({ ownerId }: { ownerId?: number }) {
   const owner = useAppSelector((state) => state.form.owner);
@@ -75,20 +81,47 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
   };
 
   const addOwnerAsync = async (data: Owner) => {
-    const result = await createOwner(data);
+    let { user: existingUser } = await getUser(data.email);
 
-    if (!result?.success) {
-      // TODO: if couldn't create owner, but blob was created then delete blob
-      console.log("Something went wrong");
-      throw new Error("Something went wrong");
+    console.log("existing user: ", existingUser);
+    // If the user doesn't exist create a user for the owner we're trying to create
+    if (!existingUser) {
+      const customerUser: RegisterProps = {
+        email: data.email,
+        password: "changethispassword",
+        confirmPassword: "",
+      };
+
+      console.log("customer User", customerUser);
+      // Try to create a new user
+      const { user } = await registerCustomerUser(customerUser);
+
+      // console.log("existing user: ", user);
+      // console.log("register user success: ", success);
+
+      if (!user) return;
+
+      existingUser = user;
     }
 
-    if (result?.error) {
-      console.log(result.error);
+    // if existing user doesn't have an id return.
+    if (!existingUser?.id) return;
+
+    // make sure the owner has a user associated with it.
+    data.userId = existingUser.id;
+
+    const { owner, success } = await createOwner(data);
+
+    if (!success || !owner) {
+      // TODO: if couldn't create owner, but blob was created then delete blob
+      console.log("Something went wrong");
+      // throw new Error("Something went wrong");
+      console.log("Owner was not created.");
       return;
     }
 
-    dispatch(addOwnerSlice(data));
+    dispatch(addOwnerSlice(owner));
+    return;
     dispatch(setFormIsOpen(false));
 
     // TODO: set toast message

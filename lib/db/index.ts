@@ -12,9 +12,9 @@ export interface Response {
   success: boolean;
 }
 
-export async function registerCustomerUser(
-  userRegister: RegisterProps,
-): Promise<Response> {
+// Users
+
+export async function registerCustomerUser(userRegister: RegisterProps) {
   try {
     const password = await hash(userRegister.password, 12);
 
@@ -28,9 +28,31 @@ export async function registerCustomerUser(
       },
     });
 
-    return { user, success: true };
+    return { user: user };
   } catch (error) {
     console.log("registerCustomerUser", error);
+    return { success: false };
+  }
+}
+
+/**
+ * Returns a user based on an email.
+ *
+ * @param email - The email of the user you want to get.
+ * @returns An object with the user that matches the email passed in and a success flag.
+ *
+ */
+export async function getUser(email: string) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+
+    return { user, success: true };
+  } catch (error) {
+    console.log("getUser", error);
     return { success: false };
   }
 }
@@ -38,7 +60,7 @@ export async function registerCustomerUser(
 export async function getOwners(): Promise<Response> {
   try {
     const owners = await prisma.owner.findMany();
-    return { owners, success: true };
+    return { owners: owners, success: true };
   } catch (error) {
     console.log("getOwners", error);
     return { success: false };
@@ -65,23 +87,17 @@ export async function createOwner(data: Owner) {
     const result = ownerSchema.safeParse(data);
 
     if (result.success) {
-      // TODO: Fix this to get the actual associated user
-      // A user will have to be created in the cases that one doesn't exist
-      // eg. the user is being created by an employee
-      data.userId = 1;
       const owner = await prisma.owner.create({
         data: data,
       });
 
-      return { success: true, data: result.data };
+      return { owner, success: true };
     }
 
-    if (result.error) {
-      return { success: false, error: result.error.format() };
-    }
+    return { owner: data, success: false };
   } catch (error) {
     console.log("createOwner", error);
-    return { success: false, error: error };
+    return { success: false };
   }
 }
 
@@ -97,7 +113,7 @@ export async function updateOwner(data: Owner, ownerId: number) {
         data: data,
       });
 
-      return { success: true, data: result.data };
+      return { success: true, owner: result.data };
     }
     if (result.error) {
       return { success: false, error: result.error.format() };
