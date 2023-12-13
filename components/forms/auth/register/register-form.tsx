@@ -65,6 +65,18 @@ export default function RegisterForm() {
             {errors.root.message}
           </span>
         )}
+        <div className="space-y-4 lg:grid lg:grid-cols-2 lg:gap-3 lg:space-y-0">
+          <Input<RegisterProps>
+            name="First Name"
+            register={register}
+            error={errors.firstName}
+          />
+          <Input<RegisterProps>
+            name="Last Name"
+            register={register}
+            error={errors.lastName}
+          />
+        </div>
         <Input<RegisterProps>
           type="text"
           name="Email"

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, Fragment } from "react";
 import { GiCrossedBones } from "react-icons/gi";
 import { CgMenuLeft } from "react-icons/cg";
+import { sidebarItems } from "@/lib/constants";
 import {
   IoCalendar,
   IoGrid,
@@ -22,6 +23,7 @@ import { useWindowSize } from "@uidotdev/usehooks";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setIsOpen } from "@/lib/redux/slices/sidebar-slice";
 import Logo from "../logo";
+import SidebarItem from "./sidebar-item";
 
 const lalezar = Lalezar({ subsets: ["latin"], weight: "400" });
 const kanit = Kanit({
@@ -82,7 +84,7 @@ export default function SideBar() {
           </div>
         </div>
       </div>
-      <Transition show={isOpen}>
+      <Transition show={true}>
         <div className="relative z-40">
           <Transition.Child
             as={Fragment}
@@ -101,90 +103,26 @@ export default function SideBar() {
           </Transition.Child>
           <Transition.Child
             as={Fragment}
-            enter="transition-all ease-in-out duration-300"
-            enterFrom="-translate-x-full"
-            enterTo="translate-x-0"
-            leave="transition-all ease-in-out duration-200"
-            leaveFrom="translate-x-0"
-            leaveTo="-translate-x-full"
+            enter="transition-all linear duration-[25ms]"
+            enterFrom="-translate-x-full translate-x-0 w-10"
+            enterTo="translate-x-0 w-64"
+            leave="transition-all linear duration-[10ms]"
+            leaveFrom="translate-x-0 w-64"
+            leaveTo="translate-x-0 w-10"
           >
             <aside className="fixed bottom-0 left-0 top-0 w-64 border-r-2 border-cerulean-700/25 bg-cerulean-950">
               <div className="flex flex-col items-start justify-start gap-5 px-3 pt-28">
                 <ul
                   className={`${kanit.className} w-full space-y-3 text-base font-semibold`}
                 >
-                  <li className="group w-full rounded-lg px-3 py-2 transition hover:bg-cerulean-800 hover:shadow-md ">
-                    <Link
-                      href="/app"
-                      onClick={closeMenu}
-                      className="flex items-center justify-start gap-3 text-gray-400 group-hover:text-gray-200"
-                    >
-                      <span>
-                        <IoGrid className="h-[20px] w-[20px] text-cerulean-500" />
-                      </span>
-                      Dashboard
-                    </Link>
-                  </li>
-                  <li className="group w-full rounded-lg px-3 py-2 transition hover:bg-cerulean-800 hover:shadow-md">
-                    <Link
-                      href="/"
-                      onClick={closeMenu}
-                      className="flex items-center justify-start gap-3 text-gray-400 group-hover:text-gray-200"
-                    >
-                      <span>
-                        <IoCalendar className="h-[20px] w-[20px] text-cerulean-500" />
-                      </span>
-                      Appointments
-                    </Link>
-                  </li>
-                  <li className="group w-full rounded-lg px-3 py-2 transition hover:bg-cerulean-800 hover:shadow-md">
-                    <Link
-                      href="/"
-                      onClick={closeMenu}
-                      className="flex items-center justify-start gap-3 text-gray-400 group-hover:text-gray-200"
-                    >
-                      <span>
-                        <IoChatbox className="h-[20px] w-[20px] text-cerulean-500" />
-                      </span>
-                      Messages
-                    </Link>
-                  </li>
-                  <li className="group w-full rounded-lg px-3 py-2 transition hover:bg-cerulean-800 hover:shadow-md">
-                    <Link
-                      href="/app/owners"
-                      onClick={closeMenu}
-                      className="flex items-center justify-start gap-3 text-gray-400 group-hover:text-gray-200"
-                    >
-                      <span>
-                        <IoPeople className="h-[20px] w-[20px] text-cerulean-500" />
-                      </span>
-                      Owners
-                    </Link>
-                  </li>
-                  <li className="group w-full rounded-lg px-3 py-2 transition hover:bg-cerulean-800 hover:shadow-md">
-                    <Link
-                      href="/"
-                      onClick={closeMenu}
-                      className="flex items-center justify-start gap-3 text-gray-400 group-hover:text-gray-200"
-                    >
-                      <span>
-                        <IoPaw className="h-[20px] w-[20px] text-cerulean-500" />
-                      </span>
-                      Pets
-                    </Link>
-                  </li>
-                  <li className="group w-full rounded-lg px-3 py-2 transition hover:bg-cerulean-800 hover:shadow-md">
-                    <Link
-                      href="/"
-                      onClick={closeMenu}
-                      className="flex items-center justify-start gap-3 text-gray-400 group-hover:text-gray-200"
-                    >
-                      <span>
-                        <IoSettings className="h-[20px] w-[20px] text-cerulean-500" />
-                      </span>
-                      Settings
-                    </Link>
-                  </li>
+                  {sidebarItems.map((item, index) => (
+                    <SidebarItem
+                      key={index}
+                      title={item.title}
+                      urlPath={item.urlPath}
+                      icon={item.icon}
+                    />
+                  ))}
                 </ul>
               </div>
             </aside>

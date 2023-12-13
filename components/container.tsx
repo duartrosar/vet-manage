@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useWindowSize } from "@uidotdev/usehooks";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setIsOpen } from "@/lib/redux/slices/sidebar-slice";
+import clsx from "clsx";
 
 export default function Container({
   children,
@@ -24,24 +25,25 @@ export default function Container({
 
   return (
     <motion.div
-      className={`flex h-screen w-full items-center justify-center pt-20 lg:pb-6 lg:pr-6 lg:pt-[104px] ${
-        isOpen ? "lg:pl-[280px]" : "lg:pl-6"
-      }`}
+      className={clsx(
+        `flex h-screen w-full items-center justify-center bg-cerulean-950 pl-64 pt-20 backdrop-blur-2xl lg:pb-0 lg:pr-0 lg:pt-20`,
+        isOpen ? "lg:pl-64" : "lg:pl-0",
+      )}
       // style={{
       //   paddingTop: "104px",
       // }}
       animate={{
         paddingLeft:
           isOpen && size.width! >= 1024
-            ? "280px"
+            ? "256px"
             : size.width! < 1024
               ? "0px"
-              : "24px",
+              : "0",
       }}
-      transition={{ ease: "easeInOut", duration: isOpen ? 0.3 : 0.2 }}
+      transition={{ ease: "linear", duration: isOpen ? 0.025 : 0.01 }}
     >
       <div
-        className={`h-full w-full bg-cerulean-950 font-bold shadow-xl lg:rounded-lg lg:border-2 lg:border-cerulean-700/25 ${className}`}
+        className={`h-full w-full bg-cerulean-950 font-bold shadow-xl ${className}`}
       >
         {children}
       </div>

@@ -87,6 +87,8 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
     // If the user doesn't exist create a user for the owner we're trying to create
     if (!existingUser) {
       const customerUser: RegisterProps = {
+        firstName: data.firstName,
+        lastName: data.lastName,
         email: data.email,
         password: "changethispassword",
         confirmPassword: "",

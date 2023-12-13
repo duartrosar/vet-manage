@@ -1,3 +1,5 @@
+import { IconType } from "react-icons";
+
 import {
   FieldError,
   FieldValues,
@@ -28,7 +30,15 @@ export interface LoginProps {
 }
 
 export interface RegisterProps {
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   confirmPassword: string;
+}
+
+export interface SidebarItemsProp {
+  title: string;
+  urlPath: string;
+  icon: IconType;
 }
