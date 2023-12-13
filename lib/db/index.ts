@@ -4,8 +4,7 @@ import { Owner, PrismaClient, User } from "@prisma/client";
 import { ownerSchema } from "../zod/zodSchemas";
 import { RegisterProps } from "../types";
 import { hash } from "bcrypt";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/db/prisma";
 
 export interface Response {
   owners?: Owner[];
