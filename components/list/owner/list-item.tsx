@@ -53,7 +53,7 @@ export default function ListItem({
           {owner.mobileNumber}
         </div>
         <div className="hidden w-48 flex-none text-base font-normal text-white lg:block">
-          {format(owner.dateOfBirth, "dd/MM/yyyy")}
+          {owner.dateOfBirth ? format(owner.dateOfBirth, "dd/MM/yyyy") : "N/A"}
         </div>
         <div className="flex w-9 flex-col justify-end gap-2 xs:w-32 xs:flex-row 2xl:w-72">
           <button

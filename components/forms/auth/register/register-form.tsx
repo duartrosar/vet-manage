@@ -11,6 +11,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { error } from "console";
 import { registerCustomerUser } from "@/lib/db";
+import { Owner } from "@prisma/client";
+import { generateOwnerFromUser } from "@/lib/utils";
 
 export default function RegisterForm() {
   const searchParams = useSearchParams();
@@ -47,12 +49,14 @@ export default function RegisterForm() {
       return;
     }
 
-    const result = await registerCustomerUser(data);
+    const { user, success } = await registerCustomerUser(data);
 
-    if (!result.success) {
+    if (!user) {
       setRegisterError("User was not created");
       return;
     }
+
+    const owner = generateOwnerFromUser(data, user.id);
 
     router.push("/login");
   };

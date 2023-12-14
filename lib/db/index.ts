@@ -22,13 +22,15 @@ export async function registerCustomerUser(userRegister: RegisterProps) {
       data: {
         email: userRegister.email,
         password: password,
+        isActive: true,
+        hasEntity: true,
         roles: {
           create: { role: "CUSTOMER" },
         },
       },
     });
 
-    return { user: user };
+    return { user: user, success: true };
   } catch (error) {
     console.log("registerCustomerUser", error);
     return { success: false };

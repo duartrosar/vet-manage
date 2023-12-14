@@ -52,7 +52,9 @@ export default function TrItem({
         </span>
       </TdItem>
       <TdItem>{owner.mobileNumber}</TdItem>
-      <TdItem>{format(owner.dateOfBirth, "dd/MM/yyyy")}</TdItem>
+      <TdItem>
+        {owner.dateOfBirth ? format(owner.dateOfBirth, "dd/MM/yyyy") : "N/A"}
+      </TdItem>
       <TdItem>{owner.gender}</TdItem>
       <TdItem>
         <span className="flex max-w-xs flex-row justify-end gap-2 pr-2">

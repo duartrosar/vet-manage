@@ -6,9 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model UserRole {
@@ -16,6 +16,8 @@ model UserRole {
   role   Roles
   userId Int
   User   User  @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
 
 enum Roles {
@@ -36,18 +38,20 @@ model User {
 }
 
 model Owner {
-  id           Int      @id @default(autoincrement())
+  id           Int       @id @default(autoincrement())
   firstName    String
   lastName     String
-  dateOfBirth  DateTime
+  dateOfBirth  DateTime?
   gender       String?
   email        String
-  mobileNumber String
+  mobileNumber String?
   address      String?
   imageUrl     String?
   pets         Pet[]
-  userId       Int      @unique
-  user         User     @relation(fields: [userId], references: [id])
+  userId       Int       @unique
+  user         User      @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
 
 model Pet {
@@ -62,17 +66,19 @@ model Pet {
 }
 
 model Vet {
-  id           Int      @id @default(autoincrement())
+  id           Int       @id @default(autoincrement())
   firstName    String
   lastName     String
-  dateOfBirth  DateTime
-  gender       String
+  dateOfBirth  DateTime?
+  gender       String?
   email        String
-  mobileNumber String
-  address      String
-  imageUrl     String
-  userId       Int      @unique
-  user         User     @relation(fields: [userId], references: [id])
+  mobileNumber String?
+  address      String?
+  imageUrl     String?
+  userId       Int       @unique
+  user         User      @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
 
 model Appointment {

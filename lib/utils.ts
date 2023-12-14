@@ -1,3 +1,6 @@
+import { Owner, User } from "@prisma/client";
+import { RegisterProps } from "./types";
+
 export function toCamelCase(input: string): string {
   const words = input.split(" ");
 
@@ -12,6 +15,26 @@ export function propertiesOf<TObj>(_obj: TObj | undefined = undefined) {
   return function result<T extends keyof TObj>(name: T) {
     return name;
   };
+}
+
+export function generateOwnerFromUser(
+  data: RegisterProps,
+  userId: number,
+): Owner {
+  const owner: Owner = {
+    id: 0,
+    firstName: data.firstName,
+    lastName: data.lastName,
+    email: data.email,
+    userId: userId,
+    dateOfBirth: null,
+    gender: null,
+    mobileNumber: null,
+    address: null,
+    imageUrl: null,
+  };
+
+  return owner;
 }
 
 // input: "First Name", returns: "firstName"
