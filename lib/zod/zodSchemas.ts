@@ -38,6 +38,14 @@ export const loginSchema = z.object({
 });
 
 export const registerSchema = z.object({
+  firstName: z
+    .string()
+    .min(1, { message: "You must enter a first name" })
+    .max(50, "Max length is 50 characters"),
+  lastName: z
+    .string()
+    .min(1, { message: "You must enter a last name" })
+    .max(50, "Max length is 50 characters"),
   email: z
     .string()
     .email({ message: "You must enter an email" })

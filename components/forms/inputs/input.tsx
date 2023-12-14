@@ -15,20 +15,19 @@ export default function Input<T extends FieldValues>({
   register,
   error,
   placeholder,
+  ...props
 }: InputProps<T>) {
-  const inputId = toCamelCase(name);
-  // console.log(error);
-
+  const inputId = toCamelCase(name ? name : "");
+  console.log(inputId);
+  // TODO: Make InputProps
   return (
     <div className="flex flex-col gap-1">
       <label htmlFor={inputId} className="pl-3 text-sm font-bold text-gray-500">
         {name}
       </label>
       <input
+        {...props}
         {...(register(inputId as Path<T>) as UseFormRegisterReturn)}
-        type={type}
-        name={inputId}
-        placeholder={placeholder ? placeholder : name}
         className="rounded-lg border-2 border-cerulean-100/25 bg-transparent px-3 py-2 font-semibold text-gray-200 autofill:!bg-transparent hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600"
       />
       {error && (

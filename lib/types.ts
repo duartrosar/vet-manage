@@ -7,14 +7,13 @@ import {
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
+import { InputHTMLAttributes } from "react";
 
-export interface InputProps<T extends FieldValues> {
-  value?: string | null;
-  name: string;
-  type?: string;
+export interface InputProps<T extends FieldValues>
+  extends InputHTMLAttributes<HTMLInputElement> {
+  // value?: string | null;
   register: UseFormRegister<T>;
   error: FieldError | undefined;
-  placeholder?: string;
 }
 
 export interface CustomInputProps<T extends FieldValues> extends InputProps<T> {

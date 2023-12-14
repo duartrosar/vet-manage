@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import {
-  createOwner,
+  createOwnerWithUser,
   getUser,
-  registerCustomerUser,
+  createUserWithOwner,
   updateOwner,
 } from "../../lib/db";
 import ImageSelector from "./inputs/image-selector";
@@ -27,10 +27,12 @@ import {
 } from "@/lib/redux/slices/owners-slice";
 import { setFormIsOpen } from "@/lib/redux/slices/form-slice";
 import { RegisterProps } from "@/lib/types";
+import { generateOwnerFromUser } from "@/lib/utils";
 
 export default function OwnerForm({ ownerId }: { ownerId?: number }) {
   const owner = useAppSelector((state) => state.form.owner);
   const dispatch = useAppDispatch();
+  const [emailError, setEmailError] = useState("");
   const { pending } = useFormStatus();
   const [file, setFile] = useState<File>();
   const router = useRouter();
@@ -81,40 +83,17 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
   };
 
   const addOwnerAsync = async (data: Owner) => {
-    let { user: existingUser } = await getUser(data.email);
+    let { user } = await getUser(data.email);
 
-    console.log("existing user: ", existingUser);
-    // If the user doesn't exist create a user for the owner we're trying to create
-    if (!existingUser) {
-      const customerUser: RegisterProps = {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        password: "changethispassword",
-        confirmPassword: "",
-      };
-
-      console.log("customer User", customerUser);
-      // Try to create a new user
-      const { user } = await registerCustomerUser(customerUser);
-
-      // console.log("existing user: ", user);
-      // console.log("register user success: ", success);
-
-      if (!user) return;
-
-      existingUser = user;
+    if (user) {
+      console.log("Existing User: ", user);
+      setEmailError("That email is already being used.");
+      return;
     }
 
-    // if existing user doesn't have an id return.
-    if (!existingUser?.id) return;
+    const { ownerUser, success } = await createOwnerWithUser(data);
 
-    // make sure the owner has a user associated with it.
-    data.userId = existingUser.id;
-
-    const { owner, success } = await createOwner(data);
-
-    if (!success || !owner) {
+    if (!success || !ownerUser) {
       // TODO: if couldn't create owner, but blob was created then delete blob
       console.log("Something went wrong");
       // throw new Error("Something went wrong");
@@ -122,7 +101,7 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
       return;
     }
 
-    dispatch(addOwnerSlice(owner));
+    dispatch(addOwnerSlice(data));
     return;
     dispatch(setFormIsOpen(false));
 
@@ -133,7 +112,7 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
     const result = await updateOwner(data, data.id);
     if (!result) {
       // TODO: figure out a way to check if the image changed or not, or if the user had an image already
-      // TODO: If blob was create
+      // TODO: If blob was created
       console.log("Something went wrong");
       throw new Error("Something went wrong");
     }
@@ -212,12 +191,19 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
             />
           </div>
           <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
-            <Input<Owner>
-              name="Email"
-              type="email"
-              register={register}
-              error={errors.email}
-            />
+            <span>
+              <Input<Owner>
+                name="Email"
+                type="email"
+                register={register}
+                error={errors.email}
+              />
+              {emailError && (
+                <span className="text-right text-xs font-bold text-red-500">
+                  {emailError}
+                </span>
+              )}
+            </span>
 
             <Input<Owner>
               name="Mobile Number"

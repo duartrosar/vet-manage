@@ -10,7 +10,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { error } from "console";
-import { registerCustomerUser } from "@/lib/db";
+import { createOwnerWithUser, getUser, createUserWithOwner } from "@/lib/db";
 import { Owner } from "@prisma/client";
 import { generateOwnerFromUser } from "@/lib/utils";
 
@@ -30,6 +30,8 @@ export default function RegisterForm() {
     clearErrors,
   } = useForm<RegisterProps>({
     defaultValues: {
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -42,23 +44,42 @@ export default function RegisterForm() {
     data: RegisterProps,
   ) => {
     const isPasswordMatch = data.password === data.confirmPassword;
-    console.log("Passwords match: ", isPasswordMatch);
+    console.log("Owner data: ", data);
 
     if (!isPasswordMatch) {
       setPasswordError("Passwords do not match");
       return;
     }
 
-    const { user, success } = await registerCustomerUser(data);
+    let { user } = await getUser(data.email);
 
-    if (!user) {
-      setRegisterError("User was not created");
+    if (user) {
+      console.log("Existing User: ", user);
+      setRegisterError("That email is already being used.");
       return;
     }
 
-    const owner = generateOwnerFromUser(data, user.id);
+    try {
+      const { user, success } = await createUserWithOwner(data);
 
-    router.push("/login");
+      if (!user) {
+        setRegisterError("User was not created");
+        return;
+      }
+
+      console.log("Created User ", user);
+
+      if (success) {
+        router.push("/app");
+      }
+
+      // TODO: render error and delete user
+    } catch (error) {
+      // TODO: handle exceptions
+      const { user } = await getUser(data.email);
+      if (user) {
+      }
+    }
   };
 
   return (

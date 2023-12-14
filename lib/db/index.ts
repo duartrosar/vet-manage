@@ -5,6 +5,7 @@ import { ownerSchema } from "../zod/zodSchemas";
 import { RegisterProps } from "../types";
 import { hash } from "bcrypt";
 import prisma from "@/lib/db/prisma";
+import { generateOwnerFromUser } from "../utils";
 
 export interface Response {
   owners?: Owner[];
@@ -12,9 +13,8 @@ export interface Response {
   success: boolean;
 }
 
-// Users
-
-export async function registerCustomerUser(userRegister: RegisterProps) {
+// USERS
+export async function createUserWithOwner(userRegister: RegisterProps) {
   try {
     const password = await hash(userRegister.password, 12);
 
@@ -26,6 +26,13 @@ export async function registerCustomerUser(userRegister: RegisterProps) {
         hasEntity: true,
         roles: {
           create: { role: "CUSTOMER" },
+        },
+        owner: {
+          create: {
+            firstName: userRegister.firstName,
+            lastName: userRegister.lastName,
+            email: userRegister.email,
+          },
         },
       },
     });
@@ -59,6 +66,13 @@ export async function getUser(email: string) {
   }
 }
 
+export async function deleteUser(userId: number) {
+  // try{
+  //   const user
+  // }
+}
+
+// OWNERS
 export async function getOwners(): Promise<Response> {
   try {
     const owners = await prisma.owner.findMany();
@@ -84,19 +98,40 @@ export async function getOwner(ownerId: number) {
   }
 }
 
-export async function createOwner(data: Owner) {
+export async function createOwnerWithUser(data: Owner) {
   try {
     const result = ownerSchema.safeParse(data);
 
     if (result.success) {
-      const owner = await prisma.owner.create({
-        data: data,
+      const password = await hash("", 12);
+
+      const ownerUser = await prisma.user.create({
+        data: {
+          email: data.email,
+          password: password,
+          hasEntity: true,
+          roles: {
+            create: { role: "CUSTOMER" },
+          },
+          owner: {
+            create: {
+              firstName: data.firstName,
+              lastName: data.lastName,
+              dateOfBirth: data.dateOfBirth,
+              gender: data.gender,
+              email: data.email,
+              mobileNumber: data.mobileNumber,
+              address: data.address,
+              imageUrl: data.imageUrl,
+            },
+          },
+        },
       });
 
-      return { owner, success: true };
+      return { ownerUser, success: true };
     }
 
-    return { owner: data, success: false };
+    return { ownerUser: data, success: false };
   } catch (error) {
     console.log("createOwner", error);
     return { success: false };
