@@ -3,10 +3,11 @@
 import { Owner } from "@prisma/client";
 import React, { useRef, useState, useEffect } from "react";
 import OwnerListHeader from "./list-header";
-import TrListItem from "./tr-list-item";
+import TrItem from "./tr-item";
 import { useDispatch } from "react-redux";
 import { setOwners } from "@/lib/redux/slices/owners-slice";
 import { useAppSelector } from "@/lib/hooks";
+import TheadItem from "./thead-item";
 
 export default function OwnersList({ owners }: { owners?: Owner[] }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -48,27 +49,19 @@ export default function OwnersList({ owners }: { owners?: Owner[] }) {
             {/* <div className="absolute left-6 right-6 top-4 z-10 h-5 rounded-t-xl border border-b-0 border-cerulean-800/50 bg-cerulean-950 backdrop-blur-xl"></div> */}
             <div className="rounded-b-xl border-x border-b border-cerulean-800/50 bg-cerulean-950 pb-11">
               <table className="relative w-full table-auto border-separate border-spacing-0 text-sm">
-                <thead className=" text-gray-500">
-                  <tr className="">
-                    <th className="sticky top-0 h-20 border-y-2 border-cerulean-800/50 bg-cerulean-900 py-4 text-left shadow-xl"></th>
-                    <th className="sticky top-0 border-y-2 border-cerulean-800/50 bg-cerulean-900 py-4 text-left shadow-xl">
-                      Name
-                    </th>
-                    <th className="sticky top-0 hidden border-y-2 border-cerulean-800/50 bg-cerulean-900 py-4 text-left shadow-xl sm:table-cell">
-                      Phone Number
-                    </th>
-                    <th className="sticky top-0 hidden border-y-2 border-cerulean-800/50 bg-cerulean-900 py-4 text-left shadow-xl md:table-cell">
-                      Date of birth
-                    </th>
-                    <th className="sticky top-0 hidden border-y-2 border-cerulean-800/50 bg-cerulean-900 py-4 text-left shadow-xl lg:table-cell">
-                      Gender
-                    </th>
-                    <th className="sticky top-0 border-y-2 border-cerulean-800/50 bg-cerulean-900 py-4 text-left shadow-xl"></th>
-                  </tr>
-                </thead>
+                <TheadItem
+                  headers={[
+                    "",
+                    "Name",
+                    "Phone Number",
+                    "Date Of Birth",
+                    "Gender",
+                    "",
+                  ]}
+                />
                 <tbody className="text-white">
                   {currentOwners?.map((owner, index) => (
-                    <TrListItem
+                    <TrItem
                       key={index}
                       owner={owner}
                       index={index}
@@ -76,7 +69,7 @@ export default function OwnersList({ owners }: { owners?: Owner[] }) {
                     />
                   ))}
                   {currentOwners?.map((owner, index) => (
-                    <TrListItem
+                    <TrItem
                       key={index}
                       owner={owner}
                       index={index}
@@ -84,7 +77,7 @@ export default function OwnersList({ owners }: { owners?: Owner[] }) {
                     />
                   ))}
                   {currentOwners?.map((owner, index) => (
-                    <TrListItem
+                    <TrItem
                       key={index}
                       owner={owner}
                       index={index}
@@ -92,7 +85,7 @@ export default function OwnersList({ owners }: { owners?: Owner[] }) {
                     />
                   ))}
                   {currentOwners?.map((owner, index) => (
-                    <TrListItem
+                    <TrItem
                       key={index}
                       owner={owner}
                       index={index}
@@ -100,7 +93,7 @@ export default function OwnersList({ owners }: { owners?: Owner[] }) {
                     />
                   ))}
                   {currentOwners?.map((owner, index) => (
-                    <TrListItem
+                    <TrItem
                       key={index}
                       owner={owner}
                       index={index}

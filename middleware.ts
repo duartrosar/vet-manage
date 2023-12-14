@@ -7,8 +7,8 @@ import { NextResponse } from "next/server";
 export default withAuth(
   // "withAuth" augments your "Request" with the user's token.
   function middleware(request: NextRequestWithAuth) {
-    console.log("NextUrl pahtname: ", request.nextUrl.pathname);
-    console.log("NextAuth token", request.nextauth.token);
+    // console.log("NextUrl pahtname: ", request.nextUrl.pathname);
+    // console.log("NextAuth token", request.nextauth.token);
 
     const roles = request.nextauth.token?.roles.map((roles) =>
       roles.role.toString(),

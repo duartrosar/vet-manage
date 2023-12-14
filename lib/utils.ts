@@ -8,6 +8,12 @@ export function toCamelCase(input: string): string {
   return firstWord + words.slice(1).join("");
 }
 
+export function propertiesOf<TObj>(_obj: TObj | undefined = undefined) {
+  return function result<T extends keyof TObj>(name: T) {
+    return name;
+  };
+}
+
 // input: "First Name", returns: "firstName"
 // input: "Date Of Birth", returns: "dateOfBirth"
 // input: "Address", returns: "address".

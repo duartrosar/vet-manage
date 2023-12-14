@@ -1,7 +1,7 @@
 "use client";
 
 import { Owner } from "@prisma/client";
-import React from "react";
+import React, { useEffect } from "react";
 import { FaUser } from "react-icons/fa6";
 import Image from "next/image";
 import { IoPencil, IoTrash } from "react-icons/io5";
@@ -9,8 +9,11 @@ import { format } from "date-fns";
 import { useAppDispatch } from "@/lib/hooks";
 import { removeOwnerSlice } from "@/lib/redux/slices/owners-slice";
 import { setFormIsOpen, setFormOwner } from "@/lib/redux/slices/form-slice";
+import { propertiesOf } from "@/lib/utils";
+import { TdComponents } from "./td-elements";
+import TdItem from "./td-item";
 
-export default function TrListItem({
+export default function TrItem({
   index,
   owner,
   ownersLength,
@@ -20,17 +23,18 @@ export default function TrListItem({
   ownersLength: number;
 }) {
   const dispatch = useAppDispatch();
+
   return (
     <tr
-      className={`cursor-pointer bg-cerulean-800/25 px-4 shadow-xl hover:border-cerulean-800 hover:bg-cerulean-700/50 hover:outline-cerulean-800 ${
-        index % 2 === 0 ? "bg-cerulean-800/25" : ""
-      } ${index === ownersLength - 1 ? "" : ""}`}
+      className={`cursor-pointer bg-cerulean-800/25 px-8 shadow-xl hover:border-cerulean-800 hover:bg-cerulean-700/50 hover:outline-cerulean-800 ${
+        index === ownersLength - 1 ? "" : ""
+      }`}
     >
-      <td className="h-20 w-14 border-b-2 border-cerulean-800/50 py-5 pl-2 pr-4">
-        {owner.imageUrl ? (
+      <TdItem className="pl-6">
+        {owner?.imageUrl ? (
           <Image
             className="flex-none rounded-full bg-cerulean-950"
-            src={owner.imageUrl}
+            src={owner?.imageUrl}
             width={50}
             height={50}
             alt="Profile picture"
@@ -40,23 +44,17 @@ export default function TrListItem({
             <FaUser className="h-[30px] w-[30px] text-cerulean-500/50" />
           </span>
         )}
-      </td>
-      <td className="border-b-2 border-cerulean-800/50">
+      </TdItem>
+      <TdItem>
         {owner.firstName} {owner.lastName}
         <span className="hidden text-sm text-cerulean-100/50 xs:block">
           {owner.email}
         </span>
-      </td>
-      <td className="hidden border-b-2 border-cerulean-800/50 sm:table-cell">
-        {owner.mobileNumber}
-      </td>
-      <td className="hidden border-b-2 border-cerulean-800/50 md:table-cell">
-        {format(owner.dateOfBirth, "dd/MM/yyyy")}
-      </td>
-      <td className="hidden border-b-2 border-cerulean-800/50 lg:table-cell">
-        {owner.gender}
-      </td>
-      <td className=" border-b-2 border-cerulean-800/50">
+      </TdItem>
+      <TdItem>{owner.mobileNumber}</TdItem>
+      <TdItem>{format(owner.dateOfBirth, "dd/MM/yyyy")}</TdItem>
+      <TdItem>{owner.gender}</TdItem>
+      <TdItem>
         <span className="flex max-w-xs flex-row justify-end gap-2 pr-2">
           <button
             onClick={() => {
@@ -78,7 +76,7 @@ export default function TrListItem({
             <span className="hidden 2xl:block">Delete owner</span>
           </button>
         </span>
-      </td>
+      </TdItem>
     </tr>
   );
 }
