@@ -5,6 +5,7 @@ import { CgMenuLeft } from "react-icons/cg";
 import Logo from "../logo";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setIsOpen } from "@/lib/redux/slices/sidebar-slice";
+import ProfileMenu from "../user-profile";
 
 export default function Navbar() {
   const isOpen = useAppSelector((state) => state.sidebar.isOpen);
@@ -13,7 +14,7 @@ export default function Navbar() {
   return (
     <nav className="fixed left-0 top-0 z-50 h-20 w-full">
       <div className="h-full w-full border-b-2 border-cerulean-700/25 bg-cerulean-950 shadow-xl">
-        <div className="flex h-full items-center justify-between gap-3 p-3">
+        <div className="flex h-full items-center justify-between gap-3 py-3 pl-3">
           <div className="flex items-center gap-3">
             {/* <SidebarButton /> */}
             <button
@@ -29,7 +30,7 @@ export default function Navbar() {
             </button>
             <Logo />
           </div>
-          {/* <ProfileMenu user={user} /> */}
+          <ProfileMenu />
         </div>
       </div>
     </nav>

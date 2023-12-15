@@ -110,8 +110,6 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
 
   const updateOwnerAsync = async (data: Owner) => {
     // TODO: Don't allow email to be edited???
-    // const {updatedOwner, } = await updateOwner(data, data.id);
-
     const result = await updateOwner(data, data.id);
 
     if (!result?.success) {

@@ -12,8 +12,6 @@ export default function FormModal() {
   const isOpen = useAppSelector((state) => state.form.isOpen);
   const dispatch = useAppDispatch();
 
-  console.log(isOpen);
-
   return (
     <>
       <button
