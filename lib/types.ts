@@ -18,7 +18,8 @@ export interface InputProps<T extends FieldValues>
 
 export interface CustomInputProps<T extends FieldValues> extends InputProps<T> {
   dateValue?: Date | null;
-  setValue: UseFormSetValue<T>;
+  selectedOption?: string | null;
+  setSelectedOption: UseFormSetValue<T>;
   clearErrors: UseFormClearErrors<T>;
   options?: string[];
 }

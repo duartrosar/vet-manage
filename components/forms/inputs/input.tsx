@@ -10,6 +10,7 @@ import {
 } from "react-hook-form";
 
 export default function Input<T extends FieldValues>({
+  readOnly = false,
   name,
   type = "text",
   register,
@@ -26,6 +27,7 @@ export default function Input<T extends FieldValues>({
         {name}
       </label>
       <input
+        readOnly={readOnly}
         {...props}
         {...(register(inputId as Path<T>) as UseFormRegisterReturn)}
         className="rounded-lg border-2 border-cerulean-100/25 bg-transparent px-3 py-2 font-semibold text-gray-200 autofill:!bg-transparent hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600"

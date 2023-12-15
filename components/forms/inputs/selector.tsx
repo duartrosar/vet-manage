@@ -24,25 +24,29 @@ export default function Selector<T extends FieldValues>({
   type,
   register,
   error,
-  setValue,
+  setSelectedOption,
   clearErrors,
   options,
-  value,
+  selectedOption,
 }: CustomInputProps<T>) {
   const [selectedText, setSelectedText] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const inputId = toCamelCase(name);
+  const inputId = toCamelCase(name ? name : "");
 
   function handleClick(e: ReactMouseEvent<HTMLLIElement, MouseEvent>) {
     const element = e.target as HTMLElement;
     const text = element.innerHTML;
     setDropdownOpen(false);
     setSelectedText(text);
-    setValue<Path<T>>(inputId as Path<T>, text as PathValue<T, Path<T>>, {
-      shouldDirty: false,
-    });
+    setSelectedOption<Path<T>>(
+      inputId as Path<T>,
+      text as PathValue<T, Path<T>>,
+      {
+        shouldDirty: false,
+      },
+    );
     clearErrors(inputId as Path<T>);
   }
 
@@ -56,10 +60,10 @@ export default function Selector<T extends FieldValues>({
   });
 
   useEffect(() => {
-    if (value) {
-      setSelectedText(value);
+    if (selectedOption) {
+      setSelectedText(selectedOption);
     }
-  }, [value]);
+  }, [selectedOption]);
 
   return (
     <div className="relative gap-1">

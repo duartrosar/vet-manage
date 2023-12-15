@@ -131,6 +131,7 @@ export async function createOwnerWithUser(data: Owner) {
       return { ownerUser, success: true };
     }
 
+    console.log(result.error.format());
     return { ownerUser: data, success: false };
   } catch (error) {
     console.log("createOwner", error);
@@ -150,13 +151,19 @@ export async function updateOwner(data: Owner, ownerId: number) {
         data: data,
       });
 
-      return { success: true, owner: result.data };
+      return {
+        updatedOwner,
+        success: true,
+        message: "Owner was updated sucessfully",
+      };
     }
-    if (result.error) {
-      return { success: false, error: result.error.format() };
-    }
+    console.log(result.error.format());
+    return {
+      updatedOwner: data,
+      success: false,
+      message: "An error ocurred atempting to create the owner",
+    };
   } catch (error) {
     console.log("updateOwner", error);
-    return { success: false, error: error };
   }
 }

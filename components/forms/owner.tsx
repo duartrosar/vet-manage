@@ -109,17 +109,16 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
   };
 
   const updateOwnerAsync = async (data: Owner) => {
+    // TODO: Don't allow email to be edited???
+    // const {updatedOwner, } = await updateOwner(data, data.id);
+
     const result = await updateOwner(data, data.id);
-    if (!result) {
+
+    if (!result?.success) {
       // TODO: figure out a way to check if the image changed or not, or if the user had an image already
       // TODO: If blob was created
       console.log("Something went wrong");
       throw new Error("Something went wrong");
-    }
-
-    if (result?.error) {
-      console.log(result.error);
-      return;
     }
 
     dispatch(updateOwnerSlice(data));
@@ -173,7 +172,7 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
             <DatePicker
               name="Date Of Birth"
               type="date"
-              setValue={setValue}
+              setSelectedOption={setValue}
               dateValue={owner?.dateOfBirth}
               clearErrors={clearErrors}
               register={register}
@@ -182,8 +181,8 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
             <Selector
               name="Gender"
               type="text"
-              value={owner?.gender}
-              setValue={setValue}
+              selectedOption={owner?.gender}
+              setSelectedOption={setValue}
               register={register}
               error={errors.gender}
               clearErrors={clearErrors}
@@ -193,6 +192,8 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
           <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
             <span>
               <Input<Owner>
+                // {owner && readonly}
+                readOnly={owner ? true : false}
                 name="Email"
                 type="email"
                 register={register}

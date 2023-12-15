@@ -11,7 +11,7 @@ export default function DatePicker<T extends FieldValues>({
   type = "text",
   register,
   error,
-  setValue,
+  setSelectedOption: setValue,
   clearErrors,
   dateValue,
 }: CustomInputProps<T>) {
@@ -23,7 +23,7 @@ export default function DatePicker<T extends FieldValues>({
         dateValue={dateValue}
         register={register}
         error={error}
-        setValue={setValue}
+        setSelectedOption={setValue}
         clearErrors={clearErrors}
       />
     </DatePickerProvider>
