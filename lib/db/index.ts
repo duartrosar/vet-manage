@@ -20,6 +20,8 @@ export async function createUserWithOwner(userRegister: RegisterProps) {
 
     const user = await prisma.user.create({
       data: {
+        firstName: userRegister.firstName,
+        lastName: userRegister.lastName,
         email: userRegister.email,
         password: password,
         isActive: true,
