@@ -5,22 +5,16 @@ const prisma = new PrismaClient();
 
 async function main() {
   const password = await hash("123456", 12);
-  const user = await prisma.user.upsert({
-    where: { email: "admin@admin.com" },
-    update: {
-      roles: {
-        create: [{ role: "ADMIN" }],
-      },
-    },
-    create: {
+  const user = await prisma.user.create({
+    data: {
+      firstName: "admin",
+      lastName: "admin",
       email: "admin@admin.com",
+      imageUrl: "",
       password: password,
       roles: {
         create: [{ role: "ADMIN" }],
       },
-    },
-    include: {
-      roles: true,
     },
   });
   console.log(user);

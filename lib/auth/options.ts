@@ -34,7 +34,7 @@ export const options: NextAuthOptions = {
           },
         });
 
-        // console.log("User: ", user);
+        console.log("User: ", user);
 
         if (!user) {
           return null;
@@ -54,6 +54,8 @@ export const options: NextAuthOptions = {
         return {
           id: user.id + "",
           email: user.email,
+          name: `${user.firstName} ${user.lastName}`,
+          image: user.imageUrl ?? "",
           roles: user.roles,
         };
       },
@@ -61,6 +63,7 @@ export const options: NextAuthOptions = {
   ],
   callbacks: {
     session: ({ session, token }) => {
+      // console.log("session:\n", session);
       return {
         ...session,
         user: {

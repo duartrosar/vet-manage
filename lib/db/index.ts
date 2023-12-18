@@ -108,6 +108,9 @@ export async function createOwnerWithUser(data: Owner) {
       const ownerUser = await prisma.user.create({
         data: {
           email: data.email,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          imageUrl: data.imageUrl,
           password: password,
           hasEntity: true,
           roles: {

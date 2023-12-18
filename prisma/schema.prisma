@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  seed     = "prisma/seed.ts"
 }
 
 datasource db {
@@ -28,6 +29,9 @@ enum Roles {
 
 model User {
   id        Int        @id @default(autoincrement())
+  firstName String
+  lastName  String
+  imageUrl  String?
   email     String     @unique
   password  String
   roles     UserRole[]
