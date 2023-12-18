@@ -27,7 +27,7 @@ export default function DatePickerContainer<T extends FieldValues>({
   const { currentDate, dropdownOpen, setDropdownOpen, setCurrentDate } =
     useContext(DatePickerContext);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
-  const inputId = toCamelCase(name);
+  const inputId = toCamelCase(name ? name : "");
 
   useEffect(() => {
     setValue<Path<T>>(
