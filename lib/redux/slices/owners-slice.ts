@@ -3,9 +3,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface OwnersState {
   owners: Owner[];
+  searchParams: string;
 }
 
-const initialState: OwnersState = { owners: [] };
+const initialState: OwnersState = { owners: [], searchParams: "" };
 
 const ownersSlice = createSlice({
   name: "owners",
@@ -29,10 +30,17 @@ const ownersSlice = createSlice({
         state.owners[index] = action.payload;
       }
     },
-    // TODO: Add and edit reducer
+    ownerSearch(state, action: PayloadAction<string>) {
+      state.searchParams = action.payload;
+    },
   },
 });
 
-export const { setOwners, addOwnerSlice, removeOwnerSlice, updateOwnerSlice } =
-  ownersSlice.actions;
+export const {
+  setOwners,
+  addOwnerSlice,
+  removeOwnerSlice,
+  updateOwnerSlice,
+  ownerSearch,
+} = ownersSlice.actions;
 export default ownersSlice.reducer;

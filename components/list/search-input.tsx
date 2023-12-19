@@ -1,12 +1,22 @@
+"use client";
+
+import { useAppDispatch } from "@/lib/hooks";
+import { ownerSearch } from "@/lib/redux/slices/owners-slice";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { IoSearch } from "react-icons/io5";
 
-export default function SearchInput() {
+export default function SearchInput({
+  handleSearch,
+}: {
+  handleSearch: React.ChangeEventHandler<HTMLInputElement>;
+}) {
   return (
     <div className="flex w-96 items-center rounded-lg border-2 border-cerulean-500/25 pl-2 shadow-md shadow-cerulean-950 hover:bg-cerulean-800">
       <IoSearch className="h-[18px] w-[18px] text-gray-500" />
       <input
-        //   onChange={handleSearch}
+        onChange={handleSearch}
         placeholder="Search"
         name="search"
         type="text"

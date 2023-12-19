@@ -4,7 +4,6 @@ import { Owner } from "@prisma/client";
 import React, { useRef, useState, useEffect } from "react";
 import OwnerListHeader from "./list-header";
 import TableRow from "../../table/table-row";
-import { useDispatch } from "react-redux";
 import { setOwners } from "@/lib/redux/slices/owners-slice";
 import { useAppSelector } from "@/lib/hooks";
 import TableHead from "../../table/table-head";
@@ -19,11 +18,41 @@ import { useAppDispatch } from "@/lib/hooks";
 import { removeOwnerSlice } from "@/lib/redux/slices/owners-slice";
 import { setFormIsOpen, setFormOwner } from "@/lib/redux/slices/form-slice";
 import { propertiesOf } from "@/lib/utils";
+import { useSearchParams } from "next/navigation";
 
 export default function OwnersList({ owners }: { owners?: Owner[] }) {
   const ref = useRef<HTMLDivElement>(null);
-  const currentOwners = useAppSelector((state) => state.owners.owners);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (owners) {
+      dispatch(setOwners(owners));
+    }
+  }, [dispatch, owners]);
+
+  const currentOwners = useAppSelector((state) => state.owners.owners);
+  const searchParams = useAppSelector((state) => state.owners.searchParams);
+  const filteredOwners = currentOwners.filter((owner) => {
+    // owner.firstName.toLowerCase().includes(searchParams.toLowerCase());
+    const searchTerm = searchParams.toLowerCase().split(" ");
+
+    return searchTerm.every((searchTerm) =>
+      Object.values(owner).some((value) => {
+        if (value instanceof Date) {
+          // Convert date to string representation
+          const dateString = format(value, "dd/MM/yyyy");
+          console.log(dateString);
+          return dateString.toLowerCase().includes(searchTerm);
+        }
+
+        return (
+          value &&
+          typeof value === "string" &&
+          value.toLowerCase().includes(searchTerm)
+        );
+      }),
+    );
+  });
 
   return (
     <>
@@ -48,7 +77,7 @@ export default function OwnersList({ owners }: { owners?: Owner[] }) {
                   ]}
                 />
                 <TableBody>
-                  {currentOwners?.map((owner, index) => (
+                  {filteredOwners?.map((owner, index) => (
                     <TableRow key={index}>
                       <TableData className="pl-6">
                         {owner?.imageUrl ? (
