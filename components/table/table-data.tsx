@@ -1,12 +1,11 @@
 import clsx from "clsx";
 import React from "react";
-import { FaUser } from "react-icons/fa6";
 
 interface TdItemProps {
   type: "text" | "image" | "date" | "profile";
 }
 
-export default function TdItem({
+export default function TableData({
   children,
   className = "",
 }: {

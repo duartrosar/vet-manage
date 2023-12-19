@@ -34,9 +34,14 @@ export function TdProfile() {
   return <div>td-elements</div>;
 }
 
-export const TdComponents = {
-  image: TdImage,
-  text: TdText,
-  date: TdDate,
-  profile: TdProfile,
-};
+export function TdComponentsMapper({
+  value,
+  type,
+}: {
+  value: string;
+  type: string;
+}) {
+  if (type === "image") {
+    return <TdImage imageUrl={value} />;
+  }
+}

@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function TheadItem({ headers }: { headers: string[] }) {
+export default function TableHead({ headers }: { headers: string[] }) {
   return (
     <thead className=" text-gray-500">
       <tr className="">
