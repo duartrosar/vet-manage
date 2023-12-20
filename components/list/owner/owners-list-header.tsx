@@ -8,7 +8,7 @@ import { useAppDispatch } from "@/lib/hooks";
 import { ownerSearchSlice } from "@/lib/redux/slices/owners-slice";
 import DeleteForm from "@/components/forms/delete-form";
 
-export default function OwnerListHeader() {
+export default function OwnersListHeader() {
   const dispatch = useAppDispatch();
   function handleSearch(event: React.ChangeEvent<HTMLInputElement>): void {
     const text = event.target.value;
@@ -24,7 +24,7 @@ export default function OwnerListHeader() {
         <div className="flex items-center justify-between">
           <SearchInput handleSearch={handleSearch} />
           <Form type="owner" />
-          <DeleteForm />
+          <DeleteForm type="owner" />
         </div>
       </div>
     </div>

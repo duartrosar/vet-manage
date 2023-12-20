@@ -2,7 +2,7 @@
 
 import { Owner } from "@prisma/client";
 import React, { useRef, useState, useEffect } from "react";
-import OwnerListHeader from "./list-header";
+import OwnersListHeader from "./owners-list-header";
 import TableRow from "../../table/table-row";
 import { setOwners } from "@/lib/redux/slices/owners-slice";
 import { useAppSelector } from "@/lib/hooks";
@@ -18,12 +18,10 @@ import { useAppDispatch } from "@/lib/hooks";
 import { removeOwnerSlice } from "@/lib/redux/slices/owners-slice";
 import {
   setDeleteFormIsOpen,
-  setFormIsOpen,
+  setOwnerFormIsOpen,
   setFormOwner,
   setUserId,
 } from "@/lib/redux/slices/form-slice";
-import { propertiesOf } from "@/lib/utils";
-import { useSearchParams } from "next/navigation";
 
 export default function OwnersList({ owners }: { owners?: Owner[] }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -61,14 +59,10 @@ export default function OwnersList({ owners }: { owners?: Owner[] }) {
 
   return (
     <>
-      <OwnerListHeader />
+      <OwnersListHeader />
       <div className="flex h-full flex-col">
         <div className="relative h-full w-full pt-[30px]" ref={ref}>
-          <div
-            className={`overflow-auto-y ${
-              currentOwners.length === 0 ? "" : ""
-            }`}
-          >
+          <div className={`overflow-auto-y`}>
             <div className="rounded-b-xl border-x border-b border-cerulean-800/50 bg-cerulean-950 pb-11">
               <Table>
                 <TableHead
@@ -116,7 +110,7 @@ export default function OwnersList({ owners }: { owners?: Owner[] }) {
                         <span className="flex max-w-xs flex-row justify-end gap-2 pr-2">
                           <button
                             onClick={() => {
-                              dispatch(setFormIsOpen(true));
+                              dispatch(setOwnerFormIsOpen(true));
                               dispatch(setFormOwner(owner));
                             }}
                             className="text-xm flex items-center justify-start gap-2 rounded-lg bg-cerulean-600 px-2 py-1 text-sm font-normal text-white shadow-md shadow-cerulean-950 transition hover:bg-cerulean-700 sm:px-3 sm:py-2 "

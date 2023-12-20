@@ -1,5 +1,5 @@
 import Container from "@/components/container";
-import OwnersList from "@/components/list/owner/list";
+import OwnersList from "@/components/list/owner/owners-list";
 import { getOwners } from "@/lib/db";
 // import prisma from "@/lib/db/prisma";
 

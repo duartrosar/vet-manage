@@ -19,7 +19,7 @@ import {
   addOwnerSlice,
   updateOwnerSlice,
 } from "@/lib/redux/slices/owners-slice";
-import { setFormIsOpen } from "@/lib/redux/slices/form-slice";
+import { setOwnerFormIsOpen } from "@/lib/redux/slices/form-slice";
 
 export default function OwnerForm({ ownerId }: { ownerId?: number }) {
   const owner = useAppSelector((state) => state.form.owner);
@@ -93,7 +93,7 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
     }
 
     dispatch(addOwnerSlice(data));
-    dispatch(setFormIsOpen(false));
+    dispatch(setOwnerFormIsOpen(false));
 
     // TODO: set toast message
   };
@@ -110,7 +110,7 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
     }
 
     dispatch(updateOwnerSlice(data));
-    dispatch(setFormIsOpen(false));
+    dispatch(setOwnerFormIsOpen(false));
     // TODO: set toast message
   };
 

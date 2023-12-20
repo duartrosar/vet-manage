@@ -5,7 +5,7 @@ import Modal from "../modal";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {
   setDeleteFormIsOpen,
-  setFormIsOpen,
+  setOwnerFormIsOpen,
 } from "@/lib/redux/slices/form-slice";
 import { IoTrash } from "react-icons/io5";
 import { deleteUser } from "@/lib/db";
@@ -14,8 +14,9 @@ import {
   removeOwnerSlice,
 } from "@/lib/redux/slices/owners-slice";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { removeVetByUserIdSlice } from "@/lib/redux/slices/vets-slice";
 
-export default function DeleteForm() {
+export default function DeleteForm({ type }: { type: "owner" | "vet" }) {
   const userId = useAppSelector((state) => state.form.userId);
   const isOpen = useAppSelector((state) => state.form.isDeleteFormOpen);
   const dispatch = useAppDispatch();
@@ -24,7 +25,8 @@ export default function DeleteForm() {
   const handleSubmit = async () => {
     await deleteUser(userId);
     dispatch(setDeleteFormIsOpen(false));
-    dispatch(removeOwnerByUserIdSlice(userId));
+    type === "owner" && dispatch(removeOwnerByUserIdSlice(userId));
+    type === "vet" && dispatch(removeVetByUserIdSlice(userId));
   };
 
   return (

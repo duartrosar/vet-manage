@@ -1,17 +1,21 @@
-import { Owner } from "@prisma/client";
+import { Owner, Vet } from "@prisma/client";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { boolean } from "zod";
 
 interface FormState {
-  isFormOpen: boolean;
+  isOwnerFormOpen: boolean;
+  isVetFormOpen: boolean;
   isDeleteFormOpen: boolean;
   owner: Owner | null;
+  vet: Vet | null;
   userId: number;
 }
 
 const initialState: FormState = {
-  isFormOpen: false,
+  isOwnerFormOpen: false,
   owner: null,
+  isVetFormOpen: false,
+  vet: null,
   isDeleteFormOpen: false,
   userId: 0,
 };
@@ -20,11 +24,17 @@ const formSlice = createSlice({
   name: "form",
   initialState,
   reducers: {
-    setFormIsOpen(state, action: PayloadAction<boolean>) {
-      state.isFormOpen = action.payload;
+    setOwnerFormIsOpen(state, action: PayloadAction<boolean>) {
+      state.isOwnerFormOpen = action.payload;
+    },
+    setVetFormIsOpen(state, action: PayloadAction<boolean>) {
+      state.isVetFormOpen = action.payload;
     },
     setFormOwner(state, action: PayloadAction<Owner | null>) {
       state.owner = action.payload;
+    },
+    setFormVet(state, action: PayloadAction<Vet | null>) {
+      state.vet = action.payload;
     },
     setDeleteFormIsOpen(state, action: PayloadAction<boolean>) {
       state.isDeleteFormOpen = action.payload;
@@ -35,6 +45,12 @@ const formSlice = createSlice({
   },
 });
 
-export const { setFormIsOpen, setFormOwner, setDeleteFormIsOpen, setUserId } =
-  formSlice.actions;
+export const {
+  setOwnerFormIsOpen,
+  setVetFormIsOpen,
+  setFormOwner,
+  setFormVet,
+  setDeleteFormIsOpen,
+  setUserId,
+} = formSlice.actions;
 export default formSlice.reducer;

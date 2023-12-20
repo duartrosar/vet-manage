@@ -33,6 +33,11 @@ export default function Address<T extends FieldValues>({
           name="Address"
           register={ownerRegister}
         />
+        {error && (
+          <span className="text-right text-xs font-bold text-red-500">
+            {error.message}
+          </span>
+        )}
       </div>
       {/* <div className="flex flex-col gap-1">
         <AddressInput<Owner>
@@ -57,11 +62,6 @@ export default function Address<T extends FieldValues>({
           />
         </div>
       </div> */}
-      {error && (
-        <span className="text-right text-xs font-bold text-red-500">
-          {error.message}
-        </span>
-      )}
     </>
   );
 }

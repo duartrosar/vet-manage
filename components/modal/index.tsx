@@ -3,7 +3,7 @@ import React, { Fragment } from "react";
 import { IoMdClose } from "react-icons/io";
 import OwnerForm from "../forms/owner/owner-form";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { setFormIsOpen } from "@/lib/redux/slices/form-slice";
+import { setOwnerFormIsOpen } from "@/lib/redux/slices/form-slice";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit/react";
 
 export default function Modal<T extends string>({

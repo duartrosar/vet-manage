@@ -10,6 +10,8 @@ import {
   IoLogOut,
 } from "react-icons/io5";
 
+import { MdHealthAndSafety } from "react-icons/md";
+
 export const genderOptions: string[] = ["Prefer not to say", "Female", "Male"];
 
 export const sidebarItems: SidebarItemsProp[] = [
@@ -38,6 +40,7 @@ export const sidebarItems: SidebarItemsProp[] = [
     urlPath: "/app",
     icon: IoPaw,
   },
+  { title: "Vets", urlPath: "/app/vets", icon: MdHealthAndSafety },
   {
     title: "Settings",
     urlPath: "/app",

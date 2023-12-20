@@ -1,7 +1,7 @@
 "use server";
 
-import { Owner, PrismaClient, User } from "@prisma/client";
-import { ownerSchema } from "../zod/zodSchemas";
+import { Owner, PrismaClient, User, Vet } from "@prisma/client";
+import { ownerSchema, vetSchema } from "../zod/zodSchemas";
 import { RegisterProps } from "../types";
 import { hash } from "bcrypt";
 import prisma from "@/lib/db/prisma";
@@ -46,13 +46,6 @@ export async function createUserWithOwner(userRegister: RegisterProps) {
   }
 }
 
-/**
- * Returns a user based on an email.
- *
- * @param email - The email of the user you want to get.
- * @returns An object with the user that matches the email passed in and a success flag.
- *
- */
 export async function getUser(email: string) {
   try {
     const user = await prisma.user.findUnique({
@@ -148,7 +141,7 @@ export async function createOwnerWithUser(data: Owner) {
     console.log(result.error.format());
     return { ownerUser: data, success: false };
   } catch (error) {
-    console.log("createOwner", error);
+    console.log("createOwnerWithUser", error);
     return { success: false };
   }
 }
@@ -179,5 +172,104 @@ export async function updateOwner(data: Owner, ownerId: number) {
     };
   } catch (error) {
     console.log("updateOwner", error);
+  }
+}
+
+// Vets
+export async function getVets() {
+  try {
+    const vets = await prisma.vet.findMany();
+    return { vets: vets, success: true };
+  } catch (error) {
+    console.log("getVets", error);
+    return { success: false };
+  }
+}
+
+export async function getVet(vetId: number) {
+  try {
+    const vet = await prisma.vet.findUnique({
+      where: {
+        id: vetId,
+      },
+    });
+
+    return { vet };
+  } catch (error) {
+    console.log("getVet", error);
+    return { error };
+  }
+}
+
+export async function createVetWithUser(data: Vet) {
+  try {
+    const result = ownerSchema.safeParse(data);
+
+    if (result.success) {
+      const password = await hash("", 12);
+
+      const vetUser = await prisma.user.create({
+        data: {
+          email: data.email,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          imageUrl: data.imageUrl,
+          password: password,
+          hasEntity: true,
+          roles: {
+            create: { role: "EMPLOYEE" },
+          },
+          vet: {
+            create: {
+              firstName: data.firstName,
+              lastName: data.lastName,
+              dateOfBirth: data.dateOfBirth,
+              gender: data.gender,
+              email: data.email,
+              mobileNumber: data.mobileNumber,
+              address: data.address,
+              imageUrl: data.imageUrl,
+            },
+          },
+        },
+      });
+
+      return { vetUser, success: true };
+    }
+
+    console.log(result.error.format());
+    return { vetUser: data, success: false };
+  } catch (error) {
+    console.log("createVetWithUser", error);
+    return { success: false };
+  }
+}
+
+export async function updateVet(data: Vet, vetId: number) {
+  try {
+    const result = vetSchema.safeParse(data);
+
+    if (result.success) {
+      const updatedvet = await prisma.vet.update({
+        where: {
+          id: vetId,
+        },
+        data: data,
+      });
+
+      return {
+        updatedvet,
+        success: true,
+        message: "Vet was updated sucessfully",
+      };
+    }
+    console.log(result.error.format());
+    return {
+      updatedvet: data,
+      success: false,
+      message: "An error ocurred atempting to create the Vet",
+    };
+  } catch (error) {
+    console.log("updateVet", error);
   }
 }
