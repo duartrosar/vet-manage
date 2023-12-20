@@ -2,32 +2,24 @@
 
 import React, { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
-import {
-  createOwnerWithUser,
-  getUser,
-  createUserWithOwner,
-  updateOwner,
-} from "../../lib/db";
-import ImageSelector from "./inputs/image-selector";
-import Input from "./inputs/input";
-import Selector from "./inputs/selector";
+import { createOwnerWithUser, getUser, updateOwner } from "../../../lib/db";
+import ImageSelector from "../inputs/image-selector";
+import Input from "../inputs/input";
+import Selector from "../inputs/selector";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Owner } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ownerSchema } from "@/lib/zod/zodSchemas";
-import Address from "./inputs/address";
+import Address from "../inputs/address";
 import { PutBlobResult } from "@vercel/blob";
 import { genderOptions } from "@/lib/constants";
-import { useRouter } from "next/navigation";
-import DatePicker from "../date-picker";
+import DatePicker from "../../date-picker";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {
   addOwnerSlice,
   updateOwnerSlice,
 } from "@/lib/redux/slices/owners-slice";
 import { setFormIsOpen } from "@/lib/redux/slices/form-slice";
-import { RegisterProps } from "@/lib/types";
-import { generateOwnerFromUser } from "@/lib/utils";
 
 export default function OwnerForm({ ownerId }: { ownerId?: number }) {
   const owner = useAppSelector((state) => state.form.owner);
@@ -35,7 +27,6 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
   const [emailError, setEmailError] = useState("");
   const { pending } = useFormStatus();
   const [file, setFile] = useState<File>();
-  const router = useRouter();
   const options = genderOptions;
 
   const {
@@ -102,7 +93,6 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
     }
 
     dispatch(addOwnerSlice(data));
-    return;
     dispatch(setFormIsOpen(false));
 
     // TODO: set toast message

@@ -1,5 +1,5 @@
 import Container from "@/components/container";
-import OwnerForm from "@/components/forms/owner";
+import OwnerForm from "@/components/forms/owner/owner-form";
 import React from "react";
 
 export default function CreateOwner() {

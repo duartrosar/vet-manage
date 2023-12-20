@@ -16,7 +16,7 @@ model UserRole {
   id     Int   @id @default(autoincrement())
   role   Roles
   userId Int
-  User   User  @relation(fields: [userId], references: [id])
+  User   User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
@@ -53,7 +53,7 @@ model Owner {
   imageUrl     String?
   pets         Pet[]
   userId       Int       @unique
-  user         User      @relation(fields: [userId], references: [id])
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
@@ -80,7 +80,7 @@ model Vet {
   address      String?
   imageUrl     String?
   userId       Int       @unique
-  user         User      @relation(fields: [userId], references: [id])
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }

@@ -3,24 +3,38 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { boolean } from "zod";
 
 interface FormState {
-  isOpen: boolean;
+  isFormOpen: boolean;
+  isDeleteFormOpen: boolean;
   owner: Owner | null;
+  userId: number;
 }
 
-const initialState: FormState = { isOpen: false, owner: null };
+const initialState: FormState = {
+  isFormOpen: false,
+  owner: null,
+  isDeleteFormOpen: false,
+  userId: 0,
+};
 
 const formSlice = createSlice({
   name: "form",
   initialState,
   reducers: {
     setFormIsOpen(state, action: PayloadAction<boolean>) {
-      state.isOpen = action.payload;
+      state.isFormOpen = action.payload;
     },
     setFormOwner(state, action: PayloadAction<Owner | null>) {
       state.owner = action.payload;
     },
+    setDeleteFormIsOpen(state, action: PayloadAction<boolean>) {
+      state.isDeleteFormOpen = action.payload;
+    },
+    setUserId(state, action: PayloadAction<number>) {
+      state.userId = action.payload;
+    },
   },
 });
 
-export const { setFormIsOpen, setFormOwner } = formSlice.actions;
+export const { setFormIsOpen, setFormOwner, setDeleteFormIsOpen, setUserId } =
+  formSlice.actions;
 export default formSlice.reducer;

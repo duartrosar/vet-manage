@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppDispatch } from "@/lib/hooks";
-import { ownerSearch } from "@/lib/redux/slices/owners-slice";
+import { ownerSearchSlice } from "@/lib/redux/slices/owners-slice";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import React from "react";

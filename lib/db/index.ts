@@ -69,9 +69,18 @@ export async function getUser(email: string) {
 }
 
 export async function deleteUser(userId: number) {
-  // try{
-  //   const user
-  // }
+  console.log("userId", userId);
+
+  try {
+    await prisma.user.delete({
+      where: {
+        id: userId,
+      },
+    });
+  } catch (error) {
+    console.log("deleteUser", error);
+    return { success: false };
+  }
 }
 
 // OWNERS

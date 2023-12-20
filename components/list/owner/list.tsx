@@ -16,7 +16,12 @@ import { IoPencil, IoTrash } from "react-icons/io5";
 import { format } from "date-fns";
 import { useAppDispatch } from "@/lib/hooks";
 import { removeOwnerSlice } from "@/lib/redux/slices/owners-slice";
-import { setFormIsOpen, setFormOwner } from "@/lib/redux/slices/form-slice";
+import {
+  setDeleteFormIsOpen,
+  setFormIsOpen,
+  setFormOwner,
+  setUserId,
+} from "@/lib/redux/slices/form-slice";
 import { propertiesOf } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 
@@ -121,7 +126,8 @@ export default function OwnersList({ owners }: { owners?: Owner[] }) {
                           </button>
                           <button
                             onClick={() => {
-                              dispatch(removeOwnerSlice(index));
+                              dispatch(setDeleteFormIsOpen(true));
+                              dispatch(setUserId(owner.userId));
                             }}
                             className="text-xm flex items-center justify-start gap-2 rounded-lg bg-red-600 px-2 py-1 text-sm font-normal text-white shadow-md shadow-cerulean-950 transition hover:bg-red-700 sm:px-3 sm:py-2 "
                           >

@@ -21,16 +21,21 @@ const ownersSlice = createSlice({
     removeOwnerSlice(state, action: PayloadAction<number>) {
       state.owners.splice(action.payload, 1);
     },
+    removeOwnerByUserIdSlice(state, action: PayloadAction<number>) {
+      const owner = state.owners.findIndex(
+        (owner) => owner.userId === action.payload,
+      );
+
+      state.owners.splice(owner, 1);
+    },
     updateOwnerSlice(state, action: PayloadAction<Owner>) {
       const index = state.owners.findIndex(
         (owner) => owner.id === action.payload.id,
       );
 
-      if (index) {
-        state.owners[index] = action.payload;
-      }
+      state.owners[index] = action.payload;
     },
-    ownerSearch(state, action: PayloadAction<string>) {
+    ownerSearchSlice(state, action: PayloadAction<string>) {
       state.searchParams = action.payload;
     },
   },
@@ -41,6 +46,7 @@ export const {
   addOwnerSlice,
   removeOwnerSlice,
   updateOwnerSlice,
-  ownerSearch,
+  ownerSearchSlice,
+  removeOwnerByUserIdSlice,
 } = ownersSlice.actions;
 export default ownersSlice.reducer;
