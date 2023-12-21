@@ -37,7 +37,7 @@ export const sidebarItems: SidebarItemsProp[] = [
   },
   {
     title: "Pets",
-    urlPath: "/app",
+    urlPath: "/app/pets",
     icon: IoPaw,
   },
   { title: "Vets", urlPath: "/app/vets", icon: MdHealthAndSafety },

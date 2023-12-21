@@ -3,22 +3,13 @@
 import React from "react";
 import Modal from "../modal";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import {
-  setDeleteFormIsOpen,
-  setOwnerFormIsOpen,
-} from "@/lib/redux/slices/form-slice";
+import { setDeleteFormIsOpen } from "@/lib/redux/slices/form-slice";
 import { IoTrash } from "react-icons/io5";
 import { deleteUser } from "@/lib/db";
-import {
-  removeOwnerByUserIdSlice,
-  removeOwnerSlice,
-} from "@/lib/redux/slices/owners-slice";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { removeOwnerByUserIdSlice } from "@/lib/redux/slices/owners-slice";
 import { removeVetByUserIdSlice } from "@/lib/redux/slices/vets-slice";
-import { useFormStatus } from "react-dom";
 
 export default function DeleteForm({ type }: { type: "owner" | "vet" }) {
-  const { pending } = useFormStatus();
   const userId = useAppSelector((state) => state.form.userId);
   const isOpen = useAppSelector((state) => state.form.isDeleteFormOpen);
   const dispatch = useAppDispatch();

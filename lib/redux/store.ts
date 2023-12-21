@@ -3,6 +3,7 @@ import sidebarReducer from "@/lib/redux/slices/sidebar-slice";
 import ownersReducer from "@/lib/redux/slices/owners-slice";
 import formReducer from "@/lib/redux/slices/form-slice";
 import vetsReducer from "@/lib/redux/slices/vets-slice";
+import petsReducer from "@/lib/redux/slices/pets-slice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     owners: ownersReducer,
     vets: vetsReducer,
     form: formReducer,
+    pets: petsReducer,
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware({
