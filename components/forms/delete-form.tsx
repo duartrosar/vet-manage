@@ -15,14 +15,18 @@ import {
 } from "@/lib/redux/slices/owners-slice";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { removeVetByUserIdSlice } from "@/lib/redux/slices/vets-slice";
+import { useFormStatus } from "react-dom";
 
 export default function DeleteForm({ type }: { type: "owner" | "vet" }) {
+  const { pending } = useFormStatus();
   const userId = useAppSelector((state) => state.form.userId);
   const isOpen = useAppSelector((state) => state.form.isDeleteFormOpen);
   const dispatch = useAppDispatch();
   const deleteUserWithId = deleteUser.bind(null, userId);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     await deleteUser(userId);
     dispatch(setDeleteFormIsOpen(false));
     type === "owner" && dispatch(removeOwnerByUserIdSlice(userId));
@@ -52,13 +56,13 @@ export default function DeleteForm({ type }: { type: "owner" | "vet" }) {
               }}
               className="text-xm flex items-center justify-start gap-2 rounded-lg bg-cerulean-600 px-2 py-1 text-sm font-normal text-white shadow-md shadow-cerulean-950 transition hover:bg-cerulean-700 sm:px-3 sm:py-2 "
             >
-              <span className="hidden 2xl:block">Cancel</span>
+              <span className="">Cancel</span>
             </button>
             <button
               type="submit"
               className="text-xm flex items-center justify-start gap-2 rounded-lg bg-red-600 px-2 py-1 text-sm font-normal text-white shadow-md shadow-cerulean-950 transition hover:bg-red-700 sm:px-3 sm:py-2 "
             >
-              <span className="hidden 2xl:block">Delete</span>
+              <span className="">Delete</span>
             </button>
           </span>
         </form>

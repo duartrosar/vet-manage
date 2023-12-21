@@ -82,9 +82,9 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
       return;
     }
 
-    const { ownerUser, success } = await createOwnerWithUser(data);
+    const { ownerUser, success, owner } = await createOwnerWithUser(data);
 
-    if (!success || !ownerUser) {
+    if (!success || !ownerUser || !owner) {
       // TODO: if couldn't create owner, but blob was created then delete blob
       console.log("Something went wrong");
       // throw new Error("Something went wrong");
@@ -92,7 +92,7 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
       return;
     }
 
-    dispatch(addOwnerSlice(data));
+    dispatch(addOwnerSlice(owner));
     dispatch(setOwnerFormIsOpen(false));
 
     // TODO: set toast message

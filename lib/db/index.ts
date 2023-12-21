@@ -133,9 +133,12 @@ export async function createOwnerWithUser(data: Owner) {
             },
           },
         },
+        include: { owner: true },
       });
 
-      return { ownerUser, success: true };
+      const owner = ownerUser.owner;
+
+      return { ownerUser, success: true, owner };
     }
 
     console.log(result.error.format());
@@ -155,7 +158,23 @@ export async function updateOwner(data: Owner, ownerId: number) {
         where: {
           id: ownerId,
         },
-        data: data,
+        data: {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          dateOfBirth: data.dateOfBirth,
+          gender: data.gender,
+          email: data.email,
+          mobileNumber: data.mobileNumber,
+          address: data.address,
+          imageUrl: data.imageUrl,
+          user: {
+            update: {
+              firstName: data.firstName,
+              lastName: data.lastName,
+              imageUrl: data.imageUrl,
+            },
+          },
+        },
       });
 
       return {
@@ -232,9 +251,12 @@ export async function createVetWithUser(data: Vet) {
             },
           },
         },
+        include: { vet: true },
       });
 
-      return { vetUser, success: true };
+      const vet = vetUser.vet;
+
+      return { vetUser, success: true, vet };
     }
 
     console.log(result.error.format());
@@ -254,7 +276,23 @@ export async function updateVet(data: Vet, vetId: number) {
         where: {
           id: vetId,
         },
-        data: data,
+        data: {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          dateOfBirth: data.dateOfBirth,
+          gender: data.gender,
+          email: data.email,
+          mobileNumber: data.mobileNumber,
+          address: data.address,
+          imageUrl: data.imageUrl,
+          user: {
+            update: {
+              firstName: data.firstName,
+              lastName: data.lastName,
+              imageUrl: data.imageUrl,
+            },
+          },
+        },
       });
 
       return {

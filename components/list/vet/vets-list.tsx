@@ -2,6 +2,7 @@
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setVets } from "@/lib/redux/slices/vets-slice";
+import { setFormVet } from "@/lib/redux/slices/form-slice";
 import { Vet } from "@prisma/client";
 import { format } from "date-fns";
 import Image from "next/image";
@@ -50,21 +51,6 @@ export default function VetsList({ vets }: { vets?: Vet[] }) {
       }),
     );
   });
-
-  function setFormvet(vet: {
-    id: number;
-    firstName: string;
-    lastName: string;
-    dateOfBirth: Date | null;
-    gender: string | null;
-    email: string;
-    mobileNumber: string | null;
-    address: string | null;
-    imageUrl: string | null;
-    userId: number;
-  }): any {
-    throw new Error("Function not implemented.");
-  }
 
   return (
     <>
@@ -121,7 +107,7 @@ export default function VetsList({ vets }: { vets?: Vet[] }) {
                             onClick={() => {
                               // TODO: Separate bewtween owner form and vet form
                               dispatch(setVetFormIsOpen(true));
-                              dispatch(setFormvet(vet));
+                              dispatch(setFormVet(vet));
                             }}
                             className="text-xm flex items-center justify-start gap-2 rounded-lg bg-cerulean-600 px-2 py-1 text-sm font-normal text-white shadow-md shadow-cerulean-950 transition hover:bg-cerulean-700 sm:px-3 sm:py-2 "
                           >
