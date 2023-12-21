@@ -48,16 +48,16 @@ export default function SideBar() {
 
   return (
     <>
-      <Transition show={true}>
-        <div className="relative z-40">
+      <div className="relative z-40">
+        <Transition show={isOpen}>
           <Transition.Child
             as={Fragment}
-            enter="transition-all ease-in-out duration-300"
-            enterFrom="opacity-0 backdrop-blur-none"
-            enterTo="opacity-100 backdrop-blur-[.5px]"
-            leave="transition-all ease-in-out duration-200"
-            leaveFrom="opacity-100 backdrop-blur-[.5px]"
-            leaveTo="opacity-0 backdrop-blur-none"
+            enter="transition-all ease-in-out duration-150"
+            enterFrom="opacity-0 backdrop-blur-none translate-x-full"
+            enterTo="opacity-100 backdrop-blur-[.5px] translate-x-0"
+            leave="transition-all ease-in-out duration-50"
+            leaveFrom="opacity-100 backdrop-blur-[.5px] translate-x-0"
+            leaveTo="opacity-0 backdrop-blur-none translate-x-full"
           >
             <div
               onClick={() => setMenu(!isOpen)}
@@ -65,41 +65,42 @@ export default function SideBar() {
               aria-hidden="true"
             />
           </Transition.Child>
-          <aside
-            className={clsx(
-              "fixed bottom-0 left-0 top-0 border-r-2 border-cerulean-700/25 bg-cerulean-950",
-              isOpen ? "w-64" : "",
-            )}
-          >
-            <div className="h-full px-3 pt-28">
-              <ul
-                className={`${kanit.className} flex h-full w-full flex-col justify-between pb-3 text-base font-semibold`}
-              >
-                <span className="space-y-3">
-                  {sidebarItems.map(
-                    (item, index) =>
-                      index !== sidebarItems.length - 1 && (
-                        <SidebarItem
-                          key={index}
-                          title={item.title}
-                          urlPath={item.urlPath}
-                          icon={item.icon}
-                        />
-                      ),
-                  )}
-                </span>
-                <span>
-                  <SidebarItem
-                    title={sidebarItems[sidebarItems.length - 1].title}
-                    urlPath={sidebarItems[sidebarItems.length - 1].urlPath}
-                    icon={sidebarItems[sidebarItems.length - 1].icon}
-                  />
-                </span>
-              </ul>
-            </div>
-          </aside>
-        </div>
-      </Transition>
+        </Transition>
+
+        <aside
+          className={clsx(
+            "fixed bottom-0 left-0 top-0 -translate-x-full border-r-2 border-cerulean-700/25 bg-cerulean-950 lg:translate-x-0",
+            isOpen ? "w-64 translate-x-0" : "",
+          )}
+        >
+          <div className="h-full px-3 pt-28">
+            <ul
+              className={`${kanit.className} flex h-full w-full flex-col justify-between pb-3 text-base font-semibold`}
+            >
+              <span className="space-y-3">
+                {sidebarItems.map(
+                  (item, index) =>
+                    index !== sidebarItems.length - 1 && (
+                      <SidebarItem
+                        key={index}
+                        title={item.title}
+                        urlPath={item.urlPath}
+                        icon={item.icon}
+                      />
+                    ),
+                )}
+              </span>
+              <span>
+                <SidebarItem
+                  title={sidebarItems[sidebarItems.length - 1].title}
+                  urlPath={sidebarItems[sidebarItems.length - 1].urlPath}
+                  icon={sidebarItems[sidebarItems.length - 1].icon}
+                />
+              </span>
+            </ul>
+          </div>
+        </aside>
+      </div>
     </>
   );
 }

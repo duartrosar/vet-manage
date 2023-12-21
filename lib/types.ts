@@ -43,3 +43,8 @@ export interface SidebarItemsProp {
   icon: IconType;
   displayTitle?: boolean;
 }
+
+export interface TableHeading {
+  title: string;
+  display: string;
+}

@@ -22,6 +22,7 @@ import {
   setFormOwner,
   setUserId,
 } from "@/lib/redux/slices/form-slice";
+import { TableHeading } from "@/lib/types";
 
 export default function OwnersList({ owners }: { owners?: Owner[] }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -57,6 +58,24 @@ export default function OwnersList({ owners }: { owners?: Owner[] }) {
     );
   });
 
+  // {
+  //   "",
+  //   "Name",
+  //   "Phone Number",
+  //   "Date Of Birth",
+  //   "Gender",
+  //   "",
+  // }
+
+  const headers: TableHeading[] = [
+    { title: "", display: "" },
+    { title: "Name", display: "" },
+    { title: "Phone Number", display: "hidden md:table-cell" },
+    { title: "Date Of Birth", display: "hidden lg:table-cell" },
+    { title: "Gender", display: "hidden xl:table-cell" },
+    { title: "", display: "" },
+  ];
+
   return (
     <>
       <OwnersListHeader />
@@ -65,16 +84,7 @@ export default function OwnersList({ owners }: { owners?: Owner[] }) {
           <div className={`overflow-auto-y`}>
             <div className="rounded-b-xl border-x border-b border-cerulean-800/50 bg-cerulean-950 pb-11">
               <Table>
-                <TableHead
-                  headers={[
-                    "",
-                    "Name",
-                    "Phone Number",
-                    "Date Of Birth",
-                    "Gender",
-                    "",
-                  ]}
-                />
+                <TableHead headers={headers} />
                 <TableBody>
                   {filteredOwners?.map((owner, index) => (
                     <TableRow key={index}>
@@ -99,13 +109,17 @@ export default function OwnersList({ owners }: { owners?: Owner[] }) {
                           {owner.email}
                         </span>
                       </TableData>
-                      <TableData>{owner.mobileNumber}</TableData>
-                      <TableData>
+                      <TableData className="hidden md:table-cell">
+                        {owner.mobileNumber}
+                      </TableData>
+                      <TableData className="hidden lg:table-cell">
                         {owner.dateOfBirth
                           ? format(owner.dateOfBirth, "dd/MM/yyyy")
                           : "N/A"}
                       </TableData>
-                      <TableData>{owner.gender}</TableData>
+                      <TableData className="hidden xl:table-cell">
+                        {owner.gender}
+                      </TableData>
                       <TableData>
                         <span className="flex max-w-xs flex-row justify-end gap-2 pr-2">
                           <button

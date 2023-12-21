@@ -20,6 +20,7 @@ import {
   setVetFormIsOpen,
 } from "@/lib/redux/slices/form-slice";
 import { FaUser } from "react-icons/fa6";
+import { TableHeading } from "@/lib/types";
 
 export default function VetsList({ vets }: { vets?: Vet[] }) {
   const dispatch = useAppDispatch();
@@ -52,6 +53,15 @@ export default function VetsList({ vets }: { vets?: Vet[] }) {
     );
   });
 
+  const headers: TableHeading[] = [
+    { title: "", display: "" },
+    { title: "Name", display: "" },
+    { title: "Phone Number", display: "hidden md:table-cell" },
+    { title: "Date Of Birth", display: "hidden lg:table-cell" },
+    { title: "Gender", display: "hidden xl:table-cell" },
+    { title: "", display: "" },
+  ];
+
   return (
     <>
       <VetsListHeader />
@@ -60,16 +70,7 @@ export default function VetsList({ vets }: { vets?: Vet[] }) {
           <div className={`overflow-auto-y`}>
             <div className="rounded-b-xl border-x border-b border-cerulean-800/50 bg-cerulean-950 pb-11">
               <Table>
-                <TableHead
-                  headers={[
-                    "",
-                    "Name",
-                    "Phone Number",
-                    "Date Of Birth",
-                    "Gender",
-                    "",
-                  ]}
-                />
+                <TableHead headers={headers} />
                 <TableBody>
                   {filteredVets?.map((vet, index) => (
                     <TableRow key={index}>
@@ -94,13 +95,17 @@ export default function VetsList({ vets }: { vets?: Vet[] }) {
                           {vet.email}
                         </span>
                       </TableData>
-                      <TableData>{vet.mobileNumber}</TableData>
-                      <TableData>
+                      <TableData className="hidden md:table-cell">
+                        {vet.mobileNumber}
+                      </TableData>
+                      <TableData className="hidden lg:table-cell">
                         {vet.dateOfBirth
                           ? format(vet.dateOfBirth, "dd/MM/yyyy")
                           : "N/A"}
                       </TableData>
-                      <TableData>{vet.gender}</TableData>
+                      <TableData className="hidden xl:table-cell">
+                        {vet.gender}
+                      </TableData>
                       <TableData>
                         <span className="flex max-w-xs flex-row justify-end gap-2 pr-2">
                           <button

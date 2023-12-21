@@ -15,7 +15,7 @@ export default function TableData({
   return (
     <td
       className={clsx(
-        "h-20 w-14 border-b-2 border-cerulean-800/50 py-5 pr-4",
+        "h-20 border-b-2 border-cerulean-800/50 py-5 pr-4",
         className,
       )}
     >

@@ -1,15 +1,20 @@
+import { TableHeading } from "@/lib/types";
+import clsx from "clsx";
 import React from "react";
 
-export default function TableHead({ headers }: { headers: string[] }) {
+export default function TableHead({ headers }: { headers: TableHeading[] }) {
   return (
     <thead className=" text-gray-500">
       <tr className="">
-        {headers.map((value, index) => (
+        {headers.map((header, index) => (
           <th
             key={index}
-            className="sticky top-0 h-20 border-y-2 border-cerulean-800/50 bg-cerulean-900 py-4 text-left shadow-xl"
+            className={clsx(
+              "sticky top-0 h-20 border-y-2 border-cerulean-800/50 bg-cerulean-900 py-4 text-left shadow-xl",
+              header.display,
+            )}
           >
-            {value}
+            {header.title}
           </th>
         ))}
       </tr>
