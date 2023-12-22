@@ -58,6 +58,18 @@ export const vetSchema = z.object({
   gender: z.string().min(1, { message: "You must choose a value" }),
 });
 
+export const petSchema = z.object({
+  name: z
+    .string()
+    .min(1, { message: "You must enter a first name" })
+    .max(50, "Max length is 50 characters"),
+  type: z
+    .string()
+    .min(1, { message: "You must enter a type" })
+    .max(50, "Max length is 20 characters"),
+  imgUrl: z.string().optional(),
+});
+
 export const loginSchema = z.object({
   email: z
     .string()

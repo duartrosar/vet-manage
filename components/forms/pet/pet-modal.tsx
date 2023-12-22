@@ -1,11 +1,51 @@
 import Modal from "@/components/modal";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setFormPet, setPetFormIsOpen } from "@/lib/redux/slices/form-slice";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IoAdd } from "react-icons/io5";
 import FormContainer from "../form-container";
+import PetForm from "./pet-form";
+import { getOwners } from "@/lib/db";
+import { Owner } from "@prisma/client";
 
 export default function PetFormModal() {
+  const [owners, setOwners] = useState<Owner[] | null>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getOwners();
+        if (response.success) {
+          setOwners(response.owners);
+        } else {
+          setOwners(null);
+        }
+      } catch (error) {
+        // Handle any unexpected errors during the fetch
+        console.error("Error fetching owners", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // const owners = getOwners().then((res) => res.owners);
+
+  // const owners: Owner[] = [
+  //   {
+  //     id: 1,
+  //     imageUrl: "https://source.unsplash.com/random/200x200/?man+face+1",
+  //     firstName: "John",
+  //     lastName: "Doe",
+  //     mobileNumber: "555-1234-5678",
+  //     dateOfBirth: new Date(),
+  //     gender: "Prefer not to say",
+  //     email: "JohnDoe@fakemail.com",
+  //     address: "Fake address, 17",
+  //     userId: 1,
+  //   },
+  // ];
+
   const isOpen = useAppSelector((state) => state.form.isPetFormOpen);
   const dispatch = useAppDispatch();
 
@@ -26,8 +66,7 @@ export default function PetFormModal() {
         isOpen={isOpen}
       >
         <FormContainer type="pet">
-          Pet Form
-          {/* <PetForm /> */}
+          <PetForm owners={owners} />
         </FormContainer>
       </Modal>
     </>
