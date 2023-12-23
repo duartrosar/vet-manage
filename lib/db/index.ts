@@ -10,6 +10,7 @@ import { generateOwnerFromUser } from "../utils";
 export interface Response {
   owners?: Owner[];
   user?: User;
+  pets?: Pet[];
   success: boolean;
 }
 
@@ -313,6 +314,18 @@ export async function updateVet(data: Vet, vetId: number) {
 }
 
 // PETS
+
+export async function getPets() {
+  try {
+    const pets = await prisma.pet.findMany();
+
+    return { pets, success: true };
+  } catch (error) {
+    console.log("getPets", error);
+    return { success: false };
+  }
+}
+
 export async function createPet(data: Pet) {
   try {
     const result = petSchema.safeParse(data);
@@ -328,6 +341,28 @@ export async function createPet(data: Pet) {
     }
 
     return { pet: data, success: false };
+  } catch (error) {
+    console.log("createPet", error);
+    return { success: false };
+  }
+}
+
+export async function updatePet(data: Pet) {
+  try {
+    const result = petSchema.safeParse(data);
+
+    if (result) {
+      const updatedPet = await prisma.pet.update({
+        where: {
+          id: data.id,
+        },
+        data: data,
+      });
+
+      return { updatedPet, success: true };
+    }
+
+    return { updatedPet: data, success: false };
   } catch (error) {
     console.log("createPet", error);
     return { success: false };

@@ -15,8 +15,8 @@ import { useFormStatus } from "react-dom";
 import { Listbox } from "@headlessui/react";
 import ListboxWrapper from "../inputs/listbox-wrapper";
 import InputTest from "../inputs/input-test";
-import { createPet } from "@/lib/db";
-import { addPetSlice } from "@/lib/redux/slices/pets-slice";
+import { createPet, updatePet } from "@/lib/db";
+import { addPetSlice, updatePetSlice } from "@/lib/redux/slices/pets-slice";
 import { setPetFormIsOpen } from "@/lib/redux/slices/form-slice";
 
 export default function PetForm({
@@ -53,9 +53,9 @@ export default function PetForm({
   useEffect(() => {
     reset();
 
-    // if (pet) {
-    //   setValues(pet);
-    // }
+    if (pet) {
+      setValues(pet);
+    }
   }, []);
 
   const processForm: SubmitHandler<Pet> = async (data: Pet) => {
@@ -66,7 +66,7 @@ export default function PetForm({
     // }
     if (pet) {
       data.id = pet.id;
-      // await updateOwnerAsync(data);
+      await updatePetAsync(data);
     } else {
       await addPetAsync(data);
     }
@@ -86,6 +86,26 @@ export default function PetForm({
     dispatch(addPetSlice(pet));
     dispatch(setPetFormIsOpen(false));
   };
+
+  const updatePetAsync = async (data: Pet) => {
+    const result = await updatePet(data);
+
+    if (!result?.success) {
+      console.log("Something went wrong");
+      throw new Error("Something went wrong");
+    }
+
+    dispatch(updatePetSlice(data));
+    dispatch(setPetFormIsOpen(false));
+  };
+
+  function setValues(pet: Pet) {
+    setValue("id", pet.id);
+    setValue("name", pet.name);
+    setValue("type", pet.type);
+    setValue("ownerId", pet.ownerId);
+    setValue("imageUrl", pet.imageUrl);
+  }
 
   return (
     <form onSubmit={handleSubmit(processForm)} className="w-full p-4 xl:p-6 ">

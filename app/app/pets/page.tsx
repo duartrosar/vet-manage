@@ -1,9 +1,10 @@
 import PetsList from "@/components/list/pet/pets-list";
+import { getPets } from "@/lib/db";
 import { Pet } from "@prisma/client";
 import React from "react";
 
-export default function PetsHome() {
-  const pets: Pet[] = [
+export default async function PetsHome() {
+  const petsStatic: Pet[] = [
     {
       id: 1,
       name: "Buddy",
@@ -47,6 +48,8 @@ export default function PetsHome() {
       ownerId: 106,
     },
   ];
+
+  const { pets } = await getPets();
 
   return <PetsList pets={pets} />;
 }
