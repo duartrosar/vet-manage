@@ -2,13 +2,19 @@ import { petSchema } from "@/lib/zod/zodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Owner, Pet } from "@prisma/client";
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import {
+  Controller,
+  FieldValues,
+  SubmitHandler,
+  useForm,
+} from "react-hook-form";
 import ImageSelector from "../inputs/image-selector";
 import { useAppSelector } from "@/lib/hooks";
 import Input from "../inputs/input";
 import { useFormStatus } from "react-dom";
 import { Listbox } from "@headlessui/react";
 import ListboxWrapper from "../inputs/listbox-wrapper";
+import InputTest from "../inputs/input-test";
 
 export default function PetForm({
   owners,
@@ -17,7 +23,6 @@ export default function PetForm({
   owners?: Owner[] | null;
   petId?: number;
 }) {
-  console.log(owners);
   const pet = useAppSelector((state) => state.form.pet);
   const { pending } = useFormStatus();
   const [file, setFile] = useState<File>();
@@ -27,6 +32,7 @@ export default function PetForm({
     watch,
     reset,
     setValue,
+    control,
     formState: { errors, isSubmitting },
     clearErrors,
   } = useForm<Pet>({
@@ -48,21 +54,46 @@ export default function PetForm({
     // }
   }, []);
 
+  const processForm: SubmitHandler<Pet> = async (data: Pet) => {
+    console.log("Form pet: ", data);
+    // TODO: Uncomment this
+    // if (file) {
+    //   data.imageUrl = await blobUpload();
+    // }
+    if (pet) {
+      data.id = pet.id;
+      // await updateOwnerAsync(data);
+    } else {
+      // await addOwnerAsync(data);
+    }
+  };
+
   return (
-    <form className="w-full p-4 xl:p-6 ">
+    <form onSubmit={handleSubmit(processForm)} className="w-full p-4 xl:p-6 ">
       <div className="space-y-3 lg:grid lg:grid-cols-3 lg:gap-3 lg:space-y-0">
         <div className="">
           <ImageSelector setFile={setFile} imageUrl={pet?.imageUrl} />
         </div>
-        <div className="w-full md:space-y-3 lg:col-span-2">
-          <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
-            <Input<Pet> name="Name" register={register} error={errors.name} />
-            <Input<Pet> name="Type" register={register} error={errors.type} />
-          </div>
-          <div className="w-full space-y-3 md:grid md:gap-3 md:space-y-0 lg:col-span-2">
-            {owners && <ListboxWrapper owners={owners} />}
-            <Input<Pet> name="Owner" register={register} error={errors.name} />
-          </div>
+        <div className="w-full space-y-3 lg:col-span-2">
+          <Input<Pet> name="Name" register={register} error={errors.name} />
+          <Input<Pet> name="Type" register={register} error={errors.type} />
+          {owners && (
+            <Controller
+              name="ownerId"
+              control={control}
+              rules={{
+                required: "Please select an owner",
+              }}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <ListboxWrapper
+                  onChange={onChange}
+                  value={value}
+                  owners={owners}
+                  error={errors.ownerId}
+                />
+              )}
+            />
+          )}
         </div>
         <div className="col-start-2 gap-1 text-end lg:text-start">
           <button

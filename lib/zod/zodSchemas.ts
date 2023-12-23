@@ -68,6 +68,7 @@ export const petSchema = z.object({
     .min(1, { message: "You must enter a type" })
     .max(50, "Max length is 20 characters"),
   imgUrl: z.string().optional(),
+  ownerId: z.number().min(1, { message: "You must choose an owner" }),
 });
 
 export const loginSchema = z.object({
