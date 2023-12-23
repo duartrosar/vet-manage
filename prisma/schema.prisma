@@ -59,11 +59,11 @@ model Owner {
 }
 
 model Pet {
-  id       Int    @id @default(autoincrement())
+  id       Int     @id @default(autoincrement())
   name     String
   type     String
-  imageUrl String
-  owner    Owner  @relation(fields: [ownerId], references: [id])
+  imageUrl String?
+  owner    Owner   @relation(fields: [ownerId], references: [id])
   ownerId  Int
 
   @@index([ownerId])

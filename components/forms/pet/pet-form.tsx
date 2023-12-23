@@ -9,12 +9,15 @@ import {
   useForm,
 } from "react-hook-form";
 import ImageSelector from "../inputs/image-selector";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import Input from "../inputs/input";
 import { useFormStatus } from "react-dom";
 import { Listbox } from "@headlessui/react";
 import ListboxWrapper from "../inputs/listbox-wrapper";
 import InputTest from "../inputs/input-test";
+import { createPet } from "@/lib/db";
+import { addPetSlice } from "@/lib/redux/slices/pets-slice";
+import { setPetFormIsOpen } from "@/lib/redux/slices/form-slice";
 
 export default function PetForm({
   owners,
@@ -24,6 +27,7 @@ export default function PetForm({
   petId?: number;
 }) {
   const pet = useAppSelector((state) => state.form.pet);
+  const dispatch = useAppDispatch();
   const { pending } = useFormStatus();
   const [file, setFile] = useState<File>();
   const {
@@ -64,8 +68,23 @@ export default function PetForm({
       data.id = pet.id;
       // await updateOwnerAsync(data);
     } else {
-      // await addOwnerAsync(data);
+      await addPetAsync(data);
     }
+  };
+
+  const addPetAsync = async (data: Pet) => {
+    const { pet, success } = await createPet(data);
+
+    if (!success || !pet) {
+      // TODO: if couldn't create owner, but blob was created then delete blob
+      console.log("Something went wrong");
+      // throw new Error("Something went wrong");
+      console.log("Pet was not created.");
+      return;
+    }
+
+    dispatch(addPetSlice(pet));
+    dispatch(setPetFormIsOpen(false));
   };
 
   return (

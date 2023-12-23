@@ -1,7 +1,7 @@
 "use server";
 
-import { Owner, PrismaClient, User, Vet } from "@prisma/client";
-import { ownerSchema, vetSchema } from "../zod/zodSchemas";
+import { Owner, Pet, PrismaClient, User, Vet } from "@prisma/client";
+import { ownerSchema, petSchema, vetSchema } from "../zod/zodSchemas";
 import { RegisterProps } from "../types";
 import { hash } from "bcrypt";
 import prisma from "@/lib/db/prisma";
@@ -309,5 +309,27 @@ export async function updateVet(data: Vet, vetId: number) {
     };
   } catch (error) {
     console.log("updateVet", error);
+  }
+}
+
+// PETS
+export async function createPet(data: Pet) {
+  try {
+    const result = petSchema.safeParse(data);
+
+    if (result.success) {
+      const pet = await prisma.pet.create({
+        data: data,
+      });
+
+      if (pet) {
+        return { pet, success: true };
+      }
+    }
+
+    return { pet: data, success: false };
+  } catch (error) {
+    console.log("createPet", error);
+    return { success: false };
   }
 }
