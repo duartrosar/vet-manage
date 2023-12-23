@@ -19,6 +19,7 @@ const petsSlice = createSlice({
       state.pets.push(action.payload);
     },
     removePetSlice(state, action: PayloadAction<number>) {
+      console.log(action.payload);
       state.pets.splice(action.payload, 1);
     },
     updatePetSlice(state, action: PayloadAction<Pet>) {

@@ -21,7 +21,7 @@ export default function PetsListheader() {
         <div className="flex items-center justify-between">
           <SearchInput handleSearch={handleSearch} />
           <PetFormModal />
-          <DeleteForm type="owner" />
+          <DeleteForm type="pet" />
         </div>
       </div>
     </div>

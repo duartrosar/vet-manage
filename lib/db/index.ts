@@ -364,7 +364,20 @@ export async function updatePet(data: Pet) {
 
     return { updatedPet: data, success: false };
   } catch (error) {
-    console.log("createPet", error);
+    console.log("updatePet", error);
+    return { success: false };
+  }
+}
+
+export async function deletePet(petId: number) {
+  try {
+    await prisma.pet.delete({
+      where: {
+        id: petId,
+      },
+    });
+  } catch (error) {
+    console.log("deletePet", error);
     return { success: false };
   }
 }

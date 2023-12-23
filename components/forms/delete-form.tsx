@@ -5,23 +5,41 @@ import Modal from "../modal";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setDeleteFormIsOpen } from "@/lib/redux/slices/form-slice";
 import { IoTrash } from "react-icons/io5";
-import { deleteUser } from "@/lib/db";
+import { deletePet, deleteUser } from "@/lib/db";
 import { removeOwnerByUserIdSlice } from "@/lib/redux/slices/owners-slice";
 import { removeVetByUserIdSlice } from "@/lib/redux/slices/vets-slice";
+import { removePetSlice } from "@/lib/redux/slices/pets-slice";
+import { Pet } from "@prisma/client";
 
-export default function DeleteForm({ type }: { type: "owner" | "vet" }) {
+export default function DeleteForm({
+  type,
+}: {
+  type: "owner" | "vet" | "pet";
+}) {
   const userId = useAppSelector((state) => state.form.userId);
   const isOpen = useAppSelector((state) => state.form.isDeleteFormOpen);
+  const pet = useAppSelector((state) => state.form.pet);
+  const pets = useAppSelector((state) => state.pets.pets);
   const dispatch = useAppDispatch();
   const deleteUserWithId = deleteUser.bind(null, userId);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    await deleteUser(userId);
+    if (type === "owner" || type === "vet") {
+      await deleteUser(userId);
+
+      type === "owner" && dispatch(removeOwnerByUserIdSlice(userId));
+      type === "vet" && dispatch(removeVetByUserIdSlice(userId));
+    } else {
+      if (pet && pets) {
+        const petIndex = pets.findIndex((p) => p.id === pet.id);
+        dispatch(removePetSlice(petIndex));
+        await deletePet(pet.id);
+      }
+    }
+
     dispatch(setDeleteFormIsOpen(false));
-    type === "owner" && dispatch(removeOwnerByUserIdSlice(userId));
-    type === "vet" && dispatch(removeVetByUserIdSlice(userId));
   };
 
   return (

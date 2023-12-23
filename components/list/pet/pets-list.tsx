@@ -102,6 +102,7 @@ export default function PetsList({ pets }: { pets: Pet[] }) {
                           <button
                             onClick={() => {
                               dispatch(setDeleteFormIsOpen(true));
+                              dispatch(setFormPet(pet));
                             }}
                             className="text-xm flex items-center justify-start gap-2 rounded-lg bg-red-600 px-2 py-1 text-sm font-normal text-white shadow-md shadow-cerulean-950 transition hover:bg-red-700 sm:px-3 sm:py-2 "
                           >
