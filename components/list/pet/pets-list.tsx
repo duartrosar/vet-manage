@@ -20,14 +20,14 @@ import {
 } from "@/lib/redux/slices/form-slice";
 import { IoPaw, IoPencil, IoTrash } from "react-icons/io5";
 
-export default function PetsList({ pets }: { pets: Pet[] }) {
+export default function PetsList({ pets }: { pets?: Pet[] }) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (pets) {
       dispatch(setPets(pets));
     }
-  }, []);
+  }, [dispatch, pets]);
 
   const currentPets = useAppSelector((state) => state.pets.pets);
   const searchParams = useAppSelector((state) => state.pets.searchParams);

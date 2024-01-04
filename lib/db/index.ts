@@ -319,7 +319,7 @@ export async function getPets() {
   try {
     const pets = await prisma.pet.findMany();
 
-    return { pets, success: true };
+    return { pets: pets, success: true };
   } catch (error) {
     console.log("getPets", error);
     return { success: false };
