@@ -10,6 +10,8 @@ import { removeOwnerByUserIdSlice } from "@/lib/redux/slices/owners-slice";
 import { removeVetByUserIdSlice } from "@/lib/redux/slices/vets-slice";
 import { removePetSlice } from "@/lib/redux/slices/pets-slice";
 import { Pet } from "@prisma/client";
+import { toast } from "sonner";
+import Toast from "../toast/toasters";
 
 export default function DeleteForm({
   type,
@@ -31,11 +33,27 @@ export default function DeleteForm({
 
       type === "owner" && dispatch(removeOwnerByUserIdSlice(userId));
       type === "vet" && dispatch(removeVetByUserIdSlice(userId));
+      toast.custom((t) => (
+        <Toast
+          t={t}
+          message={`${type[0].toUpperCase()}${type.slice(
+            1,
+          )} was deleted successfully`}
+          type="success"
+        />
+      ));
     } else {
       if (pet && pets) {
         const petIndex = pets.findIndex((p) => p.id === pet.id);
         dispatch(removePetSlice(petIndex));
         await deletePet(pet.id);
+        toast.custom((t) => (
+          <Toast
+            t={t}
+            message={`${type} was deleted successfully`}
+            type="success"
+          />
+        ));
       }
     }
 
@@ -52,9 +70,9 @@ export default function DeleteForm({
           onSubmit={handleSubmit}
           className="flex w-full flex-col items-center justify-center gap-4"
         >
-          <IoTrash className="h-[50px] w-[50px] text-white" />
-          <h2 className="text-white">
-            Are you sure you want to delete this user?
+          <IoTrash className="h-[50px] w-[50px] text-cerulean-100/75" />
+          <h2 className="text-cerulean-100/75">
+            Are you sure you want to delete this {type}?
           </h2>
           <span className="flex max-w-xs flex-row justify-end gap-2">
             <button

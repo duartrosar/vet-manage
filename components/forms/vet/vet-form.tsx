@@ -14,6 +14,8 @@ import Input from "../inputs/input";
 import DatePicker from "@/components/date-picker";
 import Selector from "../inputs/selector";
 import Address from "../inputs/address";
+import { toast } from "sonner";
+import Toast from "@/components/toast/toasters";
 
 export default function VetForm() {
   const vet = useAppSelector((state) => state.form.vet);
@@ -91,7 +93,9 @@ export default function VetForm() {
     dispatch(addVetSlice(vet));
     dispatch(setVetFormIsOpen(false));
 
-    // TODO: set toast message
+    toast.custom((t) => (
+      <Toast t={t} message="Vet was created successfully." type="success" />
+    ));
   };
 
   const updateVetAsync = async (data: Vet) => {
@@ -114,7 +118,10 @@ export default function VetForm() {
 
     dispatch(updateVetSlice(data));
     dispatch(setVetFormIsOpen(false));
-    // TODO: set toast message
+
+    toast.custom((t) => (
+      <Toast t={t} message="Vet was updated successfully." type="success" />
+    ));
   };
 
   function setValues(vet: Vet) {

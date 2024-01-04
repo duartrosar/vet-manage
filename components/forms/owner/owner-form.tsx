@@ -20,6 +20,8 @@ import {
   updateOwnerSlice,
 } from "@/lib/redux/slices/owners-slice";
 import { setOwnerFormIsOpen } from "@/lib/redux/slices/form-slice";
+import { toast } from "sonner";
+import Toast from "@/components/toast/toasters";
 
 export default function OwnerForm({ ownerId }: { ownerId?: number }) {
   const owner = useAppSelector((state) => state.form.owner);
@@ -95,7 +97,9 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
     dispatch(addOwnerSlice(owner));
     dispatch(setOwnerFormIsOpen(false));
 
-    // TODO: set toast message
+    toast.custom((t) => (
+      <Toast t={t} message="Owner was created successfully." type="success" />
+    ));
   };
 
   const updateOwnerAsync = async (data: Owner) => {
@@ -111,7 +115,10 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
 
     dispatch(updateOwnerSlice(data));
     dispatch(setOwnerFormIsOpen(false));
-    // TODO: set toast message
+
+    toast.custom((t) => (
+      <Toast t={t} message="Owner was updated successfully." type="success" />
+    ));
   };
 
   const blobUpload = async () => {

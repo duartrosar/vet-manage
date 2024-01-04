@@ -12,6 +12,8 @@ import { IoMdClose } from "react-icons/io";
 import OwnerForm from "./owner-form";
 import Modal from "../../modal";
 import FormContainer from "../form-container";
+import { toast } from "sonner";
+import Toast from "@/components/toast/toasters";
 
 export default function OwnerFormModal() {
   const isOpen = useAppSelector((state) => state.form.isOwnerFormOpen);
@@ -21,6 +23,7 @@ export default function OwnerFormModal() {
     <>
       <button
         onClick={() => {
+          // toast.custom((t) => <Toast message={t} type="success" />);
           dispatch(setOwnerFormIsOpen(true));
           dispatch(setFormOwner(null));
         }}

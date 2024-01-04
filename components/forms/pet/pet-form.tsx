@@ -18,6 +18,8 @@ import InputTest from "../inputs/input-test";
 import { createPet, updatePet } from "@/lib/db";
 import { addPetSlice, updatePetSlice } from "@/lib/redux/slices/pets-slice";
 import { setPetFormIsOpen } from "@/lib/redux/slices/form-slice";
+import { toast } from "sonner";
+import Toast from "@/components/toast/toasters";
 
 export default function PetForm({
   owners,
@@ -85,6 +87,10 @@ export default function PetForm({
 
     dispatch(addPetSlice(pet));
     dispatch(setPetFormIsOpen(false));
+
+    toast.custom((t) => (
+      <Toast t={t} message="Pet was created successfully." type="success" />
+    ));
   };
 
   const updatePetAsync = async (data: Pet) => {
@@ -97,6 +103,10 @@ export default function PetForm({
 
     dispatch(updatePetSlice(data));
     dispatch(setPetFormIsOpen(false));
+
+    toast.custom((t) => (
+      <Toast t={t} message="Pet was updated successfully." type="success" />
+    ));
   };
 
   function setValues(pet: Pet) {
@@ -142,7 +152,7 @@ export default function PetForm({
             }}
             className="w-full rounded-lg border-2 border-cerulean-100/25 bg-cerulean-600 px-6 py-2 text-cerulean-100 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600 lg:w-1/2"
           >
-            {pet ? "Save owner" : "Create owner"}
+            {pet ? "Save pet" : "Create pet"}
           </button>
         </div>
       </div>
