@@ -7,9 +7,10 @@ import { Transition } from "@headlessui/react";
 import { useLocalStorage } from "usehooks-ts";
 import { useWindowSize } from "@uidotdev/usehooks";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { setIsOpen } from "@/lib/redux/slices/sidebar-slice";
+import { setActive, setIsOpen } from "@/lib/redux/slices/sidebar-slice";
 import SidebarItem from "./sidebar-item";
 import clsx from "clsx";
+import { usePathname } from "next/navigation";
 
 const lalezar = Lalezar({ subsets: ["latin"], weight: "400" });
 const kanit = Kanit({
@@ -26,6 +27,14 @@ export default function SideBar() {
   const size = useWindowSize();
   const isOpen = useAppSelector((state) => state.sidebar.isOpen);
   const dispatch = useAppDispatch();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const pathSegments = pathname.split("/");
+    const activePath = pathSegments[pathSegments.length - 1];
+    console.log(activePath);
+    dispatch(setActive(activePath));
+  }, [pathname]);
 
   const setMenu = (value: boolean) => {
     dispatch(setIsOpen(value));

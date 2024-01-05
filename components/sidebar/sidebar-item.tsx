@@ -20,7 +20,7 @@ export default function SidebarItem({
   const size = useWindowSize();
 
   const handleClick = () => {
-    dispatch(setActive(title));
+    dispatch(setActive(title.toLowerCase()));
 
     if (size.width && size.width <= 1024) {
       dispatch(setIsOpen(false));
@@ -31,7 +31,7 @@ export default function SidebarItem({
     <li
       className={clsx(
         "group w-full rounded-lg transition duration-75 hover:bg-cerulean-800 hover:shadow-md",
-        active === title && "bg-cerulean-800",
+        active === title.toLowerCase() && "bg-cerulean-800",
         !displayTitle && "max-w-[44px]",
       )}
     >
@@ -39,7 +39,7 @@ export default function SidebarItem({
         href={urlPath}
         className={clsx(
           "flex h-10 items-center justify-start gap-3 px-3 group-hover:text-gray-200",
-          active === title ? "text-gray-200" : "text-gray-400",
+          active === title.toLowerCase() ? "text-gray-200" : "text-gray-400",
         )}
         onClick={handleClick}
       >
