@@ -1,3 +1,5 @@
+"use client";
+
 import Modal from "@/components/modal";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setFormVet, setVetFormIsOpen } from "@/lib/redux/slices/form-slice";

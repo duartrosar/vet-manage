@@ -1,12 +1,15 @@
-import Container from "@/components/container";
-import OwnersList from "@/components/list/owner/owners-list";
-import { getOwners } from "@/lib/db";
-// import prisma from "@/lib/db/prisma";
+import Owners from "@/components/list/owner/owners";
+import OwnersListHeader from "@/components/list/owner/owners-list-header";
+import { Suspense } from "react";
+import ListSkeleton from "@/components/list/list-skeleton";
 
-export default async function OwnersHome() {
-  const { owners } = await getOwners();
-  // TODO: Fix this to make it more safe
-  // const owners = await prisma.owner.findMany();
-
-  return <OwnersList owners={owners} />;
+export default function OwnersHome() {
+  return (
+    <>
+      <OwnersListHeader />
+      <Suspense fallback={<ListSkeleton />}>
+        <Owners />
+      </Suspense>
+    </>
+  );
 }

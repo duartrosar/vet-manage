@@ -1,8 +1,7 @@
 "use client";
 
 import { Owner } from "@prisma/client";
-import React, { useRef, useState, useEffect } from "react";
-import OwnersListHeader from "./owners-list-header";
+import React, { useRef, useEffect } from "react";
 import TableRow from "../../table/table-row";
 import { setOwners } from "@/lib/redux/slices/owners-slice";
 import { useAppSelector } from "@/lib/hooks";
@@ -15,7 +14,6 @@ import Image from "next/image";
 import { IoPencil, IoTrash } from "react-icons/io5";
 import { format } from "date-fns";
 import { useAppDispatch } from "@/lib/hooks";
-import { removeOwnerSlice } from "@/lib/redux/slices/owners-slice";
 import {
   setDeleteFormIsOpen,
   setOwnerFormIsOpen,
@@ -78,7 +76,6 @@ export default function OwnersList({ owners }: { owners?: Owner[] }) {
 
   return (
     <>
-      <OwnersListHeader />
       <div className="flex h-full flex-col">
         <div className="relative h-full w-full pt-[30px]" ref={ref}>
           <div className={`overflow-auto-y`}>

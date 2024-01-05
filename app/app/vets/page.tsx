@@ -1,9 +1,15 @@
-import VetsList from "@/components/list/vet/vets-list";
-import { getVets } from "@/lib/db";
-import React from "react";
+import ListSkeleton from "@/components/list/list-skeleton";
+import Vets from "@/components/list/vet/vets";
+import VetsListHeader from "@/components/list/vet/vets-list-header";
+import { Suspense } from "react";
 
-export default async function VetsHome() {
-  const { vets } = await getVets();
-
-  return <VetsList vets={vets} />;
+export default function VetsHome() {
+  return (
+    <>
+      <VetsListHeader />
+      <Suspense fallback={<ListSkeleton />}>
+        <Vets />
+      </Suspense>
+    </>
+  );
 }

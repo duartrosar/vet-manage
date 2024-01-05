@@ -1,3 +1,5 @@
+"use client";
+
 import { useAppDispatch } from "@/lib/hooks";
 import { petSearchSlice } from "@/lib/redux/slices/pets-slice";
 import React from "react";

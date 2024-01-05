@@ -64,7 +64,6 @@ export default function VetsList({ vets }: { vets?: Vet[] }) {
 
   return (
     <>
-      <VetsListHeader />
       <div className="flex h-full flex-col">
         <div className="relative h-full w-full pt-[30px]">
           <div className={`overflow-auto-y`}>
