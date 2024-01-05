@@ -17,7 +17,7 @@ export default function FormContainer({
 }) {
   const dispatch = useAppDispatch();
   return (
-    <div className="w-full max-w-6xl rounded-lg border-2 border-cerulean-100/25 bg-cerulean-950 shadow-lg">
+    <div className="w-[90vw] max-w-6xl rounded-lg border-2 border-cerulean-100/25 bg-cerulean-950 shadow-lg">
       {type === "owner" && <OwnerFormHeader />}
       {type === "vet" && <VetFormHeader />}
       {type === "pet" && <PetFormHeader />}

@@ -65,7 +65,7 @@ export default function DeleteForm({
       isOpen={isOpen}
       setIsOpen={setDeleteFormIsOpen}
     >
-      <div className="w-full max-w-md  rounded-lg border-2 border-cerulean-100/25 bg-cerulean-950 py-6 shadow-lg">
+      <div className="w-[95vw] max-w-md rounded-lg border-2 border-cerulean-100/25 bg-cerulean-950 py-6 shadow-lg">
         <form
           onSubmit={handleSubmit}
           className="flex w-full flex-col items-center justify-center gap-4"

@@ -42,7 +42,10 @@ export default function Modal<T extends string>({
             />
           </Transition.Child>
           <div className="fixed inset-0 w-screen overflow-y-auto ">
-            <div className="flex min-h-full w-full items-center justify-center p-4">
+            <div
+              className="flex min-h-full w-full items-center justify-center p-4"
+              id="panel-parent"
+            >
               <Transition.Child
                 as={Fragment}
                 enter="transition-all ease-in-out duration-200"
@@ -52,7 +55,7 @@ export default function Modal<T extends string>({
                 leaveFrom="opacity-100 translate-y-0"
                 leaveTo="opacity-0 -translate-y-7"
               >
-                <Dialog.Panel className="flex w-full justify-center">
+                <Dialog.Panel className="flex justify-center" id="panel">
                   {children}
                 </Dialog.Panel>
               </Transition.Child>
