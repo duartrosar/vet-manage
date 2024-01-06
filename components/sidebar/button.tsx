@@ -14,7 +14,7 @@ export default function SidebarButton() {
       id="sidebarToggle"
       data-sidebar-toggle={true}
       onClick={() => dispatch(setIsOpen(!isOpen))}
-      className="cursor-pointer rounded-lg p-3 hover:bg-cerulean-900"
+      className="hover:bg-cerulean-800 cursor-pointer rounded-lg p-3 transition"
     >
       <CgMenuLeft
         data-sidebar-toggle={true}

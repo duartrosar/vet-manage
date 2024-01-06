@@ -1,5 +1,11 @@
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 import { Owner, User } from "@prisma/client";
 import { RegisterProps } from "./types";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 export function toCamelCase(input: string): string {
   const words = input.split(" ");

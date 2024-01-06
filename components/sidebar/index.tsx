@@ -49,15 +49,14 @@ export default function SideBar() {
 
   useEffect(() => {
     if (size.width !== null && size.width < 1024) {
-      console.log("ggel");
-      setIsOpen(false);
+      dispatch(setIsOpen(false));
       setSidebarExpanded(false);
     }
   }, [size.width]);
 
   return (
     <>
-      <div className="relative z-40">
+      <div className="relative z-30">
         <Transition show={isOpen}>
           <Transition.Child
             as={Fragment}
@@ -70,7 +69,7 @@ export default function SideBar() {
           >
             <div
               onClick={() => setMenu(!isOpen)}
-              className="fixed inset-0 bg-cerulean-900/50 lg:hidden"
+              className="bg-cerulean-900/50 fixed inset-0 lg:hidden"
               aria-hidden="true"
             />
           </Transition.Child>
@@ -78,7 +77,7 @@ export default function SideBar() {
 
         <aside
           className={clsx(
-            "fixed bottom-0 left-0 top-0 -translate-x-full border-r-2 border-cerulean-700/25 bg-cerulean-950 lg:translate-x-0",
+            "border-cerulean-700/25 bg-cerulean-950 fixed bottom-0 left-0 top-0 -translate-x-full border-r-2 lg:translate-x-0",
             isOpen ? "w-64 translate-x-0" : "",
           )}
         >

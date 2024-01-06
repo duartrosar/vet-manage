@@ -11,9 +11,9 @@ export default async function Navbar() {
   console.log("session in navbar", session);
 
   return (
-    <nav className="fixed left-0 top-0 z-50 h-20 w-full">
-      <div className="h-full w-full border-b-2 border-cerulean-700/25 bg-cerulean-950 shadow-xl">
-        <div className="flex h-full items-center justify-between gap-3 py-3 pl-3">
+    <nav className="fixed left-0 top-0 z-40 h-20 w-full">
+      <div className="border-cerulean-700/25 bg-cerulean-950 h-full w-full border-b-2 shadow-xl">
+        <div className="flex h-full items-center justify-between gap-3 px-3 py-3">
           <div className="flex items-center gap-3">
             <SidebarButton />
             <Logo />
