@@ -12,7 +12,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import ImageSelector from "../inputs/image-selector";
 import Input from "../inputs/input";
 import DatePicker from "@/components/date-picker";
-import Selector from "../inputs/selector";
+import Selector from "../inputs/controlled-selector";
 import Address from "../inputs/address";
 import { toast } from "sonner";
 import Toast from "@/components/toast/toasters";

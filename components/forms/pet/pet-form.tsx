@@ -14,7 +14,7 @@ import Input from "../inputs/input";
 import { useFormStatus } from "react-dom";
 import { Listbox } from "@headlessui/react";
 import ListboxWrapper from "../inputs/listbox-wrapper";
-import InputTest from "../inputs/input-test";
+import TextInput from "../inputs/input-test";
 import { createPet, updatePet } from "@/lib/db";
 import { addPetSlice, updatePetSlice } from "@/lib/redux/slices/pets-slice";
 import { setPetFormIsOpen } from "@/lib/redux/slices/form-slice";

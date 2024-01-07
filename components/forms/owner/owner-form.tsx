@@ -4,8 +4,13 @@ import React, { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { createOwnerWithUser, getUser, updateOwner } from "../../../lib/db";
 import ImageSelector from "../inputs/image-selector";
-import Selector from "../inputs/selector";
-import { SubmitHandler, useForm } from "react-hook-form";
+import Selector from "../inputs/controlled-selector";
+import {
+  FieldValues,
+  SubmitHandler,
+  UseFormRegister,
+  useForm,
+} from "react-hook-form";
 import { Owner } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ownerSchema } from "@/lib/zod/zodSchemas";
@@ -30,7 +35,31 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import TextInput from "../inputs/text-input";
+import { ControlledTextInput } from "../inputs/controlled-text-input";
+import clsx from "clsx";
+import TextInput from "../inputs/input-test";
+import InputOld from "../inputs/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import ControlledSeletor from "../inputs/controlled-selector";
+
+interface FormData {
+  id: number;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: Date;
+  gender: string;
+  email: string;
+  mobileNumber: string;
+  address: string;
+  imageUrl: string;
+  userId: number;
+}
 
 export default function OwnerForm({ ownerId }: { ownerId?: number }) {
   const owner = useAppSelector((state) => state.form.owner);
@@ -40,7 +69,7 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
   const [file, setFile] = useState<File>();
   const options = genderOptions;
 
-  const form = useForm<Owner>({
+  const form = useForm<FormData>({
     defaultValues: {
       id: 0,
       firstName: "",
@@ -55,6 +84,8 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
     resolver: zodResolver(ownerSchema),
   });
 
+  console.log(form.register("mobileNumber"));
+
   useEffect(() => {
     form.reset();
 
@@ -63,18 +94,20 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
     }
   }, []);
 
-  const onSubmit: SubmitHandler<Owner> = async (data: Owner) => {
+  function onSubmit(data: Owner) {
     // TODO: Uncomment this
     // if (file) {
     //   data.imageUrl = await blobUpload();
     // }
-    if (owner) {
-      data.id = owner.id;
-      await updateOwnerAsync(data);
-    } else {
-      await addOwnerAsync(data);
-    }
-  };
+    console.log(data);
+    return;
+    // if (owner) {
+    //   data.id = owner.id;
+    //   await updateOwnerAsync(data);
+    // } else {
+    //   await addOwnerAsync(data);
+    // }
+  }
 
   const addOwnerAsync = async (data: Owner) => {
     let { user } = await getUser(data.email);
@@ -137,12 +170,12 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
     form.setValue("id", owner.id);
     form.setValue("firstName", owner.firstName);
     form.setValue("lastName", owner.lastName);
-    form.setValue("dateOfBirth", owner.dateOfBirth);
     form.setValue("email", owner.email);
-    form.setValue("mobileNumber", owner.mobileNumber);
-    form.setValue("gender", owner.gender);
-    form.setValue("address", owner.address);
-    form.setValue("imageUrl", owner.imageUrl);
+    // form.setValue("dateOfBirth", owner.dateOfBirth ? owner.dateOfBirth : "");
+    form.setValue("mobileNumber", owner.mobileNumber ? owner.mobileNumber : "");
+    form.setValue("gender", owner.gender ? owner.gender : "");
+    // form.setValue("address", owner.address);
+    form.setValue("imageUrl", owner.imageUrl ? owner.imageUrl : "");
   }
 
   return (
@@ -161,7 +194,7 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
                 control={form.control}
                 name="firstName"
                 render={({ field }) => (
-                  <TextInput
+                  <ControlledTextInput
                     label="First Name"
                     {...field}
                     placeholder="First Name"
@@ -173,7 +206,7 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
                 control={form.control}
                 name="lastName"
                 render={({ field }) => (
-                  <TextInput
+                  <ControlledTextInput
                     label="Last Name"
                     {...field}
                     placeholder="Last Name"
@@ -183,6 +216,19 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
               />
             </div>
             <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
+              <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <ControlledSeletor
+                    placeholder="Please select an option"
+                    options={genderOptions}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    error={form.formState.errors.gender}
+                  />
+                )}
+              />
               {/* <DatePicker
               name="Date Of Birth"
               type="date"
@@ -209,7 +255,7 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
                   control={form.control}
                   name="email"
                   render={({ field }) => (
-                    <TextInput
+                    <ControlledTextInput
                       label="Email"
                       {...field}
                       placeholder="Email"
@@ -217,27 +263,37 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
                     />
                   )}
                 />
-                {/* <Input<Owner>
-                // {owner && readonly}
-                readOnly={owner ? true : false}
-                name="Email"
-                type="email"
-                register={register}
-                error={errors.email}
-              /> */}
                 {emailError && (
                   <span className="text-right text-xs font-bold text-red-500">
                     {emailError}
                   </span>
                 )}
               </span>
-
-              {/* <Input<Owner>
-              name="Mobile Number"
-              type="tel"
-              register={register}
-              error={errors.mobileNumber}
-            /> */}
+              <FormField
+                control={form.control}
+                name="mobileNumber"
+                render={({ field }) => (
+                  <ControlledTextInput
+                    label="Mobile Number"
+                    {...field}
+                    placeholder="Mobile Number"
+                    error={form.formState.errors.mobileNumber}
+                  />
+                )}
+              />
+              {/* <TextInput<Owner>
+                register={form.register}
+                name="mobileNumber"
+                type="tel"
+                placeholder="Mobile Number"
+                label="Mobile Number"
+              />
+              <InputOld<Owner>
+                name="Mobile Number"
+                type="tel"
+                register={form.register}
+                error={form.formState.errors.mobileNumber}
+              /> */}
             </div>
             <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
               {/* TODO: Fix errors display */}
@@ -252,9 +308,6 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
           <div className="col-start-2 gap-1 text-end lg:text-start">
             <button
               type="submit"
-              onClick={(e: React.FormEvent<HTMLButtonElement>) => {
-                if (pending) e.preventDefault;
-              }}
               className="w-full rounded-lg border-2 border-cerulean-100/25 bg-cerulean-600 px-6 py-2 text-cerulean-100 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600 lg:w-1/2"
             >
               {owner ? "Save owner" : "Create owner"}

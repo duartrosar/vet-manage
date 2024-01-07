@@ -9,7 +9,7 @@ import {
   UseFormRegisterReturn,
 } from "react-hook-form";
 
-export default function Input<T extends FieldValues>({
+export default function InputOld<T extends FieldValues>({
   readOnly = false,
   name,
   type = "text",
