@@ -38,10 +38,10 @@ export default function DayTile({
 
   return (
     <div
-      className={`flex items-center justify-center rounded-lg text-sm hover:cursor-pointer hover:bg-cerulean-800  ${
+      className={`flex h-9 w-9 items-center justify-center rounded text-sm transition duration-75 hover:cursor-pointer hover:bg-cerulean-800 ${
         currentDate.selectedDay === day && monthOffset === 0
           ? "bg-cerulean-800"
-          : "bg-cerulean-950"
+          : "bg-cerulean-"
       } ${
         monthOffset !== 0 ? "text-cerulean-500 opacity-50" : "text-cerulean-100"
       }`}

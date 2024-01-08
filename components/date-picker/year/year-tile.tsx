@@ -29,10 +29,10 @@ export default function YearTile({ year }: { year: number }) {
 
   return (
     <div
-      className={`flex items-center justify-center rounded-lg border border-cerulean-100/25  py-2 text-sm text-cerulean-100 hover:cursor-pointer hover:bg-cerulean-800 ${
-        year === currentDate.selectedYear
+      className={`flex items-center justify-center rounded py-4 text-sm text-cerulean-100 transition duration-75 hover:cursor-pointer hover:bg-cerulean-800 ${
+        year === currentDate?.selectedYear
           ? "bg-cerulean-800"
-          : "bg-cerulean-950"
+          : "bg-cerulean-950/75"
       }`}
       onClick={handleClick}
     >

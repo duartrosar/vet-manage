@@ -224,20 +224,21 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
                     placeholder="Please select an option"
                     options={genderOptions}
                     onValueChange={field.onChange}
-                    value={field.value}
+                    value={owner?.gender ? owner?.gender : ""}
                     error={form.formState.errors.gender}
                   />
                 )}
               />
-              {/* <DatePicker
-              name="Date Of Birth"
-              type="date"
-              setSelectedOption={setValue}
-              dateValue={owner?.dateOfBirth}
-              clearErrors={clearErrors}
-              register={register}
-              error={errors.dateOfBirth}
-            />
+              <DatePicker
+                name="Date Of Birth"
+                type="date"
+                setSelectedOption={form.setValue}
+                dateValue={owner?.dateOfBirth}
+                clearErrors={form.clearErrors}
+                register={form.register}
+                error={form.formState.errors.dateOfBirth}
+              />
+              {/*
             <Selector
               name="Gender"
               type="text"
@@ -281,19 +282,6 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
                   />
                 )}
               />
-              {/* <TextInput<Owner>
-                register={form.register}
-                name="mobileNumber"
-                type="tel"
-                placeholder="Mobile Number"
-                label="Mobile Number"
-              />
-              <InputOld<Owner>
-                name="Mobile Number"
-                type="tel"
-                register={form.register}
-                error={form.formState.errors.mobileNumber}
-              /> */}
             </div>
             <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
               {/* TODO: Fix errors display */}

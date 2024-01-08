@@ -4,7 +4,7 @@ import { MONTHS } from "../constants";
 
 export default function MonthSelection() {
   return (
-    <div className="grid grid-cols-4 w-full gap-1 h-[228px]">
+    <div className="grid w-full grid-cols-4 gap-1 pt-2">
       {MONTHS.map((month, index) => (
         <MonthTile key={index} month={index} />
       ))}

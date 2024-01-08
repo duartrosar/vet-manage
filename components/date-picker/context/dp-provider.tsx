@@ -13,9 +13,9 @@ export default function DatePickerProvider({
 }) {
   const [selectedView, setSelectedView] = useState<string>("year");
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
-  const selectedDay = new Date().getDate();
-  const selectedMonth = new Date().getMonth();
-  const selectedYear = new Date().getFullYear();
+  const selectedDay = -1;
+  const selectedMonth = -1;
+  const selectedYear = -1;
 
   const [currentDate, setCurrentDate] = useState<CurrentDate>({
     selectedDay: selectedDay,

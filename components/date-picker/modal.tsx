@@ -11,21 +11,15 @@ import { MONTHS } from "./constants";
 import DatePickerContext from "./context/dp-context";
 import { useWindowSize } from "@uidotdev/usehooks";
 
-export const views: string[] = ["year", "month", "day"];
-
 export default function DatePickerModal({ direction }: { direction: string }) {
   const { selectedView } = useContext(DatePickerContext);
 
   return (
-    <div
-      className={`absolute left-0 z-10 min-h-[310px] w-full rounded-lg border-2 border-cerulean-100/25 bg-cerulean-900 ${
-        direction === "up" ? "-top-[293px]" : "top-20"
-      }`}
-    >
-      <div className="w-full px-2 pt-2">
-        <Navigation views={views} />
+    <div className="p-2">
+      <div className="w-full">
+        <Navigation />
       </div>
-      <div className="w-full p-2">
+      <div className="w-full">
         {selectedView === "day" ? (
           <DaySelection />
         ) : selectedView === "month" ? (

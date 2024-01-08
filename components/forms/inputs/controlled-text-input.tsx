@@ -23,7 +23,7 @@ interface TextInputProps extends InputProps {
 const ControlledTextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
   ({ label, error, ...props }, ref) => {
     return (
-      <FormItem className="relative">
+      <FormItem className="relative gap-1 space-y-0">
         <FormLabel className="pl-3 text-sm font-bold text-gray-500">
           {label}
         </FormLabel>

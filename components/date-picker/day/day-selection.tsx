@@ -43,18 +43,18 @@ export default function DaySelection() {
   }
 
   return (
-    <>
+    <div className="pt-2">
       <div className="grid w-full grid-cols-7 gap-1">
         {WEEKDAYS.map((value, index) => (
           <div
             key={index}
-            className="mb-2 flex items-center justify-center rounded-lg text-sm text-cerulean-100/50"
+            className="mb-2 flex items-center justify-center rounded-lg text-xs text-cerulean-100/50"
           >
             {value}
           </div>
         ))}
       </div>
-      <div className="grid h-[200px] w-full grid-cols-7 gap-1">
+      <div className="grid w-full grid-cols-7 gap-1">
         {prevMonthDayTiles.map((day, index) => (
           <DayTile key={index} day={day} monthOffset={-1} />
         ))}
@@ -65,6 +65,6 @@ export default function DaySelection() {
           <DayTile key={index} day={day} monthOffset={1} />
         ))}
       </div>
-    </>
+    </div>
   );
 }

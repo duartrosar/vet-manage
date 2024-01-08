@@ -1,4 +1,10 @@
 export interface View {
-  view: string;
+  name: string;
   value: number;
+  placeholder: "dd" | "mm" | "yyyy";
 }
+
+// export interface NavigationButtonProps{
+//   view: string;
+//   va
+// }

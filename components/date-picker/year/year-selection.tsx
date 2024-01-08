@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import YearTile from "./year-tile";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
+import { IoChevronBackSharp, IoChevronForwardSharp } from "react-icons/io5";
 
 export default function YearSelection() {
   const [years, setYears] = useState<number[]>([]);
@@ -33,24 +34,26 @@ export default function YearSelection() {
   }
 
   return (
-    <div className="flex h-[228px] flex-col">
-      <div className="mb-2 flex items-center justify-around gap-2 rounded-lg bg-cerulean-950 px-2 text-cerulean-100">
+    <div className="flex flex-col">
+      <div className="flex items-center justify-between gap-1 rounded-lg py-1 text-cerulean-100 ">
         <button
           type="button"
           onClick={() => handleClick("prev")}
-          className="flex flex-1 justify-center rounded-lg px-4 py-2 text-center text-sm hover:cursor-pointer hover:bg-cerulean-800"
+          className="flex justify-center rounded-md border border-cerulean-700/25 p-2 text-center text-sm transition duration-75 hover:cursor-pointer hover:bg-cerulean-800"
         >
-          <GrFormPrevious className="text-2xl" />
+          <IoChevronBackSharp className="text-xs" />
+          {/* <GrFormPrevious className="text-lg" /> */}
         </button>
-        <div className="flex justify-center rounded-lg px-4 py-2 text-sm text-cerulean-100 hover:cursor-pointer hover:bg-cerulean-800">
-          2013 - 2024
+        <div className="flex w-full justify-center px-4 text-sm text-cerulean-100">
+          {years[0]} - {years[years.length - 1]}
         </div>
         <button
           type="button"
           onClick={() => handleClick("next")}
-          className="flex flex-1 justify-center rounded-lg px-4 py-2 text-right text-sm hover:cursor-pointer hover:bg-cerulean-800"
+          className="flex justify-center rounded-md border border-cerulean-700/25 p-2 text-right text-sm transition duration-75 hover:cursor-pointer hover:bg-cerulean-800"
         >
-          <GrFormNext className="text-2xl" />
+          <IoChevronForwardSharp className="text-xs" />
+          {/* <GrFormNext className="text-lg" /> */}
         </button>
       </div>
       <div className="grid w-full flex-grow grid-cols-4 gap-1">

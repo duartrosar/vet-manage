@@ -30,12 +30,4 @@ export const MONTHS: string[] = [
 //   },
 // ];
 
-export const WEEKDAYS: string[] = [
-  "SUN",
-  "MON",
-  "TUE",
-  "WED",
-  "THU",
-  "FRI",
-  "SAT",
-];
+export const WEEKDAYS: string[] = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
