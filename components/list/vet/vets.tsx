@@ -1,4 +1,4 @@
-import { getVets } from "@/lib/db";
+import { getVets } from "@/lib/db/actions";
 import React from "react";
 import VetsList from "./vets-list";
 

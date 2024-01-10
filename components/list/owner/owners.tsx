@@ -1,4 +1,4 @@
-import { getOwners } from "@/lib/db";
+import { getOwners } from "@/lib/db/actions";
 import React from "react";
 import OwnersList from "./owners-list";
 

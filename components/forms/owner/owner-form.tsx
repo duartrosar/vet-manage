@@ -1,23 +1,15 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useFormStatus } from "react-dom";
-import { createOwnerWithUser, getUser, updateOwner } from "../../../lib/db";
-import ImageSelector from "../inputs/image-selector";
-import Selector from "../inputs/controlled-selector";
-import {
-  FieldValues,
-  SubmitHandler,
-  UseFormRegister,
-  useForm,
-} from "react-hook-form";
+import { createOwnerWithUser, getUser, updateOwner } from "@/lib/db/actions";
+import ImageSelector from "@/components/forms/inputs/image-selector";
+import { useForm } from "react-hook-form";
 import { Owner } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ownerSchema } from "@/lib/zod/zodSchemas";
-import Address from "../inputs/address";
 import { PutBlobResult } from "@vercel/blob";
 import { genderOptions } from "@/lib/constants";
-import DatePicker from "../../date-picker";
+import DatePicker from "@/components/date-picker";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {
   addOwnerSlice,
@@ -26,27 +18,9 @@ import {
 import { setOwnerFormIsOpen } from "@/lib/redux/slices/form-slice";
 import { toast } from "sonner";
 import Toast from "@/components/toast/toasters";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { ControlledTextInput } from "../inputs/controlled-text-input";
-import clsx from "clsx";
-import TextInput from "../inputs/input-test";
-import InputOld from "../inputs/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import ControlledSeletor from "../inputs/controlled-selector";
+import { Form, FormField } from "@/components/ui/form";
+import ControlledTextInput from "@/components/forms/inputs/controlled-text-input";
+import ControlledSelector from "@/components/forms/inputs/controlled-selector";
 
 interface FormData {
   id: number;
@@ -61,13 +35,11 @@ interface FormData {
   userId: number;
 }
 
-export default function OwnerForm({ ownerId }: { ownerId?: number }) {
+export default function OwnerForm() {
   const owner = useAppSelector((state) => state.form.owner);
   const dispatch = useAppDispatch();
   const [emailError, setEmailError] = useState("");
-  const { pending } = useFormStatus();
   const [file, setFile] = useState<File>();
-  const options = genderOptions;
 
   const form = useForm<FormData>({
     defaultValues: {
@@ -84,8 +56,6 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
     resolver: zodResolver(ownerSchema),
   });
 
-  console.log(form.register("mobileNumber"));
-
   useEffect(() => {
     form.reset();
 
@@ -94,19 +64,17 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
     }
   }, []);
 
-  function onSubmit(data: Owner) {
+  async function onSubmit(data: FormData) {
     // TODO: Uncomment this
     // if (file) {
     //   data.imageUrl = await blobUpload();
     // }
-    console.log(data);
-    return;
-    // if (owner) {
-    //   data.id = owner.id;
-    //   await updateOwnerAsync(data);
-    // } else {
-    //   await addOwnerAsync(data);
-    // }
+    if (owner) {
+      data.id = owner.id;
+      await updateOwnerAsync(data);
+    } else {
+      await addOwnerAsync(data);
+    }
   }
 
   const addOwnerAsync = async (data: Owner) => {
@@ -114,7 +82,7 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
 
     if (user) {
       console.log("Existing User: ", user);
-      setEmailError("That email is already being used.");
+      setEmailError("That email is already being used");
       return;
     }
 
@@ -171,7 +139,10 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
     form.setValue("firstName", owner.firstName);
     form.setValue("lastName", owner.lastName);
     form.setValue("email", owner.email);
-    // form.setValue("dateOfBirth", owner.dateOfBirth ? owner.dateOfBirth : "");
+    form.setValue(
+      "dateOfBirth",
+      owner.dateOfBirth ? owner.dateOfBirth : new Date(),
+    );
     form.setValue("mobileNumber", owner.mobileNumber ? owner.mobileNumber : "");
     form.setValue("gender", owner.gender ? owner.gender : "");
     // form.setValue("address", owner.address);
@@ -220,35 +191,26 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
                 control={form.control}
                 name="gender"
                 render={({ field }) => (
-                  <ControlledSeletor
+                  <ControlledSelector
+                    label="Gender"
                     placeholder="Please select an option"
                     options={genderOptions}
-                    onValueChange={field.onChange}
-                    value={owner?.gender ? owner?.gender : ""}
+                    onChange={field.onChange}
+                    defaultValue={owner?.gender ? owner?.gender : ""}
                     error={form.formState.errors.gender}
+                    value={field.value}
                   />
                 )}
               />
-              <DatePicker
-                name="Date Of Birth"
-                type="date"
-                setSelectedOption={form.setValue}
+              <DatePicker<FormData>
+                label="Date Of Birth"
+                name="dateOfBirth"
                 dateValue={owner?.dateOfBirth}
-                clearErrors={form.clearErrors}
+                setValue={form.setValue}
                 register={form.register}
+                clearErrors={form.clearErrors}
                 error={form.formState.errors.dateOfBirth}
               />
-              {/*
-            <Selector
-              name="Gender"
-              type="text"
-              selectedOption={owner?.gender}
-              setSelectedOption={setValue}
-              register={register}
-              error={errors.gender}
-              clearErrors={clearErrors}
-              options={options}
-            /> */}
             </div>
             <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
               <span>
@@ -265,9 +227,9 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
                   )}
                 />
                 {emailError && (
-                  <span className="text-right text-xs font-bold text-red-500">
+                  <div className="w-full pr-3 pt-1 text-right text-xs font-bold text-red-500">
                     {emailError}
-                  </span>
+                  </div>
                 )}
               </span>
               <FormField
@@ -283,15 +245,14 @@ export default function OwnerForm({ ownerId }: { ownerId?: number }) {
                 )}
               />
             </div>
+            {/* <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
+              <Address<Owner> register={register} error={errors.address} />
+              <Address<Owner> register={register} error={errors.address} />
+            </div>  
             <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
-              {/* TODO: Fix errors display */}
-              {/* <Address<Owner> register={register} error={errors.address} />
-            <Address<Owner> register={register} error={errors.address} /> */}
-            </div>
-            <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
-              {/* <Address<Owner> register={register} error={errors.address} />
-            <Address<Owner> register={register} error={errors.address} /> */}
-            </div>
+              <Address<Owner> register={register} error={errors.address} />
+              <Address<Owner> register={register} error={errors.address} />
+            </div>*/}
           </div>
           <div className="col-start-2 gap-1 text-end lg:text-start">
             <button

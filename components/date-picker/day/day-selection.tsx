@@ -13,7 +13,6 @@ export default function DaySelection() {
     `${currentDate.selectedMonth + 1}/${1}/${currentDate.selectedYear}`,
   );
   const firstOfMonth = date.getDay();
-  console.log(firstOfMonth);
 
   // We pass selectedMonth + 1 because months are 0 indexed
   let days = getDays(currentDate.selectedYear, currentDate.selectedMonth + 1);

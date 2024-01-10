@@ -5,7 +5,7 @@ import Modal from "../modal";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setDeleteFormIsOpen } from "@/lib/redux/slices/form-slice";
 import { IoTrash } from "react-icons/io5";
-import { deletePet, deleteUser } from "@/lib/db";
+import { deletePet, deleteUser } from "@/lib/db/actions";
 import { removeOwnerByUserIdSlice } from "@/lib/redux/slices/owners-slice";
 import { removeVetByUserIdSlice } from "@/lib/redux/slices/vets-slice";
 import { removePetSlice } from "@/lib/redux/slices/pets-slice";

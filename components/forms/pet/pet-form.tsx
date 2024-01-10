@@ -15,33 +15,30 @@ import { useFormStatus } from "react-dom";
 import { Listbox } from "@headlessui/react";
 import ListboxWrapper from "../inputs/listbox-wrapper";
 import TextInput from "../inputs/input-test";
-import { createPet, updatePet } from "@/lib/db";
+import { createPet, updatePet } from "@/lib/db/actions";
 import { addPetSlice, updatePetSlice } from "@/lib/redux/slices/pets-slice";
 import { setPetFormIsOpen } from "@/lib/redux/slices/form-slice";
 import { toast } from "sonner";
 import Toast from "@/components/toast/toasters";
+import { Form, FormField } from "@/components/ui/form";
+import ControlledCombobox from "../inputs/controlled-combobox";
+import { error } from "console";
+import ControlledTextInput from "../inputs/controlled-text-input";
 
-export default function PetForm({
-  owners,
-  petId,
-}: {
-  owners?: Owner[] | null;
-  petId?: number;
-}) {
+interface FormData {
+  id: number;
+  name: string;
+  type: string;
+  imageUrl: string;
+  ownerId: number;
+}
+
+export default function PetForm({ owners }: { owners?: Owner[] | null }) {
   const pet = useAppSelector((state) => state.form.pet);
   const dispatch = useAppDispatch();
   const { pending } = useFormStatus();
   const [file, setFile] = useState<File>();
-  const {
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    setValue,
-    control,
-    formState: { errors, isSubmitting },
-    clearErrors,
-  } = useForm<Pet>({
+  const form = useForm<FormData>({
     defaultValues: {
       id: 0,
       name: "",
@@ -53,14 +50,14 @@ export default function PetForm({
   });
 
   useEffect(() => {
-    reset();
+    form.reset();
 
     if (pet) {
       setValues(pet);
     }
   }, []);
 
-  const processForm: SubmitHandler<Pet> = async (data: Pet) => {
+  async function onSubmit(data: FormData) {
     console.log("Form pet: ", data);
     // TODO: Uncomment this
     // if (file) {
@@ -72,7 +69,7 @@ export default function PetForm({
     } else {
       await addPetAsync(data);
     }
-  };
+  }
 
   const addPetAsync = async (data: Pet) => {
     const { pet, success } = await createPet(data);
@@ -110,52 +107,80 @@ export default function PetForm({
   };
 
   function setValues(pet: Pet) {
-    setValue("id", pet.id);
-    setValue("name", pet.name);
-    setValue("type", pet.type);
-    setValue("ownerId", pet.ownerId);
-    setValue("imageUrl", pet.imageUrl);
+    form.setValue("id", pet.id);
+    form.setValue("name", pet.name);
+    form.setValue("type", pet.type);
+    form.setValue("ownerId", pet.ownerId);
+    form.setValue("imageUrl", pet.imageUrl ? pet.imageUrl : "");
   }
 
   return (
-    <form onSubmit={handleSubmit(processForm)} className="w-full p-4 xl:p-6 ">
-      <div className="space-y-3 lg:grid lg:grid-cols-3 lg:gap-3 lg:space-y-0">
-        <div className="">
-          <ImageSelector setFile={setFile} imageUrl={pet?.imageUrl} />
-        </div>
-        <div className="w-full space-y-3 lg:col-span-2">
-          <Input<Pet> name="Name" register={register} error={errors.name} />
-          <Input<Pet> name="Type" register={register} error={errors.type} />
-          {owners && (
-            <Controller
-              name="ownerId"
-              control={control}
-              rules={{
-                required: "Please select an owner",
-              }}
-              render={({ field: { onChange, value, onBlur } }) => (
-                <ListboxWrapper
-                  onChange={onChange}
-                  value={value}
-                  owners={owners}
-                  error={errors.ownerId}
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-full p-4 xl:p-6 "
+      >
+        <div className="space-y-3 lg:grid lg:grid-cols-3 lg:gap-3 lg:space-y-0">
+          <div className="">
+            <ImageSelector setFile={setFile} imageUrl={pet?.imageUrl} />
+          </div>
+          <div className="w-full space-y-3 lg:col-span-2">
+            {/* <Input<Pet> name="Name" register={register} error={errors.name} />
+            <Input<Pet> name="Type" register={register} error={errors.type} /> */}
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <ControlledTextInput
+                  label="Name"
+                  {...field}
+                  placeholder="Name"
+                  error={form.formState.errors.name}
                 />
               )}
             />
-          )}
+            <FormField
+              control={form.control}
+              name="type"
+              render={({ field }) => (
+                <ControlledTextInput
+                  label="Type"
+                  {...field}
+                  placeholder="Type"
+                  error={form.formState.errors.name}
+                />
+              )}
+            />
+            {owners && (
+              <FormField
+                control={form.control}
+                name="ownerId"
+                render={({ field }) => (
+                  <ControlledCombobox<FormData>
+                    owners={owners}
+                    setValue={form.setValue}
+                    value={field.value}
+                    label="Owner"
+                    error={form.formState.errors.ownerId}
+                    clearErrors={form.clearErrors}
+                  />
+                )}
+              />
+            )}
+          </div>
+          <div className="col-start-2 gap-1 text-end lg:text-start">
+            <button
+              type="submit"
+              onClick={(e: React.FormEvent<HTMLButtonElement>) => {
+                if (pending) e.preventDefault;
+              }}
+              className="w-full rounded-lg border-2 border-cerulean-100/25 bg-cerulean-600 px-6 py-2 text-cerulean-100 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600 lg:w-1/2"
+            >
+              {pet ? "Save pet" : "Create pet"}
+            </button>
+          </div>
         </div>
-        <div className="col-start-2 gap-1 text-end lg:text-start">
-          <button
-            type="submit"
-            onClick={(e: React.FormEvent<HTMLButtonElement>) => {
-              if (pending) e.preventDefault;
-            }}
-            className="w-full rounded-lg border-2 border-cerulean-100/25 bg-cerulean-600 px-6 py-2 text-cerulean-100 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600 lg:w-1/2"
-          >
-            {pet ? "Save pet" : "Create pet"}
-          </button>
-        </div>
-      </div>
-    </form>
+      </form>
+    </Form>
   );
 }

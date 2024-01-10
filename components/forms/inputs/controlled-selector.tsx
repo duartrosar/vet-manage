@@ -1,3 +1,5 @@
+"use client";
+
 import {
   FormControl,
   FormItem,
@@ -12,48 +14,50 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import clsx from "clsx";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FieldError } from "react-hook-form";
 
 interface SelectProps {
+  label: string;
   options?: string[];
   placeholder?: string;
   value?: string;
   defaultValue?: string;
   error?: FieldError | undefined;
+  onChange?(value: string): void;
 
-  onValueChange?(value: string): void;
   open?: boolean;
   defaultOpen?: boolean;
-  onOpenChange?(open: boolean): void;
-  // dir?: Direction;
-  name?: string;
   autoComplete?: string;
   disabled?: boolean;
   required?: boolean;
 }
 
-export default function ControlledSeletor({
-  onValueChange,
+export default function ControlledSelector({
+  label,
+  onChange,
   options,
   placeholder,
   defaultValue,
   error,
+  value,
 }: SelectProps) {
+  const [isSelected, setIsSelected] = useState(false);
   return (
-    <FormItem className="gap-1 space-y-0">
+    <FormItem className="relative gap-1 space-y-0">
       <FormLabel className="pl-3 text-sm font-bold text-gray-500">
-        Email
+        {label}
       </FormLabel>
-      <Select onValueChange={onValueChange} defaultValue={defaultValue}>
+      <Select onValueChange={onChange} defaultValue={defaultValue}>
         <FormControl>
           <SelectTrigger
             className={clsx(
               "rounded-lg border-2 border-cerulean-100/25 bg-transparent px-3 py-2 font-semibold text-gray-400 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cerulean-600",
               error && "border-red-500",
+              value && "text-gray-200",
             )}
           >
-            <SelectValue className="text-gray-200" placeholder={placeholder} />
+            <SelectValue className="" placeholder={placeholder} />
           </SelectTrigger>
         </FormControl>
         <SelectContent
@@ -74,7 +78,7 @@ export default function ControlledSeletor({
           </div>
         </SelectContent>
       </Select>
-      <FormMessage />
+      <FormMessage className="absolute -bottom-1 right-0 translate-y-full pr-3 text-right text-xs font-bold text-red-500" />
     </FormItem>
   );
 }

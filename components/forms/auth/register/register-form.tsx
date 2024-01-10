@@ -10,7 +10,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { error } from "console";
-import { createOwnerWithUser, getUser, createUserWithOwner } from "@/lib/db";
+import {
+  createOwnerWithUser,
+  getUser,
+  createUserWithOwner,
+} from "@/lib/db/actions";
 import { Owner } from "@prisma/client";
 import { generateOwnerFromUser } from "@/lib/utils";
 

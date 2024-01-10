@@ -1,5 +1,7 @@
+"use client";
+
 import { genderOptions } from "@/lib/constants";
-import { createVetWithUser, getUser, updateVet } from "@/lib/db";
+import { createVetWithUser, getUser, updateVet } from "@/lib/db/actions";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setVetFormIsOpen } from "@/lib/redux/slices/form-slice";
 import { addVetSlice, updateVetSlice } from "@/lib/redux/slices/vets-slice";
@@ -8,14 +10,27 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Vet } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { SubmitHandler, useForm } from "react-hook-form";
-import ImageSelector from "../inputs/image-selector";
-import Input from "../inputs/input";
+import ImageSelector from "@/components/forms/inputs/image-selector";
 import DatePicker from "@/components/date-picker";
-import Selector from "../inputs/controlled-selector";
-import Address from "../inputs/address";
 import { toast } from "sonner";
 import Toast from "@/components/toast/toasters";
+import { Form, FormField } from "@/components/ui/form";
+import ControlledTextInput from "@/components/forms/inputs/controlled-text-input";
+import ControlledSelector from "@/components/forms/inputs/controlled-selector";
+import { useForm } from "react-hook-form";
+
+interface FormData {
+  id: number;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: Date;
+  gender: string;
+  email: string;
+  mobileNumber: string;
+  address: string;
+  imageUrl: string;
+  userId: number;
+}
 
 export default function VetForm() {
   const vet = useAppSelector((state) => state.form.vet);
@@ -25,14 +40,7 @@ export default function VetForm() {
   const [file, setFile] = useState<File>();
   const options = genderOptions;
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setValue,
-    formState: { errors, isSubmitting },
-    clearErrors,
-  } = useForm<Vet>({
+  const form = useForm<FormData>({
     defaultValues: {
       id: 0,
       firstName: "",
@@ -48,16 +56,14 @@ export default function VetForm() {
   });
 
   useEffect(() => {
-    reset();
+    form.reset();
 
     if (vet) {
       setValues(vet);
     }
   }, []);
 
-  const processForm: SubmitHandler<Vet> = async (data: Vet) => {
-    console.log(data.id);
-
+  async function onSubmit(data: Vet) {
     // TODO: Uncomment this
     // if (file) {
     //   data.imageUrl = await blobUpload();
@@ -68,14 +74,14 @@ export default function VetForm() {
     } else {
       await addVetAsync(data);
     }
-  };
+  }
 
   const addVetAsync = async (data: Vet) => {
     let { user } = await getUser(data.email);
 
     if (user) {
       console.log("Existing User: ", user);
-      setEmailError("That email is already being used.");
+      setEmailError("That email is already being used");
       return;
     }
 
@@ -125,103 +131,139 @@ export default function VetForm() {
   };
 
   function setValues(vet: Vet) {
-    setValue("id", vet.id);
-    setValue("firstName", vet.firstName);
-    setValue("lastName", vet.lastName);
-    setValue("dateOfBirth", vet.dateOfBirth);
-    setValue("email", vet.email);
-    setValue("mobileNumber", vet.mobileNumber);
-    setValue("gender", vet.gender);
-    setValue("address", vet.address);
-    setValue("imageUrl", vet.imageUrl);
+    form.setValue("id", vet.id);
+    form.setValue("firstName", vet.firstName);
+    form.setValue("lastName", vet.lastName);
+    form.setValue(
+      "dateOfBirth",
+      vet.dateOfBirth ? vet.dateOfBirth : new Date(),
+    );
+    form.setValue("email", vet.email);
+    form.setValue("mobileNumber", vet.mobileNumber ? vet.mobileNumber : "");
+    form.setValue("gender", vet.gender ? vet.gender : "");
+    // form.setValue("address", vet.address);
+    form.setValue("imageUrl", vet.imageUrl ? vet.imageUrl : "");
   }
 
   return (
-    <form onSubmit={handleSubmit(processForm)} className="w-full p-4 xl:p-6 ">
-      <div className="space-y-3 lg:grid lg:grid-cols-3 lg:gap-3 lg:space-y-0">
-        <div className="">
-          <ImageSelector setFile={setFile} imageUrl={vet?.imageUrl} />
-        </div>
-        <div className="w-full md:space-y-3 lg:col-span-2">
-          <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
-            <Input<Vet>
-              name="First Name"
-              register={register}
-              error={errors.firstName}
-            />
-            <Input<Vet>
-              name="Last Name"
-              register={register}
-              error={errors.lastName}
-            />
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-full p-4 xl:p-6 "
+      >
+        <div className="space-y-3 lg:grid lg:grid-cols-3 lg:gap-3 lg:space-y-0">
+          <div className="">
+            <ImageSelector setFile={setFile} imageUrl={vet?.imageUrl} />
           </div>
-          <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
-            <DatePicker
-              name="Date Of Birth"
-              type="date"
-              setSelectedOption={setValue}
-              dateValue={vet?.dateOfBirth}
-              clearErrors={clearErrors}
-              register={register}
-              error={errors.dateOfBirth}
-            />
-            <Selector
-              name="Gender"
-              type="text"
-              selectedOption={vet?.gender}
-              setSelectedOption={setValue}
-              register={register}
-              error={errors.gender}
-              clearErrors={clearErrors}
-              options={options}
-            />
-          </div>
-          <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
-            <span>
-              <Input<Vet>
-                // {Vet && readonly}
-                readOnly={vet ? true : false}
-                name="Email"
-                type="email"
-                register={register}
-                error={errors.email}
+          <div className="w-full md:space-y-3 lg:col-span-2">
+            <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
+              <FormField
+                control={form.control}
+                name="firstName"
+                render={({ field }) => (
+                  <ControlledTextInput
+                    label="First Name"
+                    {...field}
+                    placeholder="First Name"
+                    error={form.formState.errors.firstName}
+                  />
+                )}
               />
-              {emailError && (
-                <span className="text-right text-xs font-bold text-red-500">
-                  {emailError}
-                </span>
-              )}
-            </span>
+              <FormField
+                control={form.control}
+                name="lastName"
+                render={({ field }) => (
+                  <ControlledTextInput
+                    label="Last Name"
+                    {...field}
+                    placeholder="Last Name"
+                    error={form.formState.errors.lastName}
+                  />
+                )}
+              />
+            </div>
+            <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
+              <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <ControlledSelector
+                    label="Gender"
+                    placeholder="Please select an option"
+                    options={genderOptions}
+                    onChange={field.onChange}
+                    defaultValue={vet?.gender ? vet?.gender : ""}
+                    error={form.formState.errors.gender}
+                    value={field.value}
+                  />
+                )}
+              />
+              <DatePicker<FormData>
+                label="Date Of Birth"
+                name="dateOfBirth"
+                dateValue={vet?.dateOfBirth}
+                setValue={form.setValue}
+                register={form.register}
+                clearErrors={form.clearErrors}
+                error={form.formState.errors.dateOfBirth}
+              />
+            </div>
+            <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
+              <span>
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <ControlledTextInput
+                      label="Email"
+                      {...field}
+                      placeholder="Email"
+                      error={form.formState.errors.email}
+                    />
+                  )}
+                />
+                {emailError && (
+                  <div className="w-full pr-3 pt-1 text-right text-xs font-bold text-red-500">
+                    {emailError}
+                  </div>
+                )}
+              </span>
 
-            <Input<Vet>
-              name="Mobile Number"
-              type="tel"
-              register={register}
-              error={errors.mobileNumber}
-            />
+              <FormField
+                control={form.control}
+                name="mobileNumber"
+                render={({ field }) => (
+                  <ControlledTextInput
+                    label="Mobile Number"
+                    {...field}
+                    placeholder="Mobile Number"
+                    error={form.formState.errors.mobileNumber}
+                  />
+                )}
+              />
+            </div>
+            {/* <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
+              <Address<Vet> register={register} error={errors.address} />
+              <Address<Vet> register={register} error={errors.address} />
+            </div>
+            <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
+              <Address<Vet> register={register} error={errors.address} />
+              <Address<Vet> register={register} error={errors.address} />
+            </div> */}
           </div>
-          <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
-            {/* TODO: Fix errors display */}
-            <Address<Vet> register={register} error={errors.address} />
-            <Address<Vet> register={register} error={errors.address} />
-          </div>
-          <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
-            <Address<Vet> register={register} error={errors.address} />
-            <Address<Vet> register={register} error={errors.address} />
+          <div className="col-start-2 gap-1 text-end lg:text-start">
+            <button
+              type="submit"
+              onClick={(e: React.FormEvent<HTMLButtonElement>) => {
+                if (pending) e.preventDefault;
+              }}
+              className="w-full rounded-lg border-2 border-cerulean-100/25 bg-cerulean-600 px-6 py-2 text-cerulean-100 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600 lg:w-1/2"
+            >
+              {vet ? "Save vet" : "Create vet"}
+            </button>
           </div>
         </div>
-        <div className="col-start-2 gap-1 text-end lg:text-start">
-          <button
-            type="submit"
-            onClick={(e: React.FormEvent<HTMLButtonElement>) => {
-              if (pending) e.preventDefault;
-            }}
-            className="w-full rounded-lg border-2 border-cerulean-100/25 bg-cerulean-600 px-6 py-2 text-cerulean-100 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600 lg:w-1/2"
-          >
-            {vet ? "Save vet" : "Create vet"}
-          </button>
-        </div>
-      </div>
-    </form>
+      </form>
+    </Form>
   );
 }

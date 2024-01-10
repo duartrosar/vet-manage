@@ -31,7 +31,8 @@ const ControlledTextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
           <Input
             className={clsx(
               "rounded-lg border-2 border-cerulean-100/25 bg-transparent px-3 py-2 font-semibold text-gray-200 autofill:!bg-transparent hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cerulean-600",
-              error && "border-red-500",
+              error &&
+                "border-red-500 focus:border-red-500 focus-visible:ring-red-500",
             )}
             ref={ref}
             {...props}
@@ -43,4 +44,4 @@ const ControlledTextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
   },
 );
 
-export { ControlledTextInput };
+export default ControlledTextInput;
