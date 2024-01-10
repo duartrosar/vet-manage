@@ -2,19 +2,10 @@ import { petSchema } from "@/lib/zod/zodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Owner, Pet } from "@prisma/client";
 import React, { useEffect, useState } from "react";
-import {
-  Controller,
-  FieldValues,
-  SubmitHandler,
-  useForm,
-} from "react-hook-form";
+import { useForm } from "react-hook-form";
 import ImageSelector from "../inputs/image-selector";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import Input from "../inputs/input";
 import { useFormStatus } from "react-dom";
-import { Listbox } from "@headlessui/react";
-import ListboxWrapper from "../inputs/listbox-wrapper";
-import TextInput from "../inputs/input-test";
 import { createPet, updatePet } from "@/lib/db/actions";
 import { addPetSlice, updatePetSlice } from "@/lib/redux/slices/pets-slice";
 import { setPetFormIsOpen } from "@/lib/redux/slices/form-slice";
@@ -22,7 +13,6 @@ import { toast } from "sonner";
 import Toast from "@/components/toast/toasters";
 import { Form, FormField } from "@/components/ui/form";
 import ControlledCombobox from "../inputs/controlled-combobox";
-import { error } from "console";
 import ControlledTextInput from "../inputs/controlled-text-input";
 
 interface FormData {
@@ -58,11 +48,6 @@ export default function PetForm({ owners }: { owners?: Owner[] | null }) {
   }, []);
 
   async function onSubmit(data: FormData) {
-    console.log("Form pet: ", data);
-    // TODO: Uncomment this
-    // if (file) {
-    //   data.imageUrl = await blobUpload();
-    // }
     if (pet) {
       data.id = pet.id;
       await updatePetAsync(data);
@@ -75,14 +60,11 @@ export default function PetForm({ owners }: { owners?: Owner[] | null }) {
     const { pet, success } = await createPet(data);
 
     if (!success || !pet) {
-      // TODO: if couldn't create owner, but blob was created then delete blob
-      console.log("Something went wrong");
       // throw new Error("Something went wrong");
       console.log("Pet was not created.");
       return;
     }
 
-    dispatch(addPetSlice(pet));
     dispatch(setPetFormIsOpen(false));
 
     toast.custom((t) => (
@@ -94,11 +76,10 @@ export default function PetForm({ owners }: { owners?: Owner[] | null }) {
     const result = await updatePet(data);
 
     if (!result?.success) {
-      console.log("Something went wrong");
-      throw new Error("Something went wrong");
+      console.log("Pet was not updated.");
+      return;
     }
 
-    dispatch(updatePetSlice(data));
     dispatch(setPetFormIsOpen(false));
 
     toast.custom((t) => (

@@ -88,7 +88,7 @@ export default function OwnersList({ owners }: { owners?: Owner[] }) {
                       <TableData className="pl-6">
                         {owner?.imageUrl ? (
                           <Image
-                            className="flex-none rounded-full bg-cerulean-950"
+                            className="h-[50px] w-[50px] flex-none rounded-full bg-cerulean-950"
                             src={owner?.imageUrl}
                             width={50}
                             height={50}

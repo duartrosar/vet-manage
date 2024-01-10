@@ -1,20 +1,21 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { createOwnerWithUser, getUser, updateOwner } from "@/lib/db/actions";
+import {
+  blobDelete,
+  blobUpload,
+  createOwnerWithUser,
+  getUser,
+  updateOwner,
+} from "@/lib/db/actions";
 import ImageSelector from "@/components/forms/inputs/image-selector";
 import { useForm } from "react-hook-form";
 import { Owner } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ownerSchema } from "@/lib/zod/zodSchemas";
-import { PutBlobResult } from "@vercel/blob";
 import { genderOptions } from "@/lib/constants";
 import DatePicker from "@/components/date-picker";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import {
-  addOwnerSlice,
-  updateOwnerSlice,
-} from "@/lib/redux/slices/owners-slice";
 import { setOwnerFormIsOpen } from "@/lib/redux/slices/form-slice";
 import { toast } from "sonner";
 import Toast from "@/components/toast/toasters";
@@ -38,7 +39,6 @@ interface FormData {
 export default function OwnerForm() {
   const owner = useAppSelector((state) => state.form.owner);
   const dispatch = useAppDispatch();
-  const [emailError, setEmailError] = useState("");
   const [file, setFile] = useState<File>();
 
   const form = useForm<FormData>({
@@ -65,57 +65,72 @@ export default function OwnerForm() {
   }, []);
 
   async function onSubmit(data: FormData) {
-    // TODO: Uncomment this
-    // if (file) {
-    //   data.imageUrl = await blobUpload();
-    // }
     if (owner) {
       data.id = owner.id;
+      data.imageUrl = owner.imageUrl ? owner.imageUrl : "";
       await updateOwnerAsync(data);
     } else {
       await addOwnerAsync(data);
     }
   }
 
-  const addOwnerAsync = async (data: Owner) => {
+  async function addOwnerAsync(data: Owner) {
     let { user } = await getUser(data.email);
 
     if (user) {
       console.log("Existing User: ", user);
-      setEmailError("That email is already being used");
-      return;
+
+      form.setError("email", {
+        type: "custom",
+        message: "That email is already being used",
+      });
+    }
+
+    let wasUploaded = false;
+
+    if (file) {
+      wasUploaded = await uploadBlob(data, file);
     }
 
     const { ownerUser, success, owner } = await createOwnerWithUser(data);
+    console.log("imageURL: ", data.imageUrl);
 
     if (!success || !ownerUser || !owner) {
-      // TODO: if couldn't create owner, but blob was created then delete blob
-      console.log("Something went wrong");
-      // throw new Error("Something went wrong");
       console.log("Owner was not created.");
+      toast.custom((t) => (
+        <Toast t={t} message="Owner was not created." type="danger" />
+      ));
+
+      if (wasUploaded && data.imageUrl) {
+        await blobDelete(data.imageUrl);
+      }
       return;
     }
 
-    dispatch(addOwnerSlice(owner));
     dispatch(setOwnerFormIsOpen(false));
 
     toast.custom((t) => (
       <Toast t={t} message="Owner was created successfully." type="success" />
     ));
-  };
+  }
 
   const updateOwnerAsync = async (data: Owner) => {
-    // TODO: Don't allow email to be edited???
+    if (file) {
+      await uploadBlob(data, file);
+    }
+
     const result = await updateOwner(data, data.id);
 
     if (!result?.success) {
-      // TODO: figure out a way to check if the image changed or not, or if the user had an image already
       // TODO: If blob was created
-      console.log("Something went wrong");
-      throw new Error("Something went wrong");
+      console.log("Owner could not be updated");
+
+      toast.custom((t) => (
+        <Toast t={t} message="Owner could not be updated" type="danger" />
+      ));
+      return;
     }
 
-    dispatch(updateOwnerSlice(data));
     dispatch(setOwnerFormIsOpen(false));
 
     toast.custom((t) => (
@@ -123,16 +138,23 @@ export default function OwnerForm() {
     ));
   };
 
-  const blobUpload = async () => {
-    const response = await fetch(`/api/blob/upload?filename=${file!.name}`, {
-      method: "POST",
-      body: file,
-    });
+  async function uploadBlob(data: Owner, file: File) {
+    const formData = new FormData();
 
-    const newBlob = (await response.json()) as PutBlobResult;
+    formData.append("file", file);
 
-    return newBlob.url;
-  };
+    const url = await blobUpload(formData);
+
+    if (!url) {
+      toast.custom((t) => (
+        <Toast t={t} message="Error uploading image" type="danger" />
+      ));
+      return false;
+    }
+
+    data.imageUrl = url;
+    return true;
+  }
 
   function setValues(owner: Owner) {
     form.setValue("id", owner.id);
@@ -221,16 +243,12 @@ export default function OwnerForm() {
                     <ControlledTextInput
                       label="Email"
                       {...field}
+                      readOnly={owner ? true : false}
                       placeholder="Email"
                       error={form.formState.errors.email}
                     />
                   )}
                 />
-                {emailError && (
-                  <div className="w-full pr-3 pt-1 text-right text-xs font-bold text-red-500">
-                    {emailError}
-                  </div>
-                )}
               </span>
               <FormField
                 control={form.control}
@@ -257,7 +275,7 @@ export default function OwnerForm() {
           <div className="col-start-2 gap-1 text-end lg:text-start">
             <button
               type="submit"
-              className="w-full rounded-lg border-2 border-cerulean-100/25 bg-cerulean-600 px-6 py-2 text-cerulean-100 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600 lg:w-1/2"
+              className="w-full whitespace-nowrap rounded-lg border-2 border-cerulean-100/25 bg-cerulean-600 px-6 py-2 text-cerulean-100 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600 lg:w-1/2"
             >
               {owner ? "Save owner" : "Create owner"}
             </button>

@@ -1,14 +1,6 @@
 "use client";
 
-import { PutBlobResult } from "@vercel/blob";
-import React, {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import { IoCloudUpload } from "react-icons/io5";
 
 export default function ImageSelector({
@@ -21,9 +13,9 @@ export default function ImageSelector({
   const [image, setImage] = useState<string | ArrayBuffer | null>(null);
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+    setFile(file);
 
     if (file) {
-      setFile(file);
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = () => {
@@ -62,6 +54,8 @@ export default function ImageSelector({
           <input
             id="picture"
             type="file"
+            name="image"
+            accept="image/jpeg,image/png,image/webp"
             className="hidden"
             onChange={handleFileChange}
           />

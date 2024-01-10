@@ -5,7 +5,17 @@ import { ownerSchema, petSchema, vetSchema } from "../zod/zodSchemas";
 import { RegisterProps } from "../types";
 import { hash } from "bcrypt";
 import prisma from "@/lib/db/prisma";
-import { generateOwnerFromUser } from "../utils";
+import { revalidatePath } from "next/cache";
+import { getServerSession } from "next-auth";
+import { options } from "../auth/options";
+import {
+  S3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+} from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import cryto from "crypto";
+import { computeSHA256 } from "../utils";
 
 export interface Response {
   owners?: Owner[];
@@ -14,7 +24,105 @@ export interface Response {
   success: boolean;
 }
 
-// USERS
+/****************************************/
+/*               Blobs                  */
+/****************************************/
+
+const generateFileName = () => crypto.randomUUID().toString();
+
+const s3Client = new S3Client({
+  region: process.env.AWS_S3_REGION!,
+  credentials: {
+    accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY!,
+  },
+});
+
+const acceptedTypes = ["image/jpeg", "image/png", "image/webp"];
+
+const maxFileSize = 1024 * 1024 * 10;
+
+export async function getSignedURL(
+  type: string,
+  size: number,
+  checksum: string,
+) {
+  const session = await getServerSession(options);
+
+  if (!session) {
+    return { failure: "Not Authenticated" };
+  }
+
+  if (!acceptedTypes.includes(type)) {
+    return { failure: "Invalid file type" };
+  }
+
+  if (size > maxFileSize) {
+    return { failure: "File too large" };
+  }
+
+  const fileName = generateFileName();
+
+  const putObjectCommand = new PutObjectCommand({
+    Bucket: process.env.AWS_S3_BUCKET_NAME,
+    Key: generateFileName(),
+    ContentType: type,
+    ContentLength: size,
+    ChecksumSHA256: checksum,
+    Metadata: {
+      userId: session.user.id,
+    },
+  });
+
+  const signedUrl = await getSignedUrl(s3Client, putObjectCommand, {
+    expiresIn: 60,
+  });
+
+  return { success: { url: signedUrl } };
+}
+
+export async function blobUpload(formData: FormData) {
+  try {
+    const file = formData.get("file");
+
+    if (!(file instanceof File)) {
+      return;
+    }
+
+    const checksum = await computeSHA256(file);
+
+    const signedUrlResult = await getSignedURL(file.type, file.size, checksum);
+
+    if (signedUrlResult.failure !== undefined) return;
+
+    const url = signedUrlResult.success?.url;
+
+    await fetch(url, {
+      method: "PUT",
+      body: file,
+      headers: {
+        "Content-Type": file.type,
+      },
+    });
+
+    return url.split("?")[0];
+  } catch (error) {
+    return;
+  }
+}
+
+export async function blobDelete(imageUrl: string) {
+  const putObjectCommand = new DeleteObjectCommand({
+    Bucket: process.env.AWS_S3_BUCKET_NAME,
+    Key: imageUrl.split("/").pop()!,
+  });
+
+  await s3Client.send(putObjectCommand);
+}
+
+/****************************************/
+/*               Users                  */
+/****************************************/
 export async function createUserWithOwner(userRegister: RegisterProps) {
   try {
     const password = await hash(userRegister.password, 12);
@@ -62,7 +170,7 @@ export async function getUser(email: string) {
   }
 }
 
-export async function deleteUser(userId: number) {
+export async function deleteUser(userId: number, pathToRevalidate: string) {
   console.log("userId", userId);
 
   try {
@@ -71,13 +179,17 @@ export async function deleteUser(userId: number) {
         id: userId,
       },
     });
+
+    revalidatePath(pathToRevalidate);
   } catch (error) {
     console.log("deleteUser", error);
     return { success: false };
   }
 }
 
-// OWNERS
+/****************************************/
+/*               Onwers                 */
+/****************************************/
 export async function getOwners(): Promise<Response> {
   try {
     const owners = await prisma.owner.findMany();
@@ -139,6 +251,7 @@ export async function createOwnerWithUser(data: Owner) {
 
       const owner = ownerUser.owner;
 
+      revalidatePath("/app/owners");
       return { ownerUser, success: true, owner };
     }
 
@@ -178,6 +291,7 @@ export async function updateOwner(data: Owner, ownerId: number) {
         },
       });
 
+      revalidatePath("/app/owners");
       return {
         updatedOwner,
         success: true,
@@ -195,7 +309,9 @@ export async function updateOwner(data: Owner, ownerId: number) {
   }
 }
 
-// Vets
+/****************************************/
+/*                Vets                  */
+/****************************************/
 export async function getVets() {
   try {
     const vets = await prisma.vet.findMany();
@@ -257,6 +373,7 @@ export async function createVetWithUser(data: Vet) {
 
       const vet = vetUser.vet;
 
+      revalidatePath("/app/pets");
       return { vetUser, success: true, vet };
     }
 
@@ -296,6 +413,7 @@ export async function updateVet(data: Vet, vetId: number) {
         },
       });
 
+      revalidatePath("/app/pets");
       return {
         updatedvet,
         success: true,
@@ -313,8 +431,9 @@ export async function updateVet(data: Vet, vetId: number) {
   }
 }
 
-// PETS
-
+/****************************************/
+/*                Pets                  */
+/****************************************/
 export async function getPets() {
   try {
     const pets = await prisma.pet.findMany();
@@ -336,6 +455,7 @@ export async function createPet(data: Pet) {
       });
 
       if (pet) {
+        revalidatePath("/app/pets");
         return { pet, success: true };
       }
     }
@@ -359,6 +479,7 @@ export async function updatePet(data: Pet) {
         data: data,
       });
 
+      revalidatePath("/app/pets");
       return { updatedPet, success: true };
     }
 
@@ -376,6 +497,7 @@ export async function deletePet(petId: number) {
         id: petId,
       },
     });
+    revalidatePath("/app/pets");
   } catch (error) {
     console.log("deletePet", error);
     return { success: false };

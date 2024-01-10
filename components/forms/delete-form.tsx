@@ -23,16 +23,12 @@ export default function DeleteForm({
   const pet = useAppSelector((state) => state.form.pet);
   const pets = useAppSelector((state) => state.pets.pets);
   const dispatch = useAppDispatch();
-  const deleteUserWithId = deleteUser.bind(null, userId);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (type === "owner" || type === "vet") {
-      await deleteUser(userId);
-
-      type === "owner" && dispatch(removeOwnerByUserIdSlice(userId));
-      type === "vet" && dispatch(removeVetByUserIdSlice(userId));
+      await deleteUser(userId, `/app/${type}s`);
       toast.custom((t) => (
         <Toast
           t={t}
@@ -44,13 +40,13 @@ export default function DeleteForm({
       ));
     } else {
       if (pet && pets) {
-        const petIndex = pets.findIndex((p) => p.id === pet.id);
-        dispatch(removePetSlice(petIndex));
         await deletePet(pet.id);
         toast.custom((t) => (
           <Toast
             t={t}
-            message={`${type} was deleted successfully`}
+            message={`${type[0].toUpperCase()}${type.slice(
+              1,
+            )} was deleted successfully`}
             type="success"
           />
         ));
