@@ -84,6 +84,7 @@ export default function OwnerForm() {
         type: "custom",
         message: "That email is already being used",
       });
+      return;
     }
 
     let wasUploaded = false;
@@ -93,7 +94,6 @@ export default function OwnerForm() {
     }
 
     const { ownerUser, success, owner } = await createOwnerWithUser(data);
-    console.log("imageURL: ", data.imageUrl);
 
     if (!success || !ownerUser || !owner) {
       console.log("Owner was not created.");
@@ -115,19 +115,28 @@ export default function OwnerForm() {
   }
 
   const updateOwnerAsync = async (data: Owner) => {
+    let wasUploaded = false;
+
     if (file) {
-      await uploadBlob(data, file);
+      // delete old image from s3
+      if (data.imageUrl) {
+        await blobDelete(data.imageUrl);
+      }
+      wasUploaded = await uploadBlob(data, file);
     }
 
     const result = await updateOwner(data, data.id);
 
     if (!result?.success) {
-      // TODO: If blob was created
       console.log("Owner could not be updated");
 
       toast.custom((t) => (
         <Toast t={t} message="Owner could not be updated" type="danger" />
       ));
+
+      if (wasUploaded && data.imageUrl) {
+        await blobDelete(data.imageUrl);
+      }
       return;
     }
 
@@ -167,7 +176,6 @@ export default function OwnerForm() {
     );
     form.setValue("mobileNumber", owner.mobileNumber ? owner.mobileNumber : "");
     form.setValue("gender", owner.gender ? owner.gender : "");
-    // form.setValue("address", owner.address);
     form.setValue("imageUrl", owner.imageUrl ? owner.imageUrl : "");
   }
 

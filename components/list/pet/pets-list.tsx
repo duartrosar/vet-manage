@@ -67,7 +67,7 @@ export default function PetsList({ pets }: { pets?: Pet[] }) {
                       <TableData className="pl-6">
                         {pet?.imageUrl ? (
                           <Image
-                            className="flex-none rounded-full bg-cerulean-950"
+                            className="h-[50px] w-[50px] flex-none rounded-full bg-cerulean-950"
                             src={pet?.imageUrl}
                             width={50}
                             height={50}

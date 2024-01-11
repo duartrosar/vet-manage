@@ -7,7 +7,6 @@ import { Vet } from "@prisma/client";
 import { format } from "date-fns";
 import Image from "next/image";
 import React, { useEffect } from "react";
-import VetsListHeader from "./vets-list-header";
 import Table from "@/components/table";
 import TableHead from "@/components/table/table-head";
 import TableBody from "@/components/table/table-body";
@@ -76,7 +75,7 @@ export default function VetsList({ vets }: { vets?: Vet[] }) {
                       <TableData className="pl-6">
                         {vet?.imageUrl ? (
                           <Image
-                            className="flex-none rounded-full bg-cerulean-950"
+                            className="h-[50px] w-[50px] flex-none rounded-full bg-cerulean-950"
                             src={vet?.imageUrl}
                             width={50}
                             height={50}

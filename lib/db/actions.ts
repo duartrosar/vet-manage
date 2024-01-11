@@ -373,7 +373,7 @@ export async function createVetWithUser(data: Vet) {
 
       const vet = vetUser.vet;
 
-      revalidatePath("/app/pets");
+      revalidatePath("/app/vets");
       return { vetUser, success: true, vet };
     }
 
@@ -413,7 +413,7 @@ export async function updateVet(data: Vet, vetId: number) {
         },
       });
 
-      revalidatePath("/app/pets");
+      revalidatePath("/app/vets");
       return {
         updatedvet,
         success: true,

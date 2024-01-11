@@ -1,7 +1,13 @@
 "use client";
 
 import { genderOptions } from "@/lib/constants";
-import { createVetWithUser, getUser, updateVet } from "@/lib/db/actions";
+import {
+  blobDelete,
+  blobUpload,
+  createVetWithUser,
+  getUser,
+  updateVet,
+} from "@/lib/db/actions";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setVetFormIsOpen } from "@/lib/redux/slices/form-slice";
 import { addVetSlice, updateVetSlice } from "@/lib/redux/slices/vets-slice";
@@ -38,7 +44,6 @@ export default function VetForm() {
   const [emailError, setEmailError] = useState("");
   const { pending } = useFormStatus();
   const [file, setFile] = useState<File>();
-  const options = genderOptions;
 
   const form = useForm<FormData>({
     defaultValues: {
@@ -64,12 +69,9 @@ export default function VetForm() {
   }, []);
 
   async function onSubmit(data: Vet) {
-    // TODO: Uncomment this
-    // if (file) {
-    //   data.imageUrl = await blobUpload();
-    // }
     if (vet) {
       data.id = vet.id;
+      data.imageUrl = vet.imageUrl ? vet.imageUrl : "";
       await updateVetAsync(data);
     } else {
       await addVetAsync(data);
@@ -81,22 +83,34 @@ export default function VetForm() {
 
     if (user) {
       console.log("Existing User: ", user);
-      setEmailError("That email is already being used");
+
+      form.setError("email", {
+        type: "custom",
+        message: "That email is already being used",
+      });
       return;
+    }
+
+    let wasUploaded = false;
+
+    if (file) {
+      wasUploaded = await uploadBlob(data, file);
     }
 
     const { vetUser, success, vet } = await createVetWithUser(data);
-    // console.log("vetUser: ", vetUser.;
 
     if (!success || !vetUser || !vet) {
-      // TODO: if couldn't create Vet, but blob was created then delete blob
-      console.log("Something went wrong");
-      // throw new Error("Something went wrong");
       console.log("Vet was not created.");
+      toast.custom((t) => (
+        <Toast t={t} message="Vet was not created." type="danger" />
+      ));
+
+      if (wasUploaded && data.imageUrl) {
+        await blobDelete(data.imageUrl);
+      }
       return;
     }
 
-    dispatch(addVetSlice(vet));
     dispatch(setVetFormIsOpen(false));
 
     toast.custom((t) => (
@@ -105,24 +119,30 @@ export default function VetForm() {
   };
 
   const updateVetAsync = async (data: Vet) => {
-    console.log("Vet data: ", data);
-    if (!data.id) {
-      console.log(
-        "User was not updated, please refresh the page and try again;",
-      );
-      return;
+    let wasUploaded = false;
+
+    if (file) {
+      // delete old image from s3
+      if (data.imageUrl) {
+        await blobDelete(data.imageUrl);
+      }
+      wasUploaded = await uploadBlob(data, file);
     }
-    // TODO: Don't allow email to be edited???
     const result = await updateVet(data, data.id);
 
     if (!result?.success) {
-      // TODO: figure out a way to check if the image changed or not, or if the user had an image already
-      // TODO: If blob was created
-      console.log("Something went wrong");
-      throw new Error("Something went wrong");
+      console.log("Vet could not be updated");
+
+      toast.custom((t) => (
+        <Toast t={t} message="Vet could not be updated" type="danger" />
+      ));
+
+      if (wasUploaded && data.imageUrl) {
+        await blobDelete(data.imageUrl);
+      }
+      return;
     }
 
-    dispatch(updateVetSlice(data));
     dispatch(setVetFormIsOpen(false));
 
     toast.custom((t) => (
@@ -141,8 +161,25 @@ export default function VetForm() {
     form.setValue("email", vet.email);
     form.setValue("mobileNumber", vet.mobileNumber ? vet.mobileNumber : "");
     form.setValue("gender", vet.gender ? vet.gender : "");
-    // form.setValue("address", vet.address);
     form.setValue("imageUrl", vet.imageUrl ? vet.imageUrl : "");
+  }
+
+  async function uploadBlob(data: Vet, file: File) {
+    const formData = new FormData();
+
+    formData.append("file", file);
+
+    const url = await blobUpload(formData);
+
+    if (!url) {
+      toast.custom((t) => (
+        <Toast t={t} message="Error uploading image" type="danger" />
+      ));
+      return false;
+    }
+
+    data.imageUrl = url;
+    return true;
   }
 
   return (
@@ -217,6 +254,7 @@ export default function VetForm() {
                     <ControlledTextInput
                       label="Email"
                       {...field}
+                      readOnly={vet ? true : false}
                       placeholder="Email"
                       error={form.formState.errors.email}
                     />
