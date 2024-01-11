@@ -7,7 +7,6 @@ import ImageSelector from "../inputs/image-selector";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { useFormStatus } from "react-dom";
 import { blobDelete, blobUpload, createPet, updatePet } from "@/lib/db/actions";
-import { addPetSlice, updatePetSlice } from "@/lib/redux/slices/pets-slice";
 import { setPetFormIsOpen } from "@/lib/redux/slices/form-slice";
 import { toast } from "sonner";
 import Toast from "@/components/toast/toasters";

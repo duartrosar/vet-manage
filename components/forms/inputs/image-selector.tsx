@@ -29,7 +29,7 @@ export default function ImageSelector({
       <label className="pl-3 text-sm font-bold text-gray-500">
         Owner Image
       </label>
-      <div className="relative h-64 rounded-lg border-2 border-cerulean-100/25 p-3 hover:bg-cerulean-800 sm:h-96 lg:h-full">
+      <div className="relative h-64 rounded-lg border-2 border-cerulean-100/25 p-3 hover:bg-cerulean-800 md:h-96 lg:h-full">
         {imageUrl && (
           <img
             src={imageUrl}

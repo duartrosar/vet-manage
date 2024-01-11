@@ -14,7 +14,7 @@ export default function DashboardLayout({
   return (
     <Providers>
       <Navbar />
-      <div className="flex h-screen w-screen overflow-hidden bg-cerulean-950">
+      <div className="flex h-screen w-screen bg-cerulean-950">
         <Toaster
           closeButton
           expand
