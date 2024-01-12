@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from "react";
 import {
   blobDelete,
-  blobUpload,
   createOwnerWithUser,
+  getSignedURL,
   getUser,
   updateOwner,
 } from "@/lib/db/actions";
@@ -22,8 +22,10 @@ import Toast from "@/components/toast/toasters";
 import { Form, FormField } from "@/components/ui/form";
 import ControlledTextInput from "@/components/forms/inputs/controlled-text-input";
 import ControlledSelector from "@/components/forms/inputs/controlled-selector";
+import { computeSHA256 } from "@/lib/utils";
 
 interface FormData {
+  get(arg0: string): unknown;
   id: number;
   firstName: string;
   lastName: string;
@@ -152,7 +154,7 @@ export default function OwnerForm() {
 
     formData.append("file", file);
 
-    const url = await blobUpload(formData);
+    const url = await blobUpload(file);
 
     if (!url) {
       toast.custom((t) => (
@@ -163,6 +165,39 @@ export default function OwnerForm() {
 
     data.imageUrl = url;
     return true;
+  }
+
+  async function blobUpload(file: File) {
+    console.log("Uploading...");
+    try {
+      if (!(file instanceof File)) {
+        return;
+      }
+
+      const checksum = await computeSHA256(file);
+
+      const signedUrlResult = await getSignedURL(
+        file.type,
+        file.size,
+        checksum,
+      );
+
+      if (signedUrlResult.failure !== undefined) return;
+
+      const url = signedUrlResult.success?.url;
+
+      await fetch(url, {
+        method: "PUT",
+        body: file,
+        headers: {
+          "Content-Type": file.type,
+        },
+      });
+      console.log("Uploaded...");
+      return url.split("?")[0];
+    } catch (error) {
+      return;
+    }
   }
 
   function setValues(owner: Owner) {
