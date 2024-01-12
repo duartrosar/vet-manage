@@ -13,10 +13,10 @@ datasource db {
 }
 
 model UserRole {
-  id     Int   @id @default(autoincrement())
+  id     Int    @id @default(autoincrement())
   role   Roles
-  userId Int
-  User   User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
@@ -28,17 +28,37 @@ enum Roles {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
+  id        String     @id @default(cuid())
   firstName String
   lastName  String
   imageUrl  String?
   email     String     @unique
-  password  String
+  password  String?
   roles     UserRole[]
   isActive  Boolean    @default(false)
   hasEntity Boolean    @default(false)
+  accounts  Account[]
   owner     Owner?
   vet       Vet?
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @unique
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
 }
 
 model Owner {
@@ -52,7 +72,7 @@ model Owner {
   address      String?
   imageUrl     String?
   pets         Pet[]
-  userId       Int       @unique
+  userId       String    @unique
   user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
@@ -79,7 +99,7 @@ model Vet {
   mobileNumber String?
   address      String?
   imageUrl     String?
-  userId       Int       @unique
+  userId       String    @unique
   user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])

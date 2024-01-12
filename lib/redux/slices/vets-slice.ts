@@ -22,7 +22,7 @@ const vetsSlice = createSlice({
     removeVetSlice(state, action: PayloadAction<number>) {
       state.vets.splice(action.payload, 1);
     },
-    removeVetByUserIdSlice(state, action: PayloadAction<number>) {
+    removeVetByUserIdSlice(state, action: PayloadAction<string>) {
       const vet = state.vets.findIndex((vet) => vet.userId === action.payload);
 
       state.vets.splice(vet, 1);

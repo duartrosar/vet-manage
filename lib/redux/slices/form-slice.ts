@@ -10,7 +10,7 @@ interface FormState {
   owner: Owner | null;
   vet: Vet | null;
   pet: Pet | null;
-  userId: number;
+  userId: string;
 }
 
 const initialState: FormState = {
@@ -21,7 +21,7 @@ const initialState: FormState = {
   vet: null,
   pet: null,
   isDeleteFormOpen: false,
-  userId: 0,
+  userId: "",
 };
 
 const formSlice = createSlice({
@@ -49,7 +49,7 @@ const formSlice = createSlice({
     setDeleteFormIsOpen(state, action: PayloadAction<boolean>) {
       state.isDeleteFormOpen = action.payload;
     },
-    setUserId(state, action: PayloadAction<number>) {
+    setUserId(state, action: PayloadAction<string>) {
       state.userId = action.payload;
     },
   },

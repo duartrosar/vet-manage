@@ -1,7 +1,6 @@
 "use client";
 
-import React, { MouseEvent as ReactMouseEvent, useState } from "react";
-import { genderOptions } from "@/lib/constants";
+import React, { MouseEvent as ReactMouseEvent } from "react";
 import Image from "next/image";
 import {
   Popover,
@@ -11,7 +10,7 @@ import {
 import { FaUser } from "react-icons/fa6";
 import type { User } from "next-auth";
 import Link from "next/link";
-import { signOut } from "next-auth/react";
+import { logout } from "@/lib/db/actions";
 
 interface ProfileMenuProps {
   user: User;
@@ -57,7 +56,7 @@ export default function ProfileMenu({ user }: ProfileMenuProps) {
               <Link href="/">Account Settings</Link>
             </li>
             <li
-              onClick={() => signOut()}
+              onClick={async () => await logout()}
               className="w-full cursor-pointer rounded-lg px-3 py-2 text-gray-400 transition hover:bg-cerulean-800 hover:text-gray-200 hover:shadow-md"
             >
               Sign Out

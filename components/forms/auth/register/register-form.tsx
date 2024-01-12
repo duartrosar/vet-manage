@@ -4,19 +4,11 @@ import Input from "@/components/forms/inputs/input";
 import { RegisterProps } from "@/lib/types";
 import { registerSchema } from "@/lib/zod/zodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SignInResponse, signIn } from "next-auth/react";
 import { useFormStatus } from "react-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { error } from "console";
-import {
-  createOwnerWithUser,
-  getUser,
-  createUserWithOwner,
-} from "@/lib/db/actions";
-import { Owner } from "@prisma/client";
-import { generateOwnerFromUser } from "@/lib/utils";
+import { getUser, createUserWithOwner } from "@/lib/db/actions";
 
 export default function RegisterForm() {
   const searchParams = useSearchParams();

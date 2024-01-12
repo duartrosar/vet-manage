@@ -9,6 +9,7 @@ import { useFormStatus } from "react-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { login } from "@/lib/db/actions";
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
@@ -35,23 +36,10 @@ export default function LoginForm() {
 
   const processForm: SubmitHandler<LoginProps> = async (data: LoginProps) => {
     console.log(data);
-    const email = data.email;
-    const password = data.password;
 
-    try {
-      const res = await signIn("credentials", {
-        redirect: false,
-        email,
-        password,
-        callbackUrl,
-      });
+    const result = await login(data);
 
-      if (!res?.error) {
-        router.push(callbackUrl);
-      } else {
-        setLoginError("Invalid email or password");
-      }
-    } catch (error) {}
+    console.log("login result: ", result);
   };
 
   return (

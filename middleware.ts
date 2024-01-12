@@ -1,34 +1,41 @@
-// export { default } from "next-auth/middleware";
-// Ref: https://next-auth.js.org/configuration/nextjs#advanced-usage
+import NextAuth from "next-auth";
+import authConfig from "@/auth.config";
 
-import { withAuth, NextRequestWithAuth } from "next-auth/middleware";
-import { NextResponse } from "next/server";
+const { auth } = NextAuth(authConfig);
 
-export default withAuth(
-  // "withAuth" augments your "Request" with the user's token.
-  function middleware(request: NextRequestWithAuth) {
-    // console.log("NextUrl pahtname: ", request.nextUrl.pathname);
-    // console.log("NextAuth token", request.nextauth.token);
+import {
+  DEFAULT_LOGIN_REDIRECT,
+  apiAuthPrefix,
+  authRoutes,
+  publicRoutes,
+} from "@/routes";
 
-    const roles = request.nextauth.token?.roles.map((roles) =>
-      roles.role.toString(),
-    );
+export default auth((req) => {
+  // req.auth
+  const { nextUrl } = req;
+  const isLoggedin = !!req.auth;
 
-    // TODO: Need to this check per page/route and per role
-    if (
-      request.nextUrl.pathname.startsWith("/app/owners") &&
-      !roles?.includes("ADMIN")
-    ) {
-      return NextResponse.rewrite(new URL("/app/denied", request.url));
+  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+
+  if (isApiAuthRoute) return null;
+
+  if (isAuthRoute) {
+    if (isLoggedin) {
+      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
-  },
-  {
-    callbacks: {
-      authorized: ({ token }) => !!token,
-    },
-  },
-);
+    return null;
+  }
 
+  if (!isLoggedin && !isPublicRoute) {
+    return Response.redirect(new URL("/login", nextUrl));
+  }
+
+  return null;
+});
+
+// Optionally, don't invoke Middleware on some paths
 export const config = {
-  matcher: "/app/:path*",
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };

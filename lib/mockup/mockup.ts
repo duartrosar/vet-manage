@@ -11,7 +11,7 @@ export const data: Owner[] = [
     gender: "Prefer not to say",
     email: "JohnDoe@fakemail.com",
     address: "Fake address, 17",
-    userId: 1,
+    userId: "",
   },
   {
     id: 2,
@@ -23,7 +23,7 @@ export const data: Owner[] = [
     gender: "Prefer not to say",
     email: "JaneSmith@fakemail.com",
     address: "Fake address, 17",
-    userId: 0,
+    userId: "",
   },
   {
     id: 3,
@@ -35,7 +35,7 @@ export const data: Owner[] = [
     gender: "Prefer not to say",
     email: "Michaelnson@fakemail.com",
     address: "Fake address, 17",
-    userId: 0,
+    userId: "",
   },
   {
     id: 4,
@@ -47,7 +47,7 @@ export const data: Owner[] = [
     gender: "Prefer not to say",
     email: "Emilyavis@fakemail.com",
     address: "Fake address, 17",
-    userId: 0,
+    userId: "",
   },
   {
     id: 5,
@@ -59,7 +59,7 @@ export const data: Owner[] = [
     gender: "Prefer not to say",
     email: "Danielown@fakemail.com",
     address: "Fake address, 17",
-    userId: 0,
+    userId: "",
   },
   {
     id: 6,
@@ -71,7 +71,7 @@ export const data: Owner[] = [
     gender: "Prefer not to say",
     email: "Olivialler@fakemail.com",
     address: "Fake address, 17",
-    userId: 0,
+    userId: "",
   },
   {
     id: 7,
@@ -83,7 +83,7 @@ export const data: Owner[] = [
     gender: "Prefer not to say",
     email: "Christopher@fakemail.com",
     address: "Fake address, 17",
-    userId: 0,
+    userId: "",
   },
   {
     id: 8,
@@ -95,7 +95,7 @@ export const data: Owner[] = [
     gender: "Prefer not to say",
     email: "Sophiartinez@fakemail.com",
     address: "Fake address, 17",
-    userId: 0,
+    userId: "",
   },
   {
     id: 9,
@@ -107,7 +107,7 @@ export const data: Owner[] = [
     gender: "Prefer not to say",
     email: "Matthewerson@fakemail.com",
     address: "Fake address, 17",
-    userId: 0,
+    userId: "",
   },
   {
     id: 10,
@@ -119,6 +119,6 @@ export const data: Owner[] = [
     gender: "Prefer not to say",
     email: "AvaTaylor@fakemail.com",
     address: "Fake address, 17",
-    userId: 0,
+    userId: "",
   },
 ];

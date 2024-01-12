@@ -35,7 +35,7 @@ interface FormData {
   mobileNumber: string;
   address: string;
   imageUrl: string;
-  userId: number;
+  userId: string;
 }
 
 export default function VetForm() {

@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
-import { options } from "@/lib/auth/options";
-import { getServerSession } from "next-auth";
+import { auth } from "@/auth";
 
 export async function GET(request: Request) {
-  const session = await getServerSession(options);
+  const session = await auth();
   console.log("GET API", session);
 
   if (!session) {

@@ -36,7 +36,7 @@ export function propertiesOf<TObj>(_obj: TObj | undefined = undefined) {
 
 export function generateOwnerFromUser(
   data: RegisterProps,
-  userId: number,
+  userId: string,
 ): Owner {
   const owner: Owner = {
     id: 0,

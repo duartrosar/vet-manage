@@ -1,13 +1,17 @@
 "use server";
 
 import { Owner, Pet, PrismaClient, User, Vet } from "@prisma/client";
-import { ownerSchema, petSchema, vetSchema } from "../zod/zodSchemas";
-import { RegisterProps } from "../types";
-import { hash } from "bcrypt";
-import prisma from "@/lib/db/prisma";
+import {
+  loginSchema,
+  ownerSchema,
+  petSchema,
+  vetSchema,
+} from "../zod/zodSchemas";
+import { LoginProps, RegisterProps } from "@/lib/types";
+import { hash } from "bcryptjs";
+import { db } from "@/lib/db/prisma";
 import { revalidatePath } from "next/cache";
-import { getServerSession } from "next-auth";
-import { options } from "../auth/options";
+import { auth, signOut } from "@/auth";
 import {
   S3Client,
   PutObjectCommand,
@@ -15,13 +19,53 @@ import {
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import cryto from "crypto";
-import { computeSHA256 } from "../utils";
+import { computeSHA256 } from "@/lib/utils";
+import { signIn } from "@/auth";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { AuthError } from "next-auth";
 
 export interface Response {
   owners?: Owner[];
   user?: User;
   pets?: Pet[];
   success: boolean;
+}
+
+/****************************************/
+/*               Auth                  */
+/****************************************/
+
+export async function login(data: LoginProps) {
+  const validatedFields = loginSchema.safeParse(data);
+
+  if (!validatedFields.success) {
+    return { error: "Invalid Fields" };
+  }
+
+  const { email, password } = validatedFields.data;
+
+  try {
+    await signIn("credentials", {
+      email,
+      password,
+      redirectTo: DEFAULT_LOGIN_REDIRECT,
+    });
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return { error: "Invalid Credentials" };
+        default:
+          return { error: "Something went wrong" };
+      }
+    }
+
+    throw error;
+  }
+}
+
+export async function logout() {
+  await signOut();
 }
 
 /****************************************/
@@ -47,7 +91,7 @@ export async function getSignedURL(
   size: number,
   checksum: string,
 ) {
-  const session = await getServerSession(options);
+  const session = await auth();
 
   if (!session) {
     return { failure: "Not Authenticated" };
@@ -70,7 +114,7 @@ export async function getSignedURL(
     ContentLength: size,
     ChecksumSHA256: checksum,
     Metadata: {
-      userId: session.user.id,
+      userId: session.user?.id ?? "",
     },
   });
 
@@ -127,7 +171,7 @@ export async function createUserWithOwner(userRegister: RegisterProps) {
   try {
     const password = await hash(userRegister.password, 12);
 
-    const user = await prisma.user.create({
+    const user = await db.user.create({
       data: {
         firstName: userRegister.firstName,
         lastName: userRegister.lastName,
@@ -157,7 +201,7 @@ export async function createUserWithOwner(userRegister: RegisterProps) {
 
 export async function getUser(email: string) {
   try {
-    const user = await prisma.user.findUnique({
+    const user = await db.user.findUnique({
       where: {
         email: email,
       },
@@ -170,11 +214,11 @@ export async function getUser(email: string) {
   }
 }
 
-export async function deleteUser(userId: number, pathToRevalidate: string) {
+export async function deleteUser(userId: string, pathToRevalidate: string) {
   console.log("userId", userId);
 
   try {
-    await prisma.user.delete({
+    await db.user.delete({
       where: {
         id: userId,
       },
@@ -192,7 +236,7 @@ export async function deleteUser(userId: number, pathToRevalidate: string) {
 /****************************************/
 export async function getOwners(): Promise<Response> {
   try {
-    const owners = await prisma.owner.findMany();
+    const owners = await db.owner.findMany();
     return { owners: owners, success: true };
   } catch (error) {
     console.log("getOwners", error);
@@ -202,7 +246,7 @@ export async function getOwners(): Promise<Response> {
 
 export async function getOwner(ownerId: number) {
   try {
-    const owner = await prisma.owner.findUnique({
+    const owner = await db.owner.findUnique({
       where: {
         id: ownerId,
       },
@@ -222,7 +266,7 @@ export async function createOwnerWithUser(data: Owner) {
     if (result.success) {
       const password = await hash("", 12);
 
-      const ownerUser = await prisma.user.create({
+      const ownerUser = await db.user.create({
         data: {
           email: data.email,
           firstName: data.firstName,
@@ -268,7 +312,7 @@ export async function updateOwner(data: Owner, ownerId: number) {
     const result = ownerSchema.safeParse(data);
 
     if (result.success) {
-      const updatedOwner = await prisma.owner.update({
+      const updatedOwner = await db.owner.update({
         where: {
           id: ownerId,
         },
@@ -314,7 +358,7 @@ export async function updateOwner(data: Owner, ownerId: number) {
 /****************************************/
 export async function getVets() {
   try {
-    const vets = await prisma.vet.findMany();
+    const vets = await db.vet.findMany();
     return { vets: vets, success: true };
   } catch (error) {
     console.log("getVets", error);
@@ -324,7 +368,7 @@ export async function getVets() {
 
 export async function getVet(vetId: number) {
   try {
-    const vet = await prisma.vet.findUnique({
+    const vet = await db.vet.findUnique({
       where: {
         id: vetId,
       },
@@ -344,7 +388,7 @@ export async function createVetWithUser(data: Vet) {
     if (result.success) {
       const password = await hash("", 12);
 
-      const vetUser = await prisma.user.create({
+      const vetUser = await db.user.create({
         data: {
           email: data.email,
           firstName: data.firstName,
@@ -390,7 +434,7 @@ export async function updateVet(data: Vet, vetId: number) {
     const result = vetSchema.safeParse(data);
 
     if (result.success) {
-      const updatedvet = await prisma.vet.update({
+      const updatedvet = await db.vet.update({
         where: {
           id: vetId,
         },
@@ -436,7 +480,7 @@ export async function updateVet(data: Vet, vetId: number) {
 /****************************************/
 export async function getPets() {
   try {
-    const pets = await prisma.pet.findMany();
+    const pets = await db.pet.findMany();
 
     return { pets: pets, success: true };
   } catch (error) {
@@ -450,7 +494,7 @@ export async function createPet(data: Pet) {
     const result = petSchema.safeParse(data);
 
     if (result.success) {
-      const pet = await prisma.pet.create({
+      const pet = await db.pet.create({
         data: data,
       });
 
@@ -472,7 +516,7 @@ export async function updatePet(data: Pet) {
     const result = petSchema.safeParse(data);
 
     if (result) {
-      const updatedPet = await prisma.pet.update({
+      const updatedPet = await db.pet.update({
         where: {
           id: data.id,
         },
@@ -492,7 +536,7 @@ export async function updatePet(data: Pet) {
 
 export async function deletePet(petId: number) {
   try {
-    await prisma.pet.delete({
+    await db.pet.delete({
       where: {
         id: petId,
       },

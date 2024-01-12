@@ -21,7 +21,7 @@ const ownersSlice = createSlice({
     removeOwnerSlice(state, action: PayloadAction<number>) {
       state.owners.splice(action.payload, 1);
     },
-    removeOwnerByUserIdSlice(state, action: PayloadAction<number>) {
+    removeOwnerByUserIdSlice(state, action: PayloadAction<string>) {
       const owner = state.owners.findIndex(
         (owner) => owner.userId === action.payload,
       );
