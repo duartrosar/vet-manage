@@ -173,8 +173,7 @@ export async function createUserWithOwner(userRegister: RegisterProps) {
 
     const user = await db.user.create({
       data: {
-        firstName: userRegister.firstName,
-        lastName: userRegister.lastName,
+        name: userRegister.firstName + " " + userRegister.lastName,
         email: userRegister.email,
         password: password,
         isActive: true,
@@ -269,9 +268,8 @@ export async function createOwnerWithUser(data: Owner) {
       const ownerUser = await db.user.create({
         data: {
           email: data.email,
-          firstName: data.firstName,
-          lastName: data.lastName,
-          imageUrl: data.imageUrl,
+          name: data.firstName + " " + data.lastName,
+          image: data.imageUrl,
           password: password,
           hasEntity: true,
           roles: {
@@ -327,9 +325,8 @@ export async function updateOwner(data: Owner, ownerId: number) {
           imageUrl: data.imageUrl,
           user: {
             update: {
-              firstName: data.firstName,
-              lastName: data.lastName,
-              imageUrl: data.imageUrl,
+              name: data.firstName + " " + data.lastName,
+              image: data.imageUrl,
             },
           },
         },
@@ -391,9 +388,8 @@ export async function createVetWithUser(data: Vet) {
       const vetUser = await db.user.create({
         data: {
           email: data.email,
-          firstName: data.firstName,
-          lastName: data.lastName,
-          imageUrl: data.imageUrl,
+          name: data.firstName + " " + data.lastName,
+          image: data.imageUrl,
           password: password,
           hasEntity: true,
           roles: {
@@ -449,9 +445,8 @@ export async function updateVet(data: Vet, vetId: number) {
           imageUrl: data.imageUrl,
           user: {
             update: {
-              firstName: data.firstName,
-              lastName: data.lastName,
-              imageUrl: data.imageUrl,
+              name: data.firstName + " " + data.lastName,
+              image: data.imageUrl,
             },
           },
         },
