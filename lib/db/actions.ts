@@ -105,8 +105,6 @@ export async function getSignedURL(
     return { failure: "File too large" };
   }
 
-  const fileName = generateFileName();
-
   const putObjectCommand = new PutObjectCommand({
     Bucket: process.env.AWS_S3_BUCKET_NAME,
     Key: generateFileName(),
@@ -125,7 +123,7 @@ export async function getSignedURL(
   return { success: { url: signedUrl } };
 }
 
-export async function blobUpload(formData: FormData) {
+export async function checkFileValidity(formData: FormData) {
   try {
     const file = formData.get("file");
 
@@ -141,15 +139,7 @@ export async function blobUpload(formData: FormData) {
 
     const url = signedUrlResult.success?.url;
 
-    await fetch(url, {
-      method: "PUT",
-      body: file,
-      headers: {
-        "Content-Type": file.type,
-      },
-    });
-
-    return url.split("?")[0];
+    return url;
   } catch (error) {
     return;
   }

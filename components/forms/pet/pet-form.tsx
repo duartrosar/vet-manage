@@ -6,7 +6,12 @@ import { useForm } from "react-hook-form";
 import ImageSelector from "../inputs/image-selector";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { useFormStatus } from "react-dom";
-import { blobDelete, blobUpload, createPet, updatePet } from "@/lib/db/actions";
+import {
+  blobDelete,
+  checkFileValidity,
+  createPet,
+  updatePet,
+} from "@/lib/db/actions";
 import { setPetFormIsOpen } from "@/lib/redux/slices/form-slice";
 import { toast } from "sonner";
 import Toast from "@/components/toast/toasters";
@@ -60,7 +65,10 @@ export default function PetForm({ owners }: { owners?: Owner[] | null }) {
     let wasUploaded = false;
 
     if (file) {
-      wasUploaded = await uploadBlob(data, file);
+      const { url, success } = await uploadBlob(file);
+
+      wasUploaded = success;
+      data.imageUrl = url ?? null;
     }
 
     const { pet, success } = await createPet(data);
@@ -93,8 +101,10 @@ export default function PetForm({ owners }: { owners?: Owner[] | null }) {
       if (data.imageUrl) {
         await blobDelete(data.imageUrl);
       }
-      console.log("this ran");
-      wasUploaded = await uploadBlob(data, file);
+      const { url, success } = await uploadBlob(file);
+
+      wasUploaded = success;
+      data.imageUrl = url ?? null;
     }
 
     const result = await updatePet(data);
@@ -123,22 +133,30 @@ export default function PetForm({ owners }: { owners?: Owner[] | null }) {
     form.setValue("imageUrl", pet.imageUrl ? pet.imageUrl : "");
   }
 
-  async function uploadBlob(data: Pet, file: File) {
+  async function uploadBlob(file: File) {
     const formData = new FormData();
-
     formData.append("file", file);
 
-    const url = await blobUpload(formData);
+    const url = await checkFileValidity(formData);
 
-    if (!url) {
+    if (!url) return { url, success: false };
+
+    const result = await fetch(url, {
+      method: "PUT",
+      body: file,
+      headers: {
+        "Content-Type": file.type,
+      },
+    });
+
+    if (!result.url) {
       toast.custom((t) => (
         <Toast t={t} message="Error uploading image" type="danger" />
       ));
-      return false;
+      return { url, success: false };
     }
 
-    data.imageUrl = url;
-    return true;
+    return { url: result.url.split("?")[0], success: true };
   }
 
   return (

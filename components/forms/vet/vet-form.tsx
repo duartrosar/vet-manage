@@ -3,14 +3,13 @@
 import { genderOptions } from "@/lib/constants";
 import {
   blobDelete,
-  blobUpload,
+  checkFileValidity,
   createVetWithUser,
   getUser,
   updateVet,
 } from "@/lib/db/actions";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setVetFormIsOpen } from "@/lib/redux/slices/form-slice";
-import { addVetSlice, updateVetSlice } from "@/lib/redux/slices/vets-slice";
 import { vetSchema } from "@/lib/zod/zodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Vet } from "@prisma/client";
@@ -94,7 +93,10 @@ export default function VetForm() {
     let wasUploaded = false;
 
     if (file) {
-      wasUploaded = await uploadBlob(data, file);
+      const { url, success } = await uploadBlob(file);
+
+      wasUploaded = success;
+      data.imageUrl = url ?? null;
     }
 
     const { vetUser, success, vet } = await createVetWithUser(data);
@@ -126,7 +128,10 @@ export default function VetForm() {
       if (data.imageUrl) {
         await blobDelete(data.imageUrl);
       }
-      wasUploaded = await uploadBlob(data, file);
+      const { url, success } = await uploadBlob(file);
+
+      wasUploaded = success;
+      data.imageUrl = url ?? null;
     }
     const result = await updateVet(data, data.id);
 
@@ -164,22 +169,30 @@ export default function VetForm() {
     form.setValue("imageUrl", vet.imageUrl ? vet.imageUrl : "");
   }
 
-  async function uploadBlob(data: Vet, file: File) {
+  async function uploadBlob(file: File) {
     const formData = new FormData();
-
     formData.append("file", file);
 
-    const url = await blobUpload(formData);
+    const url = await checkFileValidity(formData);
 
-    if (!url) {
+    if (!url) return { url, success: false };
+
+    const result = await fetch(url, {
+      method: "PUT",
+      body: file,
+      headers: {
+        "Content-Type": file.type,
+      },
+    });
+
+    if (!result.url) {
       toast.custom((t) => (
         <Toast t={t} message="Error uploading image" type="danger" />
       ));
-      return false;
+      return { url, success: false };
     }
 
-    data.imageUrl = url;
-    return true;
+    return { url: result.url.split("?")[0], success: true };
   }
 
   return (

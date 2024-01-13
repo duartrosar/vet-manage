@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from "react";
 import {
   blobDelete,
+  checkFileValidity,
   createOwnerWithUser,
-  getSignedURL,
   getUser,
   updateOwner,
 } from "@/lib/db/actions";
@@ -22,10 +22,8 @@ import Toast from "@/components/toast/toasters";
 import { Form, FormField } from "@/components/ui/form";
 import ControlledTextInput from "@/components/forms/inputs/controlled-text-input";
 import ControlledSelector from "@/components/forms/inputs/controlled-selector";
-import { computeSHA256 } from "@/lib/utils";
 
-interface FormData {
-  get(arg0: string): unknown;
+interface OnwerFormData {
   id: number;
   firstName: string;
   lastName: string;
@@ -43,7 +41,7 @@ export default function OwnerForm() {
   const dispatch = useAppDispatch();
   const [file, setFile] = useState<File>();
 
-  const form = useForm<FormData>({
+  const form = useForm<OnwerFormData>({
     defaultValues: {
       id: 0,
       firstName: "",
@@ -66,7 +64,7 @@ export default function OwnerForm() {
     }
   }, []);
 
-  async function onSubmit(data: FormData) {
+  async function onSubmit(data: OnwerFormData) {
     if (owner) {
       data.id = owner.id;
       data.imageUrl = owner.imageUrl ? owner.imageUrl : "";
@@ -92,7 +90,10 @@ export default function OwnerForm() {
     let wasUploaded = false;
 
     if (file) {
-      wasUploaded = await uploadBlob(data, file);
+      const { url, success } = await uploadBlob(file);
+
+      wasUploaded = success;
+      data.imageUrl = url ?? null;
     }
 
     const { ownerUser, success, owner } = await createOwnerWithUser(data);
@@ -124,7 +125,10 @@ export default function OwnerForm() {
       if (data.imageUrl) {
         await blobDelete(data.imageUrl);
       }
-      wasUploaded = await uploadBlob(data, file);
+      const { url, success } = await uploadBlob(file);
+
+      wasUploaded = success;
+      data.imageUrl = url ?? null;
     }
 
     const result = await updateOwner(data, data.id);
@@ -149,55 +153,30 @@ export default function OwnerForm() {
     ));
   };
 
-  async function uploadBlob(data: Owner, file: File) {
+  async function uploadBlob(file: File) {
     const formData = new FormData();
-
     formData.append("file", file);
 
-    const url = await blobUpload(file);
+    const url = await checkFileValidity(formData);
 
-    if (!url) {
+    if (!url) return { url, success: false };
+
+    const result = await fetch(url, {
+      method: "PUT",
+      body: file,
+      headers: {
+        "Content-Type": file.type,
+      },
+    });
+
+    if (!result.url) {
       toast.custom((t) => (
         <Toast t={t} message="Error uploading image" type="danger" />
       ));
-      return false;
+      return { url, success: false };
     }
 
-    data.imageUrl = url;
-    return true;
-  }
-
-  async function blobUpload(file: File) {
-    console.log("Uploading...");
-    try {
-      if (!(file instanceof File)) {
-        return;
-      }
-
-      const checksum = await computeSHA256(file);
-
-      const signedUrlResult = await getSignedURL(
-        file.type,
-        file.size,
-        checksum,
-      );
-
-      if (signedUrlResult.failure !== undefined) return;
-
-      const url = signedUrlResult.success?.url;
-
-      await fetch(url, {
-        method: "PUT",
-        body: file,
-        headers: {
-          "Content-Type": file.type,
-        },
-      });
-      console.log("Uploaded...");
-      return url.split("?")[0];
-    } catch (error) {
-      return;
-    }
+    return { url: result.url.split("?")[0], success: true };
   }
 
   function setValues(owner: Owner) {
@@ -267,7 +246,7 @@ export default function OwnerForm() {
                   />
                 )}
               />
-              <DatePicker<FormData>
+              <DatePicker<OnwerFormData>
                 label="Date Of Birth"
                 name="dateOfBirth"
                 dateValue={owner?.dateOfBirth}

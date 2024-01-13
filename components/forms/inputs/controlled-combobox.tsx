@@ -13,7 +13,7 @@ import {
 import { Owner } from "@prisma/client";
 import clsx from "clsx";
 import { Check, ChevronsUpDown } from "lucide-react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   FieldError,
   FieldValues,
@@ -53,6 +53,15 @@ export default function ControlledCombobox<T extends FieldValues>({
 }: ComboboxProps<T>) {
   const contentRef = useRef<HTMLDivElement>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [owner, setOwner] = useState<Owner>();
+
+  useEffect(() => {
+    if (value) {
+      const currentOwner = owners.find((owner) => owner.id === value);
+
+      setOwner(currentOwner);
+    }
+  }, [value]);
 
   useOnClickOutside(contentRef, (e: MouseEvent) => {
     const element = e.target as HTMLElement;
@@ -79,17 +88,30 @@ export default function ControlledCombobox<T extends FieldValues>({
           )}
         >
           <FormControl>
-            <span className="flex w-full items-center justify-between">
-              {value
-                ? `${owners.find((owner) => owner.id === value)
-                    ?.firstName} ${owners.find((owner) => owner.id === value)
-                    ?.lastName}`
-                : "Select Owner"}
+            <div className="flex w-full items-center justify-between">
+              <div className="flex items-center gap-3">
+                {owner?.imageUrl ? (
+                  <Image
+                    className="h-[30px] w-[30px] flex-none rounded-full bg-cerulean-950"
+                    src={owner?.imageUrl}
+                    width={30}
+                    height={30}
+                    alt="Profile picture"
+                  />
+                ) : (
+                  <span className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-cerulean-950">
+                    <FaUser className="h-[15px] w-[15px] text-cerulean-500/50" />
+                  </span>
+                )}
+                {owner
+                  ? `${owner.firstName} ${owner.lastName}`
+                  : "Select Owner"}
+              </div>
               <ChevronsUpDown
                 id="icon"
                 className="ml-2 h-4 w-4 shrink-0 opacity-50"
               />
-            </span>
+            </div>
           </FormControl>
         </PopoverTrigger>
         <PopoverContent
@@ -108,13 +130,14 @@ export default function ControlledCombobox<T extends FieldValues>({
               {owners.map((owner) => (
                 <CommandItem
                   className="rounded-lg hover:bg-cerulean-800 hover:text-gray-200 aria-selected:bg-cerulean-800"
-                  value={`${owner.firstName} ${owner.lastName}`}
+                  value={`${owner.id}`}
                   key={owner.id}
                   onSelect={() => {
                     setValue(
                       "ownerId" as Path<T>,
                       owner.id as PathValue<T, Path<T>>,
                     );
+                    // setOwner(owner);
                     clearErrors("ownerId" as Path<T>);
                     setDropdownOpen(false);
                   }}
@@ -128,7 +151,7 @@ export default function ControlledCombobox<T extends FieldValues>({
                   <div className="flex items-center gap-3">
                     {owner?.imageUrl ? (
                       <Image
-                        className="flex-none rounded-full bg-cerulean-950"
+                        className="h-[30px] w-[30px] flex-none rounded-full bg-cerulean-950"
                         src={owner?.imageUrl}
                         width={30}
                         height={30}

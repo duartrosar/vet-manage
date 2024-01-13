@@ -12,7 +12,7 @@ interface Toaster {
 
 function Toast({ t, message, type }: Toaster) {
   return (
-    <div className="flex items-center justify-center gap-12 rounded-lg border-2 border-cerulean-200/25 bg-cerulean-900 px-4 py-5 text-cerulean-100 shadow-lg hover:scale-100">
+    <div className="z-[100] flex items-center justify-center gap-12 rounded-lg border-2 border-cerulean-200/25 bg-cerulean-900 px-4 py-5 text-cerulean-100 shadow-lg hover:scale-100">
       {type === "success" && <ToastSuccess message={message} />}
       {type === "danger" && <ToastDanger message={message} />}
 
