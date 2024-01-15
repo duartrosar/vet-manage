@@ -82,10 +82,10 @@ export const registerSchema = z.object({
     .string()
     .min(1, { message: "You must enter a password" })
     .max(50, "Max length is 50 characters"),
-  confirmPassword: z
-    .string()
-    .min(1, { message: "You must confirm your password" })
-    .max(50, "Max length is 50 characters"),
+  // confirmPassword: z
+  //   .string()
+  //   .min(1, { message: "You must confirm your password" })
+  //   .max(50, "Max length is 50 characters"),
 });
 
 export const changePasswordSchema = z.object({

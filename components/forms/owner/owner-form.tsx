@@ -285,14 +285,6 @@ export default function OwnerForm() {
                 )}
               />
             </div>
-            {/* <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
-              <Address<Owner> register={register} error={errors.address} />
-              <Address<Owner> register={register} error={errors.address} />
-            </div>  
-            <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
-              <Address<Owner> register={register} error={errors.address} />
-              <Address<Owner> register={register} error={errors.address} />
-            </div>*/}
           </div>
           <div className="col-start-2 gap-1 text-end lg:text-start">
             <button
