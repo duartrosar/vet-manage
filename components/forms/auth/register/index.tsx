@@ -6,7 +6,7 @@ import Separator from "../separator";
 
 export default function Register() {
   return (
-    <>
+    <div className="space-y-8">
       <h1 className="text-xl font-bold text-cerulean-100">Register</h1>
       <RegisterForm />
       <Separator />
@@ -17,6 +17,6 @@ export default function Register() {
           Sign In
         </Link>
       </div>
-    </>
+    </div>
   );
 }

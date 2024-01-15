@@ -10,6 +10,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { login } from "@/lib/db/actions";
+import Toast from "@/components/toast/toasters";
+import { toast } from "sonner";
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
@@ -32,11 +34,27 @@ export default function LoginForm() {
   const router = useRouter();
 
   const processForm: SubmitHandler<LoginProps> = async (data: LoginProps) => {
-    console.log(data);
+    console.log("Loggin in...");
 
     const result = await login(data);
 
-    console.log("login result: ", result);
+    if (result?.error) {
+      toast.custom((t) => <Toast t={t} message={result.error} type="danger" />);
+
+      return;
+    }
+
+    if (result?.success) {
+      toast.custom((t) => (
+        <Toast
+          t={t}
+          message="You must confirm your email address"
+          type="success"
+        />
+      ));
+      console.log("Logged in...");
+      return;
+    }
   };
 
   return (

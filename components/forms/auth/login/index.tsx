@@ -7,7 +7,7 @@ import Separator from "../separator";
 
 export default function Login() {
   return (
-    <>
+    <div className="space-y-8">
       <h1 className="text-xl font-bold text-cerulean-100 ">Welcome back!</h1>
       <LoginForm />
       <Separator />
@@ -30,6 +30,6 @@ export default function Login() {
           </Link>
         </div>
       </div>
-    </>
+    </div>
   );
 }

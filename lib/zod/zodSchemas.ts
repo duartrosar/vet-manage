@@ -78,6 +78,23 @@ export const registerSchema = z.object({
     .string()
     .email({ message: "You must enter an email" })
     .max(50, "Max length is 50 characters"),
-  password: z.string(),
-  confirmPassword: z.string(),
+  password: z
+    .string()
+    .min(1, { message: "You must enter a password" })
+    .max(50, "Max length is 50 characters"),
+  confirmPassword: z
+    .string()
+    .min(1, { message: "You must confirm your password" })
+    .max(50, "Max length is 50 characters"),
+});
+
+export const changePasswordSchema = z.object({
+  password: z
+    .string()
+    .min(1, { message: "You must enter a password" })
+    .max(50, "Max length is 50 characters"),
+  confirmPassword: z
+    .string()
+    .min(1, { message: "You must confirm your password" })
+    .max(50, "Max length is 50 characters"),
 });

@@ -17,7 +17,7 @@ export default function AuthFormContainer({
       </div>
 
       <div className="w-full max-w-lg rounded-xl bg-cerulean-950 p-8 sm:border-2 sm:border-cerulean-500/10 sm:shadow-2xl">
-        <div className="w-full space-y-8">{children}</div>
+        {children}
         {error && (
           <div
             className="mt-2

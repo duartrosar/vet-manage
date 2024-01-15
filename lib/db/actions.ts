@@ -23,6 +23,10 @@ import { computeSHA256 } from "@/lib/utils";
 import { signIn } from "@/auth";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { AuthError } from "next-auth";
+import { generateVerificationToken } from "./actions/token-actions";
+import { getUserByEmail } from "./utils";
+import { error } from "console";
+import { sendVerificationEmail } from "../mail";
 
 export interface Response {
   owners?: Owner[];
@@ -43,6 +47,24 @@ export async function login(data: LoginProps) {
   }
 
   const { email, password } = validatedFields.data;
+
+  const user = await getUserByEmail(email);
+
+  if (!user || !user.email || !user.password) {
+    return { error: "Account does not exist" };
+  }
+
+  if (!user.emailVerified) {
+    const verificationToken = await generateVerificationToken(user.email);
+
+    await sendVerificationEmail(
+      verificationToken.email,
+      verificationToken.token,
+      user.password ? true : false,
+    );
+
+    return { success: "Confirmation email sent!" };
+  }
 
   try {
     await signIn("credentials", {
@@ -181,6 +203,16 @@ export async function createUserWithOwner(userRegister: RegisterProps) {
       },
     });
 
+    const verificationToken = await generateVerificationToken(
+      userRegister.email,
+    );
+
+    await sendVerificationEmail(
+      verificationToken.email,
+      verificationToken.token,
+      true,
+    );
+
     return { user: user, success: true };
   } catch (error) {
     console.log("registerCustomerUser", error);
@@ -253,14 +285,11 @@ export async function createOwnerWithUser(data: Owner) {
     const result = ownerSchema.safeParse(data);
 
     if (result.success) {
-      const password = await hash("", 12);
-
       const ownerUser = await db.user.create({
         data: {
           email: data.email,
           name: data.firstName + " " + data.lastName,
           image: data.imageUrl,
-          password: password,
           hasEntity: true,
           roles: {
             create: { role: "CUSTOMER" },
@@ -280,6 +309,13 @@ export async function createOwnerWithUser(data: Owner) {
         },
         include: { owner: true },
       });
+
+      const verificationToken = await generateVerificationToken(data.email);
+
+      await sendVerificationEmail(
+        verificationToken.email,
+        verificationToken.token,
+      );
 
       const owner = ownerUser.owner;
 
@@ -373,14 +409,11 @@ export async function createVetWithUser(data: Vet) {
     const result = ownerSchema.safeParse(data);
 
     if (result.success) {
-      const password = await hash("", 12);
-
       const vetUser = await db.user.create({
         data: {
           email: data.email,
           name: data.firstName + " " + data.lastName,
           image: data.imageUrl,
-          password: password,
           hasEntity: true,
           roles: {
             create: { role: "EMPLOYEE" },
@@ -400,6 +433,13 @@ export async function createVetWithUser(data: Vet) {
         },
         include: { vet: true },
       });
+
+      const verificationToken = await generateVerificationToken(data.email);
+
+      await sendVerificationEmail(
+        verificationToken.email,
+        verificationToken.token,
+      );
 
       const vet = vetUser.vet;
 

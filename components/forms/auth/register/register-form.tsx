@@ -19,11 +19,7 @@ export default function RegisterForm() {
   const {
     register,
     handleSubmit,
-    watch,
-    reset,
-    setValue,
-    formState: { errors, isSubmitting },
-    clearErrors,
+    formState: { errors },
   } = useForm<RegisterProps>({
     defaultValues: {
       firstName: "",
@@ -62,8 +58,6 @@ export default function RegisterForm() {
         setRegisterError("User was not created");
         return;
       }
-
-      console.log("Created User ", user);
 
       if (success) {
         router.push("/app");
