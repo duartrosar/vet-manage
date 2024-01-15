@@ -7,9 +7,9 @@ export const sendVerificationEmail = async (
   token: string,
   isPasswordSet: boolean = false,
 ) => {
-  const confirmLink = `http://localhost:3000/auth/confirm-email?token=${token}&is-password-set=${
-    isPasswordSet ? 1 : 0
-  }`;
+  const confirmLink = `${
+    process.env.MAIL_DOMAIN
+  }/auth/confirm-email?token=${token}&is-password-set=${isPasswordSet ? 1 : 0}`;
 
   console.log(isPasswordSet ? 1 : 0);
 
