@@ -15,7 +15,7 @@ export default function DashboardLayout({
     <Providers>
       <Navbar />
       <div className="flex h-screen w-screen bg-cerulean-950">
-        <Toaster
+        {/* <Toaster
           closeButton
           expand
           toastOptions={{
@@ -26,7 +26,7 @@ export default function DashboardLayout({
             },
           }}
           duration={200000}
-        />
+        /> */}
         <SideBar />
         <Container>{children}</Container>
       </div>

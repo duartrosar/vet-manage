@@ -14,15 +14,12 @@ import { login } from "@/lib/db/actions";
 export default function LoginForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/app";
-  console.log("callbackUrl", callbackUrl);
+  console.log("callbackUrl: ", callbackUrl);
   const [loginError, setLoginError] = useState("");
   const { pending } = useFormStatus();
   const {
     register,
     handleSubmit,
-    watch,
-    reset,
-    setValue,
     formState: { errors, isSubmitting },
     clearErrors,
   } = useForm<LoginProps>({

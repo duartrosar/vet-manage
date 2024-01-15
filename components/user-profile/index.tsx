@@ -20,16 +20,15 @@ export default function ProfileMenu({ user }: ProfileMenuProps) {
   function handleClick(e: ReactMouseEvent<HTMLLIElement, MouseEvent>) {
     const element = e.target as HTMLElement;
     const text = element.innerHTML;
-    console.log(text);
   }
 
   return (
     <div className="">
       <Popover>
-        <PopoverTrigger className="mr-3 flex h-11 w-11 items-center justify-center rounded-full border border-cerulean-100/10 bg-transparent">
+        <PopoverTrigger className="mr-3 flex  h-11 w-11 items-center justify-center rounded-full border border-cerulean-100/10 bg-transparent">
           {user.image ? (
             <Image
-              className="flex-none rounded-full"
+              className="h-11 w-11 flex-none rounded-full"
               src={user.image}
               width={50}
               height={50}

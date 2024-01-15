@@ -11,7 +11,7 @@ export const publicRoutes = ["/"];
  * private part of the app
  * @type {string[]}
  */
-export const authRoutes = ["/login", "/register"];
+export const authRoutes = ["/login", "/register", "/auth-error"];
 
 /**
  * The prefix for API authentication routes

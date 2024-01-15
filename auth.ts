@@ -28,8 +28,26 @@ export const {
   signIn,
   signOut,
 } = NextAuth({
+  pages: {
+    signIn: "/login",
+    error: "/auth-error",
+  },
   events: {
+    async createUser({ user }) {
+      const name = user.name?.split(" ");
+
+      await db.owner.create({
+        data: {
+          firstName: name && name[0] ? name[0] : "",
+          lastName: name && name[1] ? name[1] : "",
+          email: user.email ? user.email : "",
+          userId: user.id,
+          imageUrl: user.image ? user.image : "",
+        },
+      });
+    },
     async linkAccount({ user }) {
+      console.log("From linkAccount: ", user);
       await db.user.update({
         where: { id: user.id },
         data: {
@@ -40,7 +58,7 @@ export const {
     },
   },
   callbacks: {
-    // async signIn({ user }) {
+    // async signIn({ user, account }) {
     //   const existingUser = await getUserById(user.id);
 
     //   if (!existingUser || !existingUser.isActive) {
@@ -51,7 +69,7 @@ export const {
     // },
     async session({ token, session, user }) {
       // console.log({ sessionToken: token, session });
-      console.log({ sessionToken: token, session });
+      // console.log({ sessionToken: token, session });
       if (token.sub && session.user) {
         session.user.id = token.sub;
       }

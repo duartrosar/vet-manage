@@ -53,11 +53,3 @@ export function generateOwnerFromUser(
 
   return owner;
 }
-
-// input: "First Name", returns: "firstName"
-// input: "Date Of Birth", returns: "dateOfBirth"
-// input: "Address", returns: "address".
-
-// input: "First Name", returns: "Firstname"
-// input: "Date Of Birth", returns: "DateOfBirth"
-// input: "Address", returns: "Address".
