@@ -5,8 +5,6 @@ import { vetSearchSlice } from "@/lib/redux/slices/vets-slice";
 import React from "react";
 import SearchInput from "../search-input";
 import DeleteForm from "@/components/forms/delete-form";
-import Form from "@/components/forms";
-import OwnerFormModal from "@/components/forms/owner/owner-modal";
 import VetFormModal from "@/components/forms/vet/vet-modal";
 
 export default function VetsListHeader() {

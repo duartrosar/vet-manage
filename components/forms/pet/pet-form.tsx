@@ -170,8 +170,6 @@ export default function PetForm({ owners }: { owners?: Owner[] | null }) {
             <ImageSelector setFile={setFile} imageUrl={pet?.imageUrl} />
           </div>
           <div className="w-full space-y-3 lg:col-span-2">
-            {/* <Input<Pet> name="Name" register={register} error={errors.name} />
-            <Input<Pet> name="Type" register={register} error={errors.type} /> */}
             <FormField
               control={form.control}
               name="name"

@@ -1,6 +1,5 @@
 "use client";
 
-import Input from "@/components/forms/inputs/input";
 import { LoginProps } from "@/lib/types";
 import { loginSchema } from "@/lib/zod/zodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
