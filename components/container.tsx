@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useWindowSize } from "@uidotdev/usehooks";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setIsOpen } from "@/lib/redux/slices/sidebar-slice";
 import clsx from "clsx";
 

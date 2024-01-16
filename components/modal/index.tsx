@@ -3,7 +3,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import React, { Fragment } from "react";
 import { IoMdClose } from "react-icons/io";
 import OwnerForm from "../forms/owner/owner-form";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setOwnerFormIsOpen } from "@/lib/redux/slices/form-slice";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit/react";
 

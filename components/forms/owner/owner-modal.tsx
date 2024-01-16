@@ -1,7 +1,7 @@
 "use client";
 
 import React, { Fragment } from "react";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import {
   setOwnerFormIsOpen,
   setFormOwner,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setPets } from "@/lib/redux/slices/pets-slice";
 import { TableHeading } from "@/lib/types";
 import { Pet } from "@prisma/client";

@@ -6,7 +6,7 @@ import { FaUser } from "react-icons/fa6";
 import Image from "next/image";
 import { IoPencil, IoTrash } from "react-icons/io5";
 import { format } from "date-fns";
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch } from "@/lib/redux/hooks";
 import { removeOwnerSlice } from "@/lib/redux/slices/owners-slice";
 
 export default function ListItem({

@@ -1,6 +1,6 @@
 "use client";
 
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch } from "@/lib/redux/hooks";
 import { ownerSearchSlice } from "@/lib/redux/slices/owners-slice";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";

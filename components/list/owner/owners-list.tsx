@@ -4,7 +4,7 @@ import { Owner } from "@prisma/client";
 import React, { useRef, useEffect } from "react";
 import TableRow from "../../table/table-row";
 import { setOwners } from "@/lib/redux/slices/owners-slice";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppSelector } from "@/lib/redux/hooks";
 import TableHead from "../../table/table-head";
 import Table from "@/components/table";
 import TableBody from "@/components/table/table-body";
@@ -13,7 +13,7 @@ import { FaUser } from "react-icons/fa6";
 import Image from "next/image";
 import { IoPencil, IoTrash } from "react-icons/io5";
 import { format } from "date-fns";
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch } from "@/lib/redux/hooks";
 import {
   setDeleteFormIsOpen,
   setOwnerFormIsOpen,

@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import {
   blobDelete,
-  checkFileValidity,
   createOwnerWithUser,
   getUser,
   updateOwner,
@@ -15,13 +14,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ownerSchema } from "@/lib/zod/zodSchemas";
 import { genderOptions } from "@/lib/constants";
 import DatePicker from "@/components/date-picker";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setOwnerFormIsOpen } from "@/lib/redux/slices/form-slice";
 import { toast } from "sonner";
 import Toast from "@/components/toast/toasters";
 import { Form, FormField } from "@/components/ui/form";
 import ControlledTextInput from "@/components/forms/inputs/controlled-text-input";
 import ControlledSelector from "@/components/forms/inputs/controlled-selector";
+import { useImageUpload } from "@/lib/hooks/useImageUpload";
 
 interface OnwerFormData {
   id: number;
@@ -37,6 +37,7 @@ interface OnwerFormData {
 }
 
 export default function OwnerForm() {
+  const { upload } = useImageUpload();
   const owner = useAppSelector((state) => state.form.owner);
   const dispatch = useAppDispatch();
   const [file, setFile] = useState<File>();
@@ -90,9 +91,9 @@ export default function OwnerForm() {
     let wasUploaded = false;
 
     if (file) {
-      const { url, success } = await uploadBlob(file);
+      const { url, ok } = await upload(file);
 
-      wasUploaded = success;
+      wasUploaded = ok;
       data.imageUrl = url ?? null;
     }
 
@@ -125,9 +126,9 @@ export default function OwnerForm() {
       if (data.imageUrl) {
         await blobDelete(data.imageUrl);
       }
-      const { url, success } = await uploadBlob(file);
+      const { url, ok } = await upload(file);
 
-      wasUploaded = success;
+      wasUploaded = ok;
       data.imageUrl = url ?? null;
     }
 
@@ -152,32 +153,6 @@ export default function OwnerForm() {
       <Toast t={t} message="Owner was updated successfully." type="success" />
     ));
   };
-
-  async function uploadBlob(file: File) {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    const url = await checkFileValidity(formData);
-
-    if (!url) return { url, success: false };
-
-    const result = await fetch(url, {
-      method: "PUT",
-      body: file,
-      headers: {
-        "Content-Type": file.type,
-      },
-    });
-
-    if (!result.url) {
-      toast.custom((t) => (
-        <Toast t={t} message="Error uploading image" type="danger" />
-      ));
-      return { url, success: false };
-    }
-
-    return { url: result.url.split("?")[0], success: true };
-  }
 
   function setValues(owner: Owner) {
     form.setValue("id", owner.id);

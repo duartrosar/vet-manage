@@ -2,7 +2,7 @@
 
 import React from "react";
 import Modal from "../modal";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setDeleteFormIsOpen } from "@/lib/redux/slices/form-slice";
 import { IoTrash } from "react-icons/io5";
 import { deletePet, deleteUser } from "@/lib/db/actions";

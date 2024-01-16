@@ -2,7 +2,7 @@
 
 import React from "react";
 import SearchInput from "../search-input";
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch } from "@/lib/redux/hooks";
 import { ownerSearchSlice } from "@/lib/redux/slices/owners-slice";
 import DeleteForm from "@/components/forms/delete-form";
 import OwnerFormModal from "@/components/forms/owner/owner-modal";

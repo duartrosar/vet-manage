@@ -4,7 +4,7 @@ import { Owner, Pet } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import ImageSelector from "../inputs/image-selector";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { useFormStatus } from "react-dom";
 import {
   blobDelete,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch } from "@/lib/redux/hooks";
 import { setOwnerFormIsOpen } from "@/lib/redux/slices/form-slice";
 import React from "react";
 import { IoMdClose } from "react-icons/io";

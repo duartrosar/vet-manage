@@ -3,7 +3,7 @@
 import { SidebarItemsProp } from "@/lib/types";
 import Link from "next/link";
 import React, { ReactNode } from "react";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setIsOpen, setActive } from "@/lib/redux/slices/sidebar-slice";
 import { useWindowSize } from "@uidotdev/usehooks";
 import clsx from "clsx";

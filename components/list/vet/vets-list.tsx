@@ -1,6 +1,6 @@
 "use client";
 
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setVets } from "@/lib/redux/slices/vets-slice";
 import { setFormVet } from "@/lib/redux/slices/form-slice";
 import { Vet } from "@prisma/client";

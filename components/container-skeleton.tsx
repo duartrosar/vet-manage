@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useWindowSize } from "@uidotdev/usehooks";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppSelector } from "@/lib/redux/hooks";
 
 export default function ContainerSkeleton({
   className = "",

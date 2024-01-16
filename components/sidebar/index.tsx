@@ -6,7 +6,7 @@ import { Lalezar, Kanit } from "next/font/google";
 import { Transition } from "@headlessui/react";
 import { useLocalStorage } from "usehooks-ts";
 import { useWindowSize } from "@uidotdev/usehooks";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setActive, setIsOpen } from "@/lib/redux/slices/sidebar-slice";
 import SidebarItem from "./sidebar-item";
 import clsx from "clsx";
@@ -69,7 +69,7 @@ export default function SideBar() {
           >
             <div
               onClick={() => setMenu(!isOpen)}
-              className="bg-cerulean-900/50 fixed inset-0 lg:hidden"
+              className="fixed inset-0 bg-cerulean-900/50 lg:hidden"
               aria-hidden="true"
             />
           </Transition.Child>
@@ -77,7 +77,7 @@ export default function SideBar() {
 
         <aside
           className={clsx(
-            "border-cerulean-700/25 bg-cerulean-950 fixed bottom-0 left-0 top-0 -translate-x-full border-r-2 lg:translate-x-0",
+            "fixed bottom-0 left-0 top-0 -translate-x-full border-r-2 border-cerulean-700/25 bg-cerulean-950 lg:translate-x-0",
             isOpen ? "w-64 translate-x-0" : "",
           )}
         >

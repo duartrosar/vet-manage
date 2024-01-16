@@ -8,7 +8,7 @@ import {
   getUser,
   updateVet,
 } from "@/lib/db/actions";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setVetFormIsOpen } from "@/lib/redux/slices/form-slice";
 import { vetSchema } from "@/lib/zod/zodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";

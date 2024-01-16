@@ -1,6 +1,6 @@
 "use client";
 
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import React from "react";
 import { CgMenuLeft } from "react-icons/cg";
 import { setIsOpen } from "@/lib/redux/slices/sidebar-slice";
@@ -14,7 +14,7 @@ export default function SidebarButton() {
       id="sidebarToggle"
       data-sidebar-toggle={true}
       onClick={() => dispatch(setIsOpen(!isOpen))}
-      className="hover:bg-cerulean-800 cursor-pointer rounded-lg p-3 transition"
+      className="cursor-pointer rounded-lg p-3 transition hover:bg-cerulean-800"
     >
       <CgMenuLeft
         data-sidebar-toggle={true}
