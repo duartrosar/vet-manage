@@ -117,17 +117,16 @@ export default function VetForm() {
   };
 
   const updateVetAsync = async (data: Vet) => {
-    let wasUploaded = false;
+    let newImageUploaded = false;
+    let oldImage = data.imageUrl;
 
     if (file) {
-      // delete old image from s3
-      if (data.imageUrl) {
-        await deleteImage(data.imageUrl);
-      }
       const { url, ok } = await upload(file);
+      newImageUploaded = ok;
 
-      wasUploaded = ok;
-      data.imageUrl = url ?? null;
+      if (ok) {
+        data.imageUrl = url;
+      }
     }
     const result = await updateVet(data, data.id);
 
@@ -138,10 +137,14 @@ export default function VetForm() {
         <Toast t={t} message="Vet could not be updated" type="danger" />
       ));
 
-      if (wasUploaded && data.imageUrl) {
+      if (newImageUploaded && data.imageUrl) {
         await deleteImage(data.imageUrl);
       }
       return;
+    }
+
+    if (oldImage && newImageUploaded) {
+      await deleteImage(oldImage);
     }
 
     dispatch(setVetFormIsOpen(false));

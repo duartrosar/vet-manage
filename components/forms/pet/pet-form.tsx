@@ -91,27 +91,34 @@ export default function PetForm({ owners }: { owners?: Owner[] | null }) {
   };
 
   const updatePetAsync = async (data: Pet) => {
-    let wasUploaded = false;
+    let newImageUploaded = false;
+    let oldImage = data.imageUrl;
 
     if (file) {
-      if (data.imageUrl) {
-        await deleteImage(data.imageUrl);
-      }
       const { url, ok } = await upload(file);
 
-      wasUploaded = ok;
-      data.imageUrl = url ?? null;
+      newImageUploaded = ok;
+
+      if (ok) {
+        data.imageUrl = url;
+      }
     }
 
     const result = await updatePet(data);
 
     if (!result?.success) {
-      console.log("Pet was not updated.");
+      toast.custom((t) => (
+        <Toast t={t} message="Pet could not be updated" type="danger" />
+      ));
 
-      if (wasUploaded && data.imageUrl) {
+      if (newImageUploaded && data.imageUrl) {
         await deleteImage(data.imageUrl);
       }
       return;
+    }
+
+    if (oldImage && newImageUploaded) {
+      await deleteImage(oldImage);
     }
 
     dispatch(setPetFormIsOpen(false));

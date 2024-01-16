@@ -114,32 +114,34 @@ export default function OwnerForm() {
   }
 
   const updateOwnerAsync = async (data: Owner) => {
-    let wasUploaded = false;
+    let newImageUploaded = false;
+    let oldImage = data.imageUrl;
 
     if (file) {
-      // delete old image from s3
-      if (data.imageUrl) {
-        await deleteImage(data.imageUrl);
-      }
       const { url, ok } = await upload(file);
 
-      wasUploaded = ok;
-      data.imageUrl = url ?? null;
+      newImageUploaded = ok;
+
+      if (ok) {
+        data.imageUrl = url;
+      }
     }
 
     const result = await updateOwner(data, data.id);
 
     if (!result?.success) {
-      console.log("Owner could not be updated");
-
       toast.custom((t) => (
         <Toast t={t} message="Owner could not be updated" type="danger" />
       ));
 
-      if (wasUploaded && data.imageUrl) {
+      if (newImageUploaded && data.imageUrl) {
         await deleteImage(data.imageUrl);
       }
       return;
+    }
+
+    if (oldImage && newImageUploaded) {
+      await deleteImage(oldImage);
     }
 
     dispatch(setOwnerFormIsOpen(false));
