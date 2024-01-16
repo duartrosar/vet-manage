@@ -1,6 +1,6 @@
 "use server";
 
-import { Owner, Pet, PrismaClient, User, Vet } from "@prisma/client";
+import { Owner, Pet, User, Vet } from "@prisma/client";
 import {
   loginSchema,
   ownerSchema,
@@ -12,20 +12,12 @@ import { hash } from "bcryptjs";
 import { db } from "@/lib/db/prisma";
 import { revalidatePath } from "next/cache";
 import { auth, signOut } from "@/auth";
-import {
-  S3Client,
-  PutObjectCommand,
-  DeleteObjectCommand,
-} from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import cryto from "crypto";
-import { computeSHA256 } from "@/lib/utils";
+import { S3Client, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { signIn } from "@/auth";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { AuthError } from "next-auth";
 import { generateVerificationToken } from "./actions/token-actions";
-import { getUserByEmail } from "./utils";
-import { error } from "console";
+import { getUserByEmail, getUserById } from "./utils";
 import { sendVerificationEmail } from "../mail";
 
 export interface Response {
@@ -94,86 +86,21 @@ export async function logout() {
 /*               Blobs                  */
 /****************************************/
 
-const generateFileName = () => crypto.randomUUID().toString();
-
-const s3Client = new S3Client({
-  region: process.env.AWS_S3_REGION!,
-  credentials: {
-    accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY!,
-  },
-});
-
-const acceptedTypes = ["image/jpeg", "image/png", "image/webp"];
-
-const maxFileSize = 1024 * 1024 * 10;
-
-export async function getSignedURL(
-  type: string,
-  size: number,
-  checksum: string,
-) {
-  const session = await auth();
-
-  if (!session) {
-    return { failure: "Not Authenticated" };
-  }
-
-  if (!acceptedTypes.includes(type)) {
-    return { failure: "Invalid file type" };
-  }
-
-  if (size > maxFileSize) {
-    return { failure: "File too large" };
-  }
-
-  const putObjectCommand = new PutObjectCommand({
-    Bucket: process.env.AWS_S3_BUCKET_NAME,
-    Key: generateFileName(),
-    ContentType: type,
-    ContentLength: size,
-    ChecksumSHA256: checksum,
-    Metadata: {
-      userId: session.user?.id ?? "",
+export async function deleteBlob(imageUrl: string) {
+  const s3Client = new S3Client({
+    region: process.env.AWS_S3_REGION!,
+    credentials: {
+      accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID!,
+      secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY!,
     },
   });
 
-  const signedUrl = await getSignedUrl(s3Client, putObjectCommand, {
-    expiresIn: 60,
-  });
-
-  return { success: { url: signedUrl } };
-}
-
-export async function checkFileValidity(formData: FormData) {
-  try {
-    const file = formData.get("file");
-
-    if (!(file instanceof File)) {
-      return;
-    }
-
-    const checksum = await computeSHA256(file);
-
-    const signedUrlResult = await getSignedURL(file.type, file.size, checksum);
-
-    if (signedUrlResult.failure !== undefined) return;
-
-    const url = signedUrlResult.success?.url;
-
-    return url;
-  } catch (error) {
-    return;
-  }
-}
-
-export async function blobDelete(imageUrl: string) {
-  const putObjectCommand = new DeleteObjectCommand({
+  const deleteObjectCommand = new DeleteObjectCommand({
     Bucket: process.env.AWS_S3_BUCKET_NAME,
     Key: imageUrl.split("/").pop()!,
   });
 
-  await s3Client.send(putObjectCommand);
+  await s3Client.send(deleteObjectCommand);
 }
 
 /****************************************/
@@ -239,6 +166,12 @@ export async function deleteUser(userId: string, pathToRevalidate: string) {
   console.log("userId", userId);
 
   try {
+    const user = await getUserById(userId);
+
+    if (user?.image) {
+      await deleteBlob(user?.image);
+    }
+
     await db.user.delete({
       where: {
         id: userId,
@@ -561,6 +494,14 @@ export async function updatePet(data: Pet) {
 
 export async function deletePet(petId: number) {
   try {
+    const pet = await db.pet.findUnique({
+      where: { id: petId },
+    });
+
+    if (pet?.imageUrl) {
+      await deleteBlob(pet.imageUrl);
+    }
+
     await db.pet.delete({
       where: {
         id: petId,

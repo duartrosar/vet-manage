@@ -6,18 +6,14 @@ import { useForm } from "react-hook-form";
 import ImageSelector from "../inputs/image-selector";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { useFormStatus } from "react-dom";
-import {
-  blobDelete,
-  checkFileValidity,
-  createPet,
-  updatePet,
-} from "@/lib/db/actions";
+import { deleteBlob, createPet, updatePet } from "@/lib/db/actions";
 import { setPetFormIsOpen } from "@/lib/redux/slices/form-slice";
 import { toast } from "sonner";
 import Toast from "@/components/toast/toasters";
 import { Form, FormField } from "@/components/ui/form";
 import ControlledCombobox from "../inputs/controlled-combobox";
 import ControlledTextInput from "../inputs/controlled-text-input";
+import { useImageUpload } from "@/lib/hooks/useImageUpload";
 
 interface FormData {
   id: number;
@@ -28,6 +24,7 @@ interface FormData {
 }
 
 export default function PetForm({ owners }: { owners?: Owner[] | null }) {
+  const { upload, deleteImage } = useImageUpload();
   const pet = useAppSelector((state) => state.form.pet);
   const dispatch = useAppDispatch();
   const { pending } = useFormStatus();
@@ -65,9 +62,9 @@ export default function PetForm({ owners }: { owners?: Owner[] | null }) {
     let wasUploaded = false;
 
     if (file) {
-      const { url, success } = await uploadBlob(file);
+      const { url, ok } = await upload(file);
 
-      wasUploaded = success;
+      wasUploaded = ok;
       data.imageUrl = url ?? null;
     }
 
@@ -81,7 +78,7 @@ export default function PetForm({ owners }: { owners?: Owner[] | null }) {
       ));
 
       if (wasUploaded && data.imageUrl) {
-        await blobDelete(data.imageUrl);
+        await deleteBlob(data.imageUrl);
       }
       return;
     }
@@ -97,13 +94,12 @@ export default function PetForm({ owners }: { owners?: Owner[] | null }) {
     let wasUploaded = false;
 
     if (file) {
-      // delete old image from s3
       if (data.imageUrl) {
-        await blobDelete(data.imageUrl);
+        await deleteImage(data.imageUrl);
       }
-      const { url, success } = await uploadBlob(file);
+      const { url, ok } = await upload(file);
 
-      wasUploaded = success;
+      wasUploaded = ok;
       data.imageUrl = url ?? null;
     }
 
@@ -113,7 +109,7 @@ export default function PetForm({ owners }: { owners?: Owner[] | null }) {
       console.log("Pet was not updated.");
 
       if (wasUploaded && data.imageUrl) {
-        await blobDelete(data.imageUrl);
+        await deleteImage(data.imageUrl);
       }
       return;
     }
@@ -131,32 +127,6 @@ export default function PetForm({ owners }: { owners?: Owner[] | null }) {
     form.setValue("type", pet.type);
     form.setValue("ownerId", pet.ownerId);
     form.setValue("imageUrl", pet.imageUrl ? pet.imageUrl : "");
-  }
-
-  async function uploadBlob(file: File) {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    const url = await checkFileValidity(formData);
-
-    if (!url) return { url, success: false };
-
-    const result = await fetch(url, {
-      method: "PUT",
-      body: file,
-      headers: {
-        "Content-Type": file.type,
-      },
-    });
-
-    if (!result.url) {
-      toast.custom((t) => (
-        <Toast t={t} message="Error uploading image" type="danger" />
-      ));
-      return { url, success: false };
-    }
-
-    return { url: result.url.split("?")[0], success: true };
   }
 
   return (

@@ -6,10 +6,6 @@ import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setDeleteFormIsOpen } from "@/lib/redux/slices/form-slice";
 import { IoTrash } from "react-icons/io5";
 import { deletePet, deleteUser } from "@/lib/db/actions";
-import { removeOwnerByUserIdSlice } from "@/lib/redux/slices/owners-slice";
-import { removeVetByUserIdSlice } from "@/lib/redux/slices/vets-slice";
-import { removePetSlice } from "@/lib/redux/slices/pets-slice";
-import { Pet } from "@prisma/client";
 import { toast } from "sonner";
 import Toast from "../toast/toasters";
 
@@ -75,7 +71,6 @@ export default function DeleteForm({
               type="button"
               onClick={(e) => {
                 dispatch(setDeleteFormIsOpen(false));
-                // dispatch(removeOwnerSlice())
               }}
               className="text-xm flex items-center justify-start gap-2 rounded-lg bg-cerulean-600 px-2 py-1 text-sm font-normal text-white shadow-md shadow-cerulean-950 transition hover:bg-cerulean-700 sm:px-3 sm:py-2 "
             >

@@ -1,12 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import {
-  blobDelete,
-  createOwnerWithUser,
-  getUser,
-  updateOwner,
-} from "@/lib/db/actions";
+import { createOwnerWithUser, getUser, updateOwner } from "@/lib/db/actions";
 import ImageSelector from "@/components/forms/inputs/image-selector";
 import { useForm } from "react-hook-form";
 import { Owner } from "@prisma/client";
@@ -37,7 +32,7 @@ interface OnwerFormData {
 }
 
 export default function OwnerForm() {
-  const { upload } = useImageUpload();
+  const { upload, deleteImage } = useImageUpload();
   const owner = useAppSelector((state) => state.form.owner);
   const dispatch = useAppDispatch();
   const [file, setFile] = useState<File>();
@@ -106,7 +101,7 @@ export default function OwnerForm() {
       ));
 
       if (wasUploaded && data.imageUrl) {
-        await blobDelete(data.imageUrl);
+        await deleteImage(data.imageUrl);
       }
       return;
     }
@@ -124,7 +119,7 @@ export default function OwnerForm() {
     if (file) {
       // delete old image from s3
       if (data.imageUrl) {
-        await blobDelete(data.imageUrl);
+        await deleteImage(data.imageUrl);
       }
       const { url, ok } = await upload(file);
 
@@ -142,7 +137,7 @@ export default function OwnerForm() {
       ));
 
       if (wasUploaded && data.imageUrl) {
-        await blobDelete(data.imageUrl);
+        await deleteImage(data.imageUrl);
       }
       return;
     }
