@@ -3,7 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 
 import { loginSchema } from "@/lib/zod/zodSchemas";
-import { getUserByEmail } from "@/lib/db/utils";
+import { getUserByEmail } from "@/lib/db/actions/user-actions";
 import { compare } from "bcryptjs";
 
 export default {

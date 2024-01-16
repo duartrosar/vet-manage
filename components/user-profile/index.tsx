@@ -10,7 +10,6 @@ import {
 import { FaUser } from "react-icons/fa6";
 import type { User } from "next-auth";
 import Link from "next/link";
-import { logout } from "@/lib/db/actions";
 import { signOut } from "next-auth/react";
 
 interface ProfileMenuProps {

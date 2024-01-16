@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import ImageSelector from "../inputs/image-selector";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { useFormStatus } from "react-dom";
-import { deleteBlob, createPet, updatePet } from "@/lib/db/actions";
+import { createPet, updatePet } from "@/lib/db/actions/pet-actions";
 import { setPetFormIsOpen } from "@/lib/redux/slices/form-slice";
 import { toast } from "sonner";
 import Toast from "@/components/toast/toasters";
@@ -78,7 +78,7 @@ export default function PetForm({ owners }: { owners?: Owner[] | null }) {
       ));
 
       if (wasUploaded && data.imageUrl) {
-        await deleteBlob(data.imageUrl);
+        await deleteImage(data.imageUrl);
       }
       return;
     }

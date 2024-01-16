@@ -1,7 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { createOwnerWithUser, getUser, updateOwner } from "@/lib/db/actions";
+import { getUser } from "@/lib/db/actions/user-actions";
+import {
+  createOwnerWithUser,
+  updateOwner,
+} from "@/lib/db/actions/owner-actions";
 import ImageSelector from "@/components/forms/inputs/image-selector";
 import { useForm } from "react-hook-form";
 import { Owner } from "@prisma/client";

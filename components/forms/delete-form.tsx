@@ -5,7 +5,8 @@ import Modal from "../modal";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setDeleteFormIsOpen } from "@/lib/redux/slices/form-slice";
 import { IoTrash } from "react-icons/io5";
-import { deletePet, deleteUser } from "@/lib/db/actions";
+import { deleteUser } from "@/lib/db/actions/user-actions";
+import { deletePet } from "@/lib/db/actions/pet-actions";
 import { toast } from "sonner";
 import Toast from "../toast/toasters";
 

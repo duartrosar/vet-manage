@@ -1,7 +1,8 @@
 "use client";
 
 import { genderOptions } from "@/lib/constants";
-import { createVetWithUser, getUser, updateVet } from "@/lib/db/actions";
+import { getUser } from "@/lib/db/actions/user-actions";
+import { createVetWithUser, updateVet } from "@/lib/db/actions/vet-actions";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setVetFormIsOpen } from "@/lib/redux/slices/form-slice";
 import { vetSchema } from "@/lib/zod/zodSchemas";

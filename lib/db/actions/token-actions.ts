@@ -1,11 +1,7 @@
 "use server";
 
 import { v4 as uuidv4 } from "uuid";
-import {
-  getUserByEmail,
-  getVerificationTokenByEmail,
-  getVerificationTokenByToken,
-} from "@/lib/db/utils";
+import { getUserByEmail } from "@/lib/db/actions/user-actions";
 import { db } from "@/lib/db/prisma";
 import { hash } from "bcryptjs";
 
@@ -108,3 +104,31 @@ export async function verifyUserSetPassword(token: string, password: string) {
 
   return { success: "Email verified!" };
 }
+
+export const getVerificationTokenByEmail = async (email: string) => {
+  try {
+    const verificationToken = db.verificationToken.findFirst({
+      where: {
+        email,
+      },
+    });
+
+    return verificationToken;
+  } catch (error) {
+    return null;
+  }
+};
+
+export const getVerificationTokenByToken = async (token: string) => {
+  try {
+    const verificationToken = db.verificationToken.findUnique({
+      where: {
+        token,
+      },
+    });
+
+    return verificationToken;
+  } catch (error) {
+    return null;
+  }
+};

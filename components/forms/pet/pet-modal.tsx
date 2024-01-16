@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import { IoAdd } from "react-icons/io5";
 import FormContainer from "../form-container";
 import PetForm from "./pet-form";
-import { getOwners } from "@/lib/db/actions";
+import { getOwners } from "@/lib/db/actions/owner-actions";
 import { Owner } from "@prisma/client";
 
 export default function PetFormModal() {

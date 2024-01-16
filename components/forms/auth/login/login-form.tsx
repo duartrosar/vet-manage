@@ -7,7 +7,7 @@ import { useFormStatus } from "react-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { login } from "@/lib/db/actions";
+import { login } from "@/lib/db/actions/auth-actions";
 import Toast from "@/components/toast/toasters";
 import { toast } from "sonner";
 import { Form, FormField } from "@/components/ui/form";

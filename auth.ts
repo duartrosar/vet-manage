@@ -2,7 +2,7 @@ import NextAuth, { DefaultSession } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import authConfig from "@/auth.config";
 import { db } from "@/lib/db/prisma";
-import { getUserById } from "@/lib/db/utils";
+import { getUserById } from "@/lib/db/actions/user-actions";
 import { UserRole } from "@prisma/client";
 // import { JWT, DefaultJWT } from "next-auth/jwt";
 
