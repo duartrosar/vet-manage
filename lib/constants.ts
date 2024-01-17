@@ -22,7 +22,7 @@ export const sidebarItems: SidebarItemsProp[] = [
   },
   {
     title: "Appointments",
-    urlPath: "/app",
+    urlPath: "/app/appointments",
     icon: IoCalendar,
   },
   {

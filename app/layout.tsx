@@ -3,6 +3,12 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/components/auth/auth-provider";
 import { Toaster } from "sonner";
+import { registerLicense } from "@syncfusion/ej2-base";
+
+// Registering Syncfusion license key
+const license = registerLicense(
+  "Ngo9BigBOggjHTQxAR8/V1NHaF5cWWdCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWX5fdnVTRGNfUkJ2WUE=",
+);
 
 const inter = Inter({ subsets: ["latin"] });
 

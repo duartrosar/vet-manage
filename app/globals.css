@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@import ".././node_modules/@syncfusion/ej2-base/styles/tailwind-dark.css";
+@import ".././node_modules/@syncfusion/ej2-react-schedule/styles/tailwind-dark.css";
+@import ".././node_modules/@syncfusion/ej2-buttons/styles/tailwind-dark.css";
+@import ".././node_modules/@syncfusion/ej2-calendars/styles/tailwind-dark.css";
+@import ".././node_modules/@syncfusion/ej2-dropdowns/styles/tailwind-dark.css";
+@import ".././node_modules/@syncfusion/ej2-inputs/styles/tailwind-dark.css";
+@import ".././node_modules/@syncfusion/ej2-navigations/styles/tailwind-dark.css";
+@import ".././node_modules/@syncfusion/ej2-popups/styles/tailwind-dark.css";
+@import ".././node_modules/@syncfusion/ej2-splitbuttons/styles/tailwind-dark.css";
+/* @import ".././node_modules/@syncfusion/ej2-react-grids/styles/tailwind-dark.css"; */
+
 @layer utilities {
   ::-webkit-scrollbar {
     width: 8px;
@@ -32,4 +43,124 @@
 .PopoverContent {
   width: var(--radix-popover-trigger-width);
   /* max-height: var(--radix-popover-trigger-height); */
+}
+
+/****************************************
+*                                       *
+*                Cells                  *
+*                                       *
+*****************************************/
+:root {
+  --cerulean-100: 205 227 248;
+  --cerulean-200: 151 202 235;
+  --cerulean-300: 101 176 221;
+  --cerulean-400: 77 151 195;
+  --cerulean-500: 53 125 170;
+  --cerulean-600: 47 100 142;
+  --cerulean-700: 42 74 114;
+  --cerulean-800: 0 31 63;
+  --cerulean-900: 0 14 30;
+  --cerulean-950: 0 9 21;
+}
+
+.e-schedule {
+  background-color: transparent;
+  border: 0;
+}
+
+/* Cell color in month and verticall views*/
+.e-schedule .e-month-view .e-work-cells,
+.e-schedule .e-vertical-view .e-work-cells {
+  --tw-bg-opacity: 1;
+  background-color: rgb(var(--cerulean-900) / var(--tw-bg-opacity));
+  border-color: rgb(var(--cerulean-800) / 0.5);
+  padding-left: 4px;
+}
+
+/* Cell hover color in month and verticall views*/
+.e-schedule .e-month-view .e-work-cells:hover,
+.e-schedule .e-vertical-view .e-work-cells:hover {
+  cursor: pointer;
+  --tw-bg-opacity: 0.5;
+  background-color: rgb(var(--cerulean-800) / var(--tw-bg-opacity));
+}
+
+/* Selected cell color in month and verticall views*/
+.e-work-cells.e-work-days.e-selected-cell,
+.e-work-cells.e-work-hours.e-selected-cell {
+  --tw-bg-opacity: 0.5;
+  background-color: rgb(var(--cerulean-800) / var(--tw-bg-opacity));
+}
+/* Selected cell hover color  in month and verticall views*/
+.e-work-cells.e-work-days.e-selected-cell:hover,
+.e-work-cells.e-work-hours.e-selected-cell:hover {
+  --tw-bg-opacity: 0.5;
+  background-color: rgb(var(--cerulean-800) / var(--tw-bg-opacity));
+}
+
+/* Cell font*/
+.e-date-header.e-navigate {
+  font-size: 12px;
+  color: white;
+}
+
+.e-schedule .e-month-view .e-date-header-wrap .e-header-cells {
+  background-color: #000915;
+  border-color: rgb(0 31 63 / 0.5);
+}
+
+.e-schedule-toolbar-container {
+  display: block;
+}
+.e-schedule-toolbar.e-toolbar {
+  border-bottom: 2px rgb(var(--cerulean-700)) solid;
+}
+
+.e-toolbar .e-toolbar-items {
+  background-color: rgb(var(--cerulean-900) / var(--tw-bg-opacity));
+}
+
+/* Toolbar buttons */
+.e-toolbar .e-toolbar-item .e-tbar-btn {
+  background-color: rgb(var(--cerulean-900) / var(--tw-bg-opacity));
+}
+/* Toolbar buttons */
+.e-toolbar .e-toolbar-item.e-views.e-active-view > * {
+  background-color: rgb(var(--cerulean-800) / var(--tw-bg-opacity));
+}
+/* Toolbar buttons focus */
+.e-toolbar .e-toolbar-item .e-tbar-btn:focus {
+  /* background-color: rgb(var(--cerulean-800) / var(--tw-bg-opacity)); */
+}
+/* Toolbar buttons hover */
+.e-toolbar .e-toolbar-item .e-tbar-btn:hover {
+  background-color: rgb(var(--cerulean-800) / var(--tw-bg-opacity));
+}
+
+/* Vertical views headers*/
+.e-schedule .e-vertical-view .e-date-header-wrap table tbody td,
+.e-schedule .e-vertical-view .e-left-indent-wrap table tbody td,
+.e-schedule .e-vertical-view .e-time-cells-wrap table td {
+  border-color: rgb(var(--cerulean-800) / 0.5);
+  background-color: rgb(var(--cerulean-950));
+}
+
+/* Appointment tags colors*/
+.e-schedule .e-month-view .e-appointment,
+.e-schedule .e-vertical-view .e-day-wrapper .e-appointment {
+  color: rgb(var(--cerulean-100));
+  background-color: rgb(var(--cerulean-600));
+}
+
+/* Selected day*/
+.e-schedule .e-vertical-view .e-header-cells.e-current-day,
+.e-schedule .e-month-view .e-date-header-wrap table td.e-current-day,
+.e-schedule .e-month-agenda-view .e-date-header-wrap table td.e-current-day {
+  color: rgb(var(--cerulean-500));
+}
+
+.e-schedule .e-month-view .e-current-date .e-date-header,
+.e-schedule .e-month-agenda-view .e-current-date .e-date-header {
+  background-color: rgb(var(--cerulean-600));
+  color: rgb(var(--cerulean-950));
 }
