@@ -1,10 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import DatePickerContext, {
-  CurrentDate,
-  DatePickerContextValue,
-} from "./dp-context";
+import DatePickerContext, { CurrentDate } from "./dp-context";
 
 export default function DatePickerProvider({
   children,

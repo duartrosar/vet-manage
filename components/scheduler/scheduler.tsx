@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   Day,
   Week,
@@ -15,27 +21,37 @@ import {
   QuickInfoTemplatesModel,
   View,
   ActionEventArgs,
+  EventSettingsModel,
 } from "@syncfusion/ej2-react-schedule";
-import clsx from "clsx";
-import { format } from "date-fns";
-import { MONTHS } from "../date-picker/constants";
 import { registerLicense } from "@syncfusion/ej2-base";
-import DateDisplayer from "./date-displayer";
 import ScheduleHeader from "./schedule-header";
+import { SchedulerContext } from "./scheduler-context";
+import SchedulerModal from "./scheduler-modal";
+import { appointments } from "./appointments";
 
 registerLicense(
   "Ngo9BigBOggjHTQxAR8/V1NAaF5cWWJCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWX5fd3RcRWdcU0xzV0I=",
 );
 
+const eventSettings: EventSettingsModel = {
+  dataSource: appointments,
+  fields: {
+    id: "id",
+    subject: { name: "subject" },
+    location: { name: "vetName" },
+    startTime: { name: "startTime" },
+    endTime: { name: "endTime" },
+  },
+};
+
 export default function Scheduler() {
+  const { setIsOpen } = useContext(SchedulerContext);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedView, setSelectedView] = useState<View>("Month");
-  const quickInfo: QuickInfoTemplatesModel = {
-    content: '<div class="bg-red-500 w-full h-full">Hello World</div>',
-  };
 
   function onPopupOpen(event: PopupOpenEventArgs): void {
-    // event.cancel = true;
+    event.cancel = true;
+    setIsOpen(true);
     console.log({ event });
   }
 
@@ -64,6 +80,7 @@ export default function Scheduler() {
 
   return (
     <>
+      <SchedulerModal />
       <ScheduleHeader
         selectedDate={selectedDate}
         selectedView={selectedView}
@@ -82,9 +99,9 @@ export default function Scheduler() {
           currentView="Month"
           selectedDate={selectedDate}
           popupOpen={(event) => onPopupOpen(event)}
-          quickInfoTemplates={quickInfo}
           workDays={workingDays}
           showQuickInfo={false}
+          eventSettings={eventSettings}
         >
           <ViewsDirective>
             <ViewDirective option="Week" />
