@@ -61,10 +61,25 @@
   --cerulean-800: 0 31 63;
   --cerulean-900: 0 14 30;
   --cerulean-950: 0 9 21;
+
+  --primary: #fff;
+  --primary-text-color: #000;
+  --secondary-bg-color: #1f2937;
+  --secondary-text-color: #fff;
 }
 
 .e-schedule {
   background-color: transparent;
+  /* background-color: rgb(var(--cerulean-900)); */
+  border-radius: 0.5rem;
+  /* border-bottom-right-radius: 0.5rem; */
+  border: 0;
+}
+
+.e-schedule .e-vertical-view {
+  /* background-color: red; */
+  border-radius: 0.5rem;
+  /* border-bottom-right-radius: 0.5rem; */
   border: 0;
 }
 
@@ -110,8 +125,9 @@
 }
 
 .e-schedule-toolbar-container {
-  display: block;
+  display: none;
 }
+/* 
 .e-schedule-toolbar.e-toolbar {
   border-bottom: 2px rgb(var(--cerulean-700)) solid;
 }
@@ -120,22 +136,16 @@
   background-color: rgb(var(--cerulean-900) / var(--tw-bg-opacity));
 }
 
-/* Toolbar buttons */
 .e-toolbar .e-toolbar-item .e-tbar-btn {
   background-color: rgb(var(--cerulean-900) / var(--tw-bg-opacity));
 }
-/* Toolbar buttons */
 .e-toolbar .e-toolbar-item.e-views.e-active-view > * {
   background-color: rgb(var(--cerulean-800) / var(--tw-bg-opacity));
 }
-/* Toolbar buttons focus */
-.e-toolbar .e-toolbar-item .e-tbar-btn:focus {
-  /* background-color: rgb(var(--cerulean-800) / var(--tw-bg-opacity)); */
-}
-/* Toolbar buttons hover */
+
 .e-toolbar .e-toolbar-item .e-tbar-btn:hover {
   background-color: rgb(var(--cerulean-800) / var(--tw-bg-opacity));
-}
+} */
 
 /* Vertical views headers*/
 .e-schedule .e-vertical-view .e-date-header-wrap table tbody td,
@@ -145,7 +155,21 @@
   background-color: rgb(var(--cerulean-950));
 }
 
-/* Appointment tags colors*/
+/* Vertical view and month view top-left corner border-radius */
+.e-schedule .e-vertical-view .e-left-indent-wrap table tbody td,
+.e-schedule .e-month-view .e-date-header-wrap .e-header-cells:first-child {
+  /* background-color: red; */
+  border-top-left-radius: 0.5rem;
+}
+/* Day view and month view top-right corner border-radius */
+/* Week top-right corner border-radius */
+td.e-header-cells.e-current-day,
+.e-schedule .e-month-view .e-date-header-wrap .e-header-cells:last-child,
+tr.e-header-row td:last-child {
+  border-top-right-radius: 0.5rem;
+}
+
+/* Appointment tags colors, todays day*/
 .e-schedule .e-month-view .e-appointment,
 .e-schedule .e-vertical-view .e-day-wrapper .e-appointment {
   color: rgb(var(--cerulean-100));
@@ -163,4 +187,38 @@
 .e-schedule .e-month-agenda-view .e-current-date .e-date-header {
   background-color: rgb(var(--cerulean-600));
   color: rgb(var(--cerulean-950));
+}
+
+/* .e-schedule .e-vertical-view .e-content-wrap,
+.e-schedule .e-vertical-view .e-time-cells-wrap {
+  height: 100% !important;
+} */
+
+/* Bottom left radius in month views*/
+.e-month-view
+  tbody
+  tr:last-child
+  td
+  .e-schedule-table
+  tbody
+  tr:last-child
+  .e-work-cells:first-child {
+  border-bottom-left-radius: 0.5rem;
+}
+/* Bottom right radius in month views*/
+
+.e-month-view
+  tbody
+  tr:last-child
+  td
+  .e-schedule-table
+  tbody
+  tr:last-child
+  .e-work-cells:last-child {
+  border-bottom-right-radius: 0.5rem;
+}
+
+.e-time-cells-wrap {
+  background-color: rgb(var(--cerulean-950));
+  /* border-bottom-left-radius: 0.5rem; */
 }

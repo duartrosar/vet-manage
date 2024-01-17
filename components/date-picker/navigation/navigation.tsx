@@ -19,18 +19,9 @@ export default function Navigation() {
 
   return (
     <div className="flex items-center justify-around gap-1 rounded-md border border-cerulean-700/25 bg-cerulean-950 p-1 text-cerulean-100 shadow-md">
-      {/* <NavigationButton name="day" value={day < 0 ? "dd" : day} />
-      <NavigationButton name="month" value={month < 0 ? "mm" : MONTHS[month]} />
-      <NavigationButton name="year" value={year < 0 ? "yyyy" : year} /> */}
       <NavigationButton name="day" value="Day" />
       <NavigationButton name="month" value="Month" />
       <NavigationButton name="year" value="Year" />
     </div>
   );
 }
-
-// {viewName === "day"
-//         ? currentDate.selectedDay
-//         : viewName === "month"
-//           ? MONTHS[currentDate.selectedMonth]
-//           : currentDate.selectedYear}

@@ -26,7 +26,7 @@ export default function Container({
   return (
     <div
       className={clsx(
-        `relative flex h-screen w-full items-center justify-center overflow-y-auto bg-cerulean-950 pt-[78px] backdrop-blur-2xl lg:pb-0 lg:pr-0`,
+        `relative flex h-full w-full items-center justify-center overflow-y-auto bg-cerulean-950 pt-[78px] backdrop-blur-2xl lg:pb-0 lg:pr-0`,
         isOpen ? "lg:pl-64" : "lg:pl-[68px]",
       )}
       // style={{

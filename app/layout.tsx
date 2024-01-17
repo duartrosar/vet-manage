@@ -3,13 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/components/auth/auth-provider";
 import { Toaster } from "sonner";
-import { registerLicense } from "@syncfusion/ej2-base";
-
-// Registering Syncfusion license key
-const license = registerLicense(
-  "Ngo9BigBOggjHTQxAR8/V1NHaF5cWWdCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWX5fdnVTRGNfUkJ2WUE=",
-);
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -22,6 +15,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // registerLicense(
+  //   "Ngo9BigBOggjHTQxAR8/V1NAaF5cWWJCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWX5fd3RcRWdcU0xzV0I=",
+  // );
+
   return (
     <html lang="en">
       <body className={`${inter.className} relative bg-cerulean-950`}>
