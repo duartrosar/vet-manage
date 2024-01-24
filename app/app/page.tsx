@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import AppointmentForm from "@/components/forms/appointment/appointment-form";
 import TimeRangePicker from "@/components/time-picker/time-range-picker";
 
 export default async function AppHome() {
@@ -19,9 +20,9 @@ export default async function AppHome() {
       </div> */}
       <h2 className="text-2xl text-white">Client Call</h2>
       <div className="w-60 space-y-3">
-        <TimeRangePicker
-          minTime={new Date("2024-01-06T09:00:00.000Z")}
-          maxTime={new Date("2024-01-06T18:00:00.000Z")}
+        <AppointmentForm
+          startTime={new Date("2024-01-06T16:00:00.000Z")}
+          endTime={new Date("2024-01-06T18:00:00.000Z")}
         />
       </div>
     </div>

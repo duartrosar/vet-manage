@@ -8,13 +8,16 @@ import {
   SelectGroup,
   SelectItem,
   SelectTrigger,
-} from "../ui/select";
+} from "@/components/ui/select";
 import { addMinutes, format } from "date-fns";
+import { FormControl, FormItem, FormLabel, FormMessage } from "../ui/form";
 
 interface TimePickerProps {
   minTime: Date;
   maxTime: Date;
   label: string;
+  defaultValue: string;
+  onChange(value: string): void;
   onTimeChanged: (value: string) => void;
 }
 
@@ -23,10 +26,17 @@ export default function TimePicker({
   maxTime,
   label,
   onTimeChanged,
+  defaultValue,
+  onChange,
 }: TimePickerProps) {
   const [timeSlots, setTimeSlots] = useState<Date[]>([]);
 
-  const [value, setValue] = useState<string>(format(minTime, "HH:mm"));
+  const [value, setValue] = useState<string>(defaultValue);
+
+  useEffect(() => {
+    setValue(defaultValue);
+    onChange(defaultValue);
+  }, [defaultValue]);
 
   useEffect(() => {
     const curTimeSlots: Date[] = [];
@@ -34,33 +44,32 @@ export default function TimePicker({
     for (let i = minTime; i <= maxTime; i = addMinutes(i, 30)) {
       curTimeSlots.push(i);
     }
+
     setTimeSlots(curTimeSlots);
-    setValue(format(curTimeSlots[0], "HH:mm"));
+    // setValue(format(curTimeSlots[0], "HH:mm"));
   }, [minTime]);
 
   const onValueChange = (value: string) => {
+    onChange(value);
     setValue(value);
     onTimeChanged(value);
   };
 
-  const changeTime = (date: Date, timeString: string) => {
-    const [hours, minutes] = timeString.split(":");
-    date.setHours(parseInt(hours, 10));
-    date.setMinutes(parseInt(minutes, 10));
-    return date;
-  };
-
   return (
-    <div className="gap-1">
-      <label className="pl-3 text-sm font-bold text-gray-500">{label}</label>
+    <FormItem className="relative gap-1 space-y-0">
+      <FormLabel className="pl-3 text-sm font-bold text-gray-500">
+        {label}
+      </FormLabel>
       <Select onValueChange={(value) => onValueChange(value)} value={value}>
-        <SelectTrigger
-          className={clsx(
-            "rounded-lg border-2 border-cerulean-100/25 bg-transparent px-3 py-0 font-semibold text-gray-400 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cerulean-600",
-          )}
-        >
-          <span>{value}</span>
-        </SelectTrigger>
+        <FormControl>
+          <SelectTrigger
+            className={clsx(
+              "rounded-lg border-2 border-cerulean-100/25 bg-transparent px-3 py-0 font-semibold text-gray-400 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cerulean-600",
+            )}
+          >
+            <span>{value}</span>
+          </SelectTrigger>
+        </FormControl>
         <SelectContent className="SelectContentNoHeight z-50 max-h-52 rounded-lg border-2 border-cerulean-100/25 bg-cerulean-900 py-1 text-sm">
           <SelectGroup>
             <div className="space-y-1 pl-1 pr-2">
@@ -77,6 +86,7 @@ export default function TimePicker({
           </SelectGroup>
         </SelectContent>
       </Select>
-    </div>
+      <FormMessage className="absolute -bottom-1 right-0 translate-y-full pr-3 text-right text-xs font-bold text-red-500" />
+    </FormItem>
   );
 }
