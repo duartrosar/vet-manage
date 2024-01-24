@@ -96,7 +96,7 @@ export default function DatePickerContainer<T extends FieldValues>({
   }, [dateValue]);
 
   return (
-    <div className="relative gap-1 space-y-0 rounded-tl-lg">
+    <div className="relative gap-1 space-y-0">
       <label htmlFor={name} className="pl-3 text-sm font-bold text-gray-500">
         {label}
       </label>

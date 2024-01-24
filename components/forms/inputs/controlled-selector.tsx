@@ -52,7 +52,7 @@ export default function ControlledSelector({
         <FormControl>
           <SelectTrigger
             className={clsx(
-              "rounded-lg border-2 border-cerulean-100/25 bg-transparent px-3 py-2 font-semibold text-gray-400 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cerulean-600",
+              "rounded-lg border-2 border-cerulean-100/25 bg-transparent px-3 py-2 font-semibold text-gray-400 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-1 focus-visible:outline-none  focus-visible:ring-2 focus-visible:ring-cerulean-600",
               error && "border-red-500",
               value && "text-gray-200",
             )}
