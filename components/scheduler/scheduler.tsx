@@ -22,12 +22,15 @@ import {
   View,
   ActionEventArgs,
   EventSettingsModel,
+  DragEventArgs,
+  ResizeEventArgs,
 } from "@syncfusion/ej2-react-schedule";
 import { registerLicense } from "@syncfusion/ej2-base";
 import ScheduleHeader from "./schedule-header";
 import { SchedulerContext } from "./scheduler-context";
 import SchedulerModal, { AppointmentData } from "./scheduler-modal";
 import { appointments } from "./appointments";
+import { Appointment } from "@prisma/client";
 
 registerLicense(
   "Ngo9BigBOggjHTQxAR8/V1NAaF5cWWJCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWX5fd3RcRWdcU0xzV0I=",
@@ -44,15 +47,24 @@ const eventSettings: EventSettingsModel = {
   },
 };
 
-export default function Scheduler() {
-  const { setIsOpen, setAppointmentData } = useContext(SchedulerContext);
+export default function Scheduler({
+  appointments,
+}: {
+  appointments?: Appointment[];
+}) {
+  const { setIsOpen, setAppointmentData, schedulerRef } =
+    useContext(SchedulerContext);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedView, setSelectedView] = useState<View>("Month");
+  // const schedulerRef = useRef<ScheduleComponent>(null);
+  const workingDays: number[] = [0, 1, 2, 3, 4, 5, 6];
+
+  eventSettings.dataSource = appointments;
 
   function onPopupOpen(event: PopupOpenEventArgs): void {
     event.cancel = true;
     setIsOpen(true);
-    // console.log({ event });
+    console.log({ event });
 
     if (!event.data) return;
 
@@ -94,24 +106,37 @@ export default function Scheduler() {
     }
   }
 
-  const workingDays: number[] = [0, 1, 2, 3, 4, 5, 6];
-  const scheduleRef = useRef<ScheduleComponent>(null);
+  function onDrag(event: DragEventArgs) {
+    if (event.name === "dragStart") {
+      event.cancel = true;
+      return;
+    }
+    console.log({ event });
+  }
+
+  function onResize(event: ResizeEventArgs) {
+    if (event.name === "resizeStart") {
+      event.cancel = true;
+      return;
+    }
+    console.log({ event });
+  }
 
   const navigateToDate = useCallback((date: Date) => {
     setSelectedDate(date);
   }, []);
 
   const navigateToView = useCallback((view: View) => {
-    if (scheduleRef.current) {
+    if (schedulerRef?.current) {
       setSelectedView(view);
-      scheduleRef.current.changeCurrentView(view);
+      schedulerRef.current.changeCurrentView(view);
     }
   }, []);
 
   function onActionBegin(e: ActionEventArgs) {
-    if (!scheduleRef.current || !e.event) return;
+    if (!schedulerRef?.current || !e.event) return;
 
-    const currentDate = scheduleRef.current.selectedDate;
+    const currentDate = schedulerRef.current.selectedDate;
 
     setSelectedView("Day");
     setSelectedDate(currentDate);
@@ -130,7 +155,7 @@ export default function Scheduler() {
         {/*  */}
         <ScheduleComponent
           actionBegin={(e) => onActionBegin(e)}
-          ref={scheduleRef}
+          ref={schedulerRef}
           startHour="09:00"
           endHour="18:00"
           width="100%"
@@ -141,6 +166,8 @@ export default function Scheduler() {
           workDays={workingDays}
           showQuickInfo={false}
           eventSettings={eventSettings}
+          dragStop={onDrag}
+          resizeStop={onResize}
         >
           <ViewsDirective>
             <ViewDirective option="Week" />

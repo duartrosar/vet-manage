@@ -53,3 +53,11 @@ export function generateOwnerFromUser(
 
   return owner;
 }
+
+export const changeTime = (date: Date, timeString: string) => {
+  const newDate = new Date(date);
+  const [hours, minutes] = timeString.split(":");
+  newDate.setHours(parseInt(hours, 10));
+  newDate.setMinutes(parseInt(minutes, 10));
+  return newDate;
+};

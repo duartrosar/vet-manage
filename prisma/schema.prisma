@@ -117,15 +117,15 @@ model Vet {
 }
 
 model Appointment {
-  id          Int    @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   subject     String
-  startTime   String
-  endTime     String
+  startTime   DateTime
+  endTime     DateTime
   description String
   vetId       Int
-  vet         Vet    @relation(fields: [vetId], references: [id], onDelete: Cascade)
+  vet         Vet      @relation(fields: [vetId], references: [id], onDelete: Cascade)
   petId       Int
-  pet         Pet    @relation(fields: [petId], references: [id], onDelete: Cascade)
+  pet         Pet      @relation(fields: [petId], references: [id], onDelete: Cascade)
 
   @@index([vetId])
   @@index([petId])

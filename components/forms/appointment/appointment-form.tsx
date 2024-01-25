@@ -3,7 +3,7 @@
 import TimeRangePicker from "@/components/time-picker/time-range-picker";
 import { Form, FormField } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Pet, Vet } from "@prisma/client";
+import { Appointment, Pet, Vet } from "@prisma/client";
 import { format } from "date-fns";
 import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -14,8 +14,15 @@ import ControlledTextInput from "../inputs/controlled-text-input";
 import ControlledTextArea from "../inputs/controlled-textarea";
 import { appointmentSchema } from "@/lib/zod/zodSchemas";
 import { SchedulerContext } from "@/components/scheduler/scheduler-context";
+import {
+  createAppointment,
+  deleteAppointment,
+  updateAppointment,
+} from "@/lib/db/actions/appointment-actions";
+import { changeTime } from "@/lib/utils";
 
 export interface AppointmentFormData {
+  id: number;
   subject: string;
   vetName: string;
   startTime: string;
@@ -31,9 +38,11 @@ interface AppointmentFormProps {
 }
 
 export default function AppointmentForm({ vets, pets }: AppointmentFormProps) {
-  const { appointmentData } = useContext(SchedulerContext);
+  const { appointmentData, setIsOpen, schedulerRef } =
+    useContext(SchedulerContext);
   const form = useForm<AppointmentFormData>({
     defaultValues: {
+      id: 0,
       subject: "",
       startTime: "",
       endTime: "",
@@ -47,6 +56,8 @@ export default function AppointmentForm({ vets, pets }: AppointmentFormProps) {
   useEffect(() => {
     if (!appointmentData) return;
 
+    console.log({ appointmentData });
+
     form.setValue("startTime", format(appointmentData.startTime, "HH:mm"));
     form.setValue("endTime", format(appointmentData.endTime, "HH:mm"));
     form.setValue("subject", appointmentData.subject);
@@ -56,7 +67,41 @@ export default function AppointmentForm({ vets, pets }: AppointmentFormProps) {
   }, []);
 
   const onSubmit = async (data: AppointmentFormData) => {
-    console.log({ data });
+    console.log({ appointmentData });
+
+    if (!appointmentData) return;
+
+    const appointment = {
+      subject: data.subject,
+      description: data.description,
+      vetId: data.vetId,
+      petId: data.petId,
+      startTime: changeTime(appointmentData.startTime, data.startTime),
+      endTime: changeTime(appointmentData.endTime, data.endTime),
+    };
+
+    console.log({ appointment });
+    if (!appointmentData.id) {
+      // FIXME: because typescript is dumb, I have to do this wretched hack
+      await createAppointment(appointment as Appointment);
+      schedulerRef?.current?.addEvent(appointment);
+    } else {
+      const appointmentToUpdate = { ...appointment, id: appointmentData.id };
+      await updateAppointment(appointmentToUpdate as Appointment);
+      schedulerRef?.current?.deleteEvent(appointmentToUpdate.id);
+      schedulerRef?.current?.addEvent(appointmentToUpdate);
+    }
+
+    setIsOpen(false);
+  };
+
+  const onDeleteCLick = async () => {
+    if (!appointmentData?.id) return;
+
+    await deleteAppointment(appointmentData.id);
+    schedulerRef?.current?.deleteEvent(appointmentData.id);
+
+    setIsOpen(false);
   };
 
   return (
@@ -136,14 +181,25 @@ export default function AppointmentForm({ vets, pets }: AppointmentFormProps) {
             )}
           />
         </div>
-        <div className="col-start-2 gap-1 text-end lg:text-start">
-          <button
-            type="submit"
-            className="w-full whitespace-nowrap rounded-lg border-2 border-cerulean-100/25 bg-cerulean-600 px-6 py-2 text-cerulean-100 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600 lg:w-1/2"
-          >
-            Submit
-          </button>
-        </div>
+        {appointmentData && (
+          <div className="col-start-2 flex gap-2 text-end lg:text-start ">
+            <button
+              type="submit"
+              className="w-full whitespace-nowrap rounded-lg border-2 border-cerulean-100/25 bg-cerulean-600 px-6 py-2 text-cerulean-100 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-2 focus:outline-cerulean-600 lg:w-1/2"
+            >
+              {appointmentData.id ? "Save" : "Create"}
+            </button>
+            {appointmentData.id && (
+              <button
+                type="button"
+                onClick={() => onDeleteCLick()}
+                className="w-full whitespace-nowrap rounded-lg border-2 border-cerulean-100/25 bg-red-600 px-6 py-2 text-cerulean-100 hover:bg-red-800 focus:border-red-600 focus:outline-2 focus:outline-cerulean-600 lg:w-1/2"
+              >
+                Delete
+              </button>
+            )}
+          </div>
+        )}
       </form>
     </Form>
   );

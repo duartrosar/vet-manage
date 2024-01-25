@@ -13,6 +13,7 @@ import { addMinutes, format, subMinutes } from "date-fns";
 import { UseFormReturn } from "react-hook-form";
 import { AppointmentFormData } from "../forms/appointment/appointment-form";
 import { SchedulerContext } from "../scheduler/scheduler-context";
+import { changeTime } from "@/lib/utils";
 
 interface TimePickerProps {
   minTime: Date;
@@ -51,14 +52,6 @@ export default function TimeRangePicker({
     const curEndTime = changeTime(endTime, value);
     setEndTimeValue(curEndTime);
   }, []);
-
-  const changeTime = (date: Date, timeString: string) => {
-    const newDate = new Date(date);
-    const [hours, minutes] = timeString.split(":");
-    newDate.setHours(parseInt(hours, 10));
-    newDate.setMinutes(parseInt(minutes, 10));
-    return newDate;
-  };
 
   const timeSlotsStart = useMemo(() => {
     const slots: Date[] = [];

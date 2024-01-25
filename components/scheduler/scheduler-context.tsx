@@ -1,14 +1,16 @@
 "use client";
 
-import { createContext, Dispatch, SetStateAction } from "react";
+import { createContext, Dispatch, SetStateAction, useRef } from "react";
 import React, { useState } from "react";
 import { AppointmentData } from "@/components/scheduler/scheduler-modal";
+import { ScheduleComponent } from "@syncfusion/ej2-react-schedule";
 
 export interface SchedulerContextValue {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   appointmentData: AppointmentData | null;
   setAppointmentData: Dispatch<SetStateAction<AppointmentData | null>>;
+  schedulerRef: React.RefObject<ScheduleComponent> | null;
 }
 
 export const SchedulerContext = createContext<SchedulerContextValue>({
@@ -16,6 +18,7 @@ export const SchedulerContext = createContext<SchedulerContextValue>({
   setIsOpen: () => {},
   appointmentData: null,
   setAppointmentData: () => {},
+  schedulerRef: null,
 });
 
 export default function SchedulerProvider({
@@ -26,6 +29,7 @@ export default function SchedulerProvider({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [appointmentData, setAppointmentData] =
     useState<AppointmentData | null>(null);
+  const schedulerRef = useRef<ScheduleComponent>(null);
 
   return (
     <SchedulerContext.Provider
@@ -34,6 +38,7 @@ export default function SchedulerProvider({
         setIsOpen,
         appointmentData,
         setAppointmentData,
+        schedulerRef,
       }}
     >
       {children}
