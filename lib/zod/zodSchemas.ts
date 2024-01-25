@@ -98,3 +98,12 @@ export const changePasswordSchema = z.object({
     .min(1, { message: "You must confirm your password" })
     .max(50, "Max length is 50 characters"),
 });
+
+export const appointmentSchema = z.object({
+  subject: z.string().min(1, "You must enter a subject"),
+  startTime: z.string().min(0, "You must select a start time"),
+  endTime: z.string().min(0, "You must select an end time"),
+  vetId: z.number().min(1, { message: "You must choose a vet" }),
+  petId: z.number().min(1, { message: "You must choose a pet" }),
+  description: z.string().min(1, "You must enter a description"),
+});

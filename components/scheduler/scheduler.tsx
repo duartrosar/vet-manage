@@ -26,7 +26,7 @@ import {
 import { registerLicense } from "@syncfusion/ej2-base";
 import ScheduleHeader from "./schedule-header";
 import { SchedulerContext } from "./scheduler-context";
-import SchedulerModal from "./scheduler-modal";
+import SchedulerModal, { AppointmentData } from "./scheduler-modal";
 import { appointments } from "./appointments";
 
 registerLicense(
@@ -45,14 +45,53 @@ const eventSettings: EventSettingsModel = {
 };
 
 export default function Scheduler() {
-  const { setIsOpen } = useContext(SchedulerContext);
+  const { setIsOpen, setAppointmentData } = useContext(SchedulerContext);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedView, setSelectedView] = useState<View>("Month");
 
   function onPopupOpen(event: PopupOpenEventArgs): void {
     event.cancel = true;
     setIsOpen(true);
-    console.log({ event });
+    // console.log({ event });
+
+    if (!event.data) return;
+
+    event.data.isAllDay = false;
+    const appointment = event.data as AppointmentData;
+
+    appointment.minTime = new Date(
+      appointment.startTime.getFullYear(),
+      appointment.startTime.getMonth(),
+      appointment.startTime.getDate(),
+      9,
+      0,
+    );
+    appointment.maxTime = new Date(
+      appointment.startTime.getFullYear(),
+      appointment.startTime.getMonth(),
+      appointment.startTime.getDate(),
+      18,
+      0,
+    );
+
+    if (appointment.id) {
+      setAppointmentData(appointment);
+    } else {
+      const year = appointment.startTime.getFullYear();
+      const month = appointment.startTime.getMonth();
+      const day = appointment.startTime.getDate();
+      const startTime = new Date(year, month, day, 9, 0);
+      const endTime = new Date(year, month, day, 9, 30);
+      if (selectedView === "Day" || selectedView === "Week") {
+        startTime.setHours(appointment.startTime.getHours());
+        startTime.setMinutes(appointment.startTime.getMinutes());
+        endTime.setHours(appointment.endTime.getHours());
+        endTime.setMinutes(appointment.endTime.getMinutes());
+      }
+      appointment.startTime = startTime;
+      appointment.endTime = endTime;
+      setAppointmentData(appointment);
+    }
   }
 
   const workingDays: number[] = [0, 1, 2, 3, 4, 5, 6];

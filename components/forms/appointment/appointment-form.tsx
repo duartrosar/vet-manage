@@ -5,13 +5,15 @@ import { Form, FormField } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Pet, Vet } from "@prisma/client";
 import { format } from "date-fns";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import VetsCombobox from "./vets-combobox";
 import PetsCombobox from "./pets-combobox";
 import ControlledTextInput from "../inputs/controlled-text-input";
 import ControlledTextArea from "../inputs/controlled-textarea";
+import { appointmentSchema } from "@/lib/zod/zodSchemas";
+import { SchedulerContext } from "@/components/scheduler/scheduler-context";
 
 export interface AppointmentFormData {
   subject: string;
@@ -24,27 +26,12 @@ export interface AppointmentFormData {
 }
 
 interface AppointmentFormProps {
-  startTime: Date;
-  endTime: Date;
   vets?: Vet[] | null;
   pets?: Pet[] | null;
 }
 
-const appointmentSchema = z.object({
-  subject: z.string().min(1, "You must enter a subject"),
-  startTime: z.string().min(0, "You must select a start time"),
-  endTime: z.string().min(0, "You must select an end time"),
-  vetId: z.number().min(1, { message: "You must choose a vet" }),
-  petId: z.number().min(1, { message: "You must choose a pet" }),
-  description: z.string().min(1, "You must enter a description"),
-});
-
-export default function AppointmentForm({
-  startTime,
-  endTime,
-  vets,
-  pets,
-}: AppointmentFormProps) {
+export default function AppointmentForm({ vets, pets }: AppointmentFormProps) {
+  const { appointmentData } = useContext(SchedulerContext);
   const form = useForm<AppointmentFormData>({
     defaultValues: {
       subject: "",
@@ -58,10 +45,14 @@ export default function AppointmentForm({
   });
 
   useEffect(() => {
-    form.setValue("startTime", format(startTime, "HH:mm"));
-    form.setValue("endTime", format(endTime, "HH:mm"));
-    console.log({ vets });
-    console.log({ pets });
+    if (!appointmentData) return;
+
+    form.setValue("startTime", format(appointmentData.startTime, "HH:mm"));
+    form.setValue("endTime", format(appointmentData.endTime, "HH:mm"));
+    form.setValue("subject", appointmentData.subject);
+    form.setValue("description", appointmentData.description);
+    form.setValue("vetId", appointmentData.vetId);
+    form.setValue("petId", appointmentData.petId);
   }, []);
 
   const onSubmit = async (data: AppointmentFormData) => {
@@ -87,13 +78,15 @@ export default function AppointmentForm({
         </div>
 
         <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
-          <TimeRangePicker
-            form={form}
-            minTime={new Date("2024-01-06T09:00:00.000Z")}
-            maxTime={new Date("2024-01-06T18:00:00.000Z")}
-            startTime={startTime}
-            endTime={endTime}
-          />
+          {appointmentData && (
+            <TimeRangePicker
+              form={form}
+              minTime={appointmentData.minTime}
+              maxTime={appointmentData.maxTime}
+              startTime={appointmentData.startTime}
+              endTime={appointmentData.endTime}
+            />
+          )}
         </div>
         <div className="w-full space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:grid-cols-2">
           {vets && (

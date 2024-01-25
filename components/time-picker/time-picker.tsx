@@ -13,8 +13,7 @@ import { addMinutes, format } from "date-fns";
 import { FormControl, FormItem, FormLabel, FormMessage } from "../ui/form";
 
 interface TimePickerProps {
-  minTime: Date;
-  maxTime: Date;
+  timeSlots: Date[];
   label: string;
   defaultValue: string;
   onChange(value: string): void;
@@ -22,32 +21,17 @@ interface TimePickerProps {
 }
 
 export default function TimePicker({
-  minTime,
-  maxTime,
   label,
   onTimeChanged,
   defaultValue,
   onChange,
+  timeSlots,
 }: TimePickerProps) {
-  const [timeSlots, setTimeSlots] = useState<Date[]>([]);
-
   const [value, setValue] = useState<string>(defaultValue);
-
   useEffect(() => {
     setValue(defaultValue);
     onChange(defaultValue);
   }, [defaultValue]);
-
-  useEffect(() => {
-    const curTimeSlots: Date[] = [];
-
-    for (let i = minTime; i <= maxTime; i = addMinutes(i, 30)) {
-      curTimeSlots.push(i);
-    }
-
-    setTimeSlots(curTimeSlots);
-    // setValue(format(curTimeSlots[0], "HH:mm"));
-  }, [minTime]);
 
   const onValueChange = (value: string) => {
     onChange(value);
@@ -75,7 +59,7 @@ export default function TimePicker({
             <div className="space-y-1 pl-1 pr-2">
               {timeSlots.map((value, index) => (
                 <SelectItem
-                  key={index}
+                  key={format(value, "HH:mm")}
                   value={format(value, "HH:mm")}
                   className="cursor-pointer justify-end rounded-md py-2 pr-4 text-right font-semibold text-gray-400 transition hover:bg-cerulean-800 hover:text-gray-200 hover:shadow-md"
                 >
