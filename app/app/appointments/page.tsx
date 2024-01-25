@@ -5,7 +5,7 @@ import React, { Suspense } from "react";
 
 export default async function AppointmentsPage() {
   const { appointments } = await getAppoinments();
-  console.log("🚀 ~ AppointmentsPage ~ appointments:", appointments);
+  // console.log("🚀 ~ AppointmentsPage ~ appointments:", appointments);
 
   return (
     <div className="flex h-full flex-col bg-cerulean-950 p-3">

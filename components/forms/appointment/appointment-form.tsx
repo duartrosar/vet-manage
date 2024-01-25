@@ -20,6 +20,8 @@ import {
   updateAppointment,
 } from "@/lib/db/actions/appointment-actions";
 import { changeTime } from "@/lib/utils";
+import { toast } from "sonner";
+import Toast from "@/components/toast/toasters";
 
 export interface AppointmentFormData {
   id: number;
@@ -80,14 +82,41 @@ export default function AppointmentForm({ vets, pets }: AppointmentFormProps) {
       endTime: changeTime(appointmentData.endTime, data.endTime),
     };
 
-    console.log({ appointment });
     if (!appointmentData.id) {
       // FIXME: because typescript is dumb, I have to do this wretched hack
-      await createAppointment(appointment as Appointment);
-      schedulerRef?.current?.addEvent(appointment);
+      const result = await createAppointment(appointment as Appointment);
+
+      if (!result.success) {
+        toast.custom((t) => (
+          <Toast t={t} message="Could not create appointment." type="danger" />
+        ));
+        return;
+      }
+
+      toast.custom((t) => (
+        <Toast t={t} message="Appointment created." type="success" />
+      ));
+
+      const createdAppointment = { ...appointment, id: result.appointment?.id };
+
+      schedulerRef?.current?.addEvent(createdAppointment);
     } else {
       const appointmentToUpdate = { ...appointment, id: appointmentData.id };
-      await updateAppointment(appointmentToUpdate as Appointment);
+      const result = await updateAppointment(
+        appointmentToUpdate as Appointment,
+      );
+
+      if (!result.success) {
+        toast.custom((t) => (
+          <Toast t={t} message="Could not update appointment." type="danger" />
+        ));
+        return;
+      }
+
+      toast.custom((t) => (
+        <Toast t={t} message="Appointment updated." type="success" />
+      ));
+
       schedulerRef?.current?.deleteEvent(appointmentToUpdate.id);
       schedulerRef?.current?.addEvent(appointmentToUpdate);
     }
@@ -98,8 +127,18 @@ export default function AppointmentForm({ vets, pets }: AppointmentFormProps) {
   const onDeleteCLick = async () => {
     if (!appointmentData?.id) return;
 
-    await deleteAppointment(appointmentData.id);
+    const result = await deleteAppointment(appointmentData.id);
     schedulerRef?.current?.deleteEvent(appointmentData.id);
+
+    if (!result.success) {
+      toast.custom((t) => (
+        <Toast t={t} message="Could not delete appointment." type="danger" />
+      ));
+      return;
+    }
+    toast.custom((t) => (
+      <Toast t={t} message="Appointment deleted." type="success" />
+    ));
 
     setIsOpen(false);
   };

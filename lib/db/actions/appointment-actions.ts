@@ -9,7 +9,7 @@ export async function getAppoinments() {
   try {
     const appointments = await db.appointment.findMany();
 
-    return { appointments: appointments, success: false };
+    return { appointments: appointments, success: true };
   } catch (error) {
     console.log("🚀 ~ getAppoinments ~ error:", error);
     return { success: false };
@@ -25,6 +25,7 @@ export async function createAppointment(data: Appointment) {
     revalidatePath("/app/appointments");
     return { appointment, success: true };
   } catch (error) {
+    console.log("hello");
     console.log("createAppointment", error);
     return { success: false };
   }
@@ -40,7 +41,7 @@ export async function updateAppointment(data: Appointment) {
     });
 
     revalidatePath("/app/appointments");
-    return { appointment, success: false };
+    return { appointment, success: true };
   } catch (error) {
     console.error("updateAppointment", error);
 
@@ -55,6 +56,7 @@ export async function deleteAppointment(appointmentId: number) {
         id: appointmentId,
       },
     });
+    return { success: true };
   } catch (error) {
     console.error("deleteAppointment", error);
 

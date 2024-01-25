@@ -31,6 +31,9 @@ import { SchedulerContext } from "./scheduler-context";
 import SchedulerModal, { AppointmentData } from "./scheduler-modal";
 import { appointments } from "./appointments";
 import { Appointment } from "@prisma/client";
+import { updateAppointment } from "@/lib/db/actions/appointment-actions";
+import { toast } from "sonner";
+import Toast from "../toast/toasters";
 
 registerLicense(
   "Ngo9BigBOggjHTQxAR8/V1NAaF5cWWJCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWX5fd3RcRWdcU0xzV0I=",
@@ -106,20 +109,68 @@ export default function Scheduler({
     }
   }
 
-  function onDrag(event: DragEventArgs) {
+  async function onDrag(event: DragEventArgs) {
     if (event.name === "dragStart") {
       event.cancel = true;
       return;
     }
-    console.log({ event });
+
+    if (!event.data) return;
+
+    const appointment: Appointment = {
+      id: event.data.id,
+      description: event.data.description,
+      subject: event.data.subject,
+      startTime: event.data.startTime,
+      endTime: event.data.endTime,
+      vetId: event.data.vetId,
+      petId: event.data.petId,
+    };
+
+    const result = await updateAppointment(appointment);
+
+    console.log({ result });
+
+    if (!result.success) {
+      toast.custom((t) => (
+        <Toast t={t} message="Could not update appointment." type="danger" />
+      ));
+      return;
+    }
+    toast.custom((t) => (
+      <Toast t={t} message="Appointment updated." type="success" />
+    ));
   }
 
-  function onResize(event: ResizeEventArgs) {
+  async function onResize(event: ResizeEventArgs) {
     if (event.name === "resizeStart") {
       event.cancel = true;
       return;
     }
-    console.log({ event });
+
+    if (!event.data) return;
+
+    const appointment: Appointment = {
+      id: event.data.id,
+      description: event.data.description,
+      subject: event.data.subject,
+      startTime: event.data.startTime,
+      endTime: event.data.endTime,
+      vetId: event.data.vetId,
+      petId: event.data.petId,
+    };
+
+    const result = await updateAppointment(appointment);
+
+    if (!result.success) {
+      toast.custom((t) => (
+        <Toast t={t} message="Could not update appointment." type="danger" />
+      ));
+      return;
+    }
+    toast.custom((t) => (
+      <Toast t={t} message="Appointment updated." type="success" />
+    ));
   }
 
   const navigateToDate = useCallback((date: Date) => {
