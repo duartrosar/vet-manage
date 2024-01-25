@@ -23,7 +23,6 @@ export default function PetFormModal() {
           setOwners(null);
         }
       } catch (error) {
-        // Handle any unexpected errors during the fetch
         console.error("Error fetching owners", error);
       }
     };

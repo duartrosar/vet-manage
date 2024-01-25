@@ -88,18 +88,19 @@ model Owner {
 }
 
 model Pet {
-  id       Int     @id @default(autoincrement())
-  name     String
-  type     String
-  imageUrl String?
-  owner    Owner   @relation(fields: [ownerId], references: [id])
-  ownerId  Int
+  id          Int           @id @default(autoincrement())
+  name        String
+  type        String
+  imageUrl    String?
+  owner       Owner         @relation(fields: [ownerId], references: [id])
+  ownerId     Int
+  Appointment Appointment[]
 
   @@index([ownerId])
 }
 
 model Vet {
-  id           Int       @id @default(autoincrement())
+  id           Int           @id @default(autoincrement())
   firstName    String
   lastName     String
   dateOfBirth  DateTime?
@@ -108,8 +109,9 @@ model Vet {
   mobileNumber String?
   address      String?
   imageUrl     String?
-  userId       String    @unique
-  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String        @unique
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Appointment  Appointment[]
 
   @@index([userId])
 }
@@ -120,4 +122,11 @@ model Appointment {
   startTime   String
   endTime     String
   description String
+  vetId       Int
+  vet         Vet    @relation(fields: [vetId], references: [id], onDelete: Cascade)
+  petId       Int
+  pet         Pet    @relation(fields: [petId], references: [id], onDelete: Cascade)
+
+  @@index([vetId])
+  @@index([petId])
 }

@@ -1,9 +1,13 @@
 import { auth } from "@/auth";
 import AppointmentForm from "@/components/forms/appointment/appointment-form";
 import TimeRangePicker from "@/components/time-picker/time-range-picker";
+import { getPets } from "@/lib/db/actions/pet-actions";
+import { getVets } from "@/lib/db/actions/vet-actions";
 
 export default async function AppHome() {
   const session = await auth();
+  const { pets } = await getPets();
+  const { vets } = await getVets();
 
   return (
     <div className="flex  h-full w-full flex-col items-start justify-center gap-10 bg-cerulean-900 px-8">
@@ -23,6 +27,8 @@ export default async function AppHome() {
         <AppointmentForm
           startTime={new Date("2024-01-06T16:00:00.000Z")}
           endTime={new Date("2024-01-06T18:00:00.000Z")}
+          pets={pets}
+          vets={vets}
         />
       </div>
     </div>

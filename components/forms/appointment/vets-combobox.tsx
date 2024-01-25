@@ -10,7 +10,7 @@ import {
   PopoverTrigger,
   Popover,
 } from "@/components/ui/popover";
-import { Owner } from "@prisma/client";
+import { Vet } from "@prisma/client";
 import clsx from "clsx";
 import { Check, ChevronsUpDown } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
@@ -38,27 +38,27 @@ interface ComboboxProps<T extends FieldValues> {
   error: FieldError | undefined;
   setValue: UseFormSetValue<T>;
   value: number;
-  owners: Owner[];
+  vets: Vet[];
   clearErrors: UseFormClearErrors<T>;
 }
 
-export default function ControlledCombobox<T extends FieldValues>({
+export default function VetsCombobox<T extends FieldValues>({
   label,
   error,
   setValue,
   value,
-  owners,
+  vets,
   clearErrors,
 }: ComboboxProps<T>) {
   const contentRef = useRef<HTMLDivElement>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [owner, setOwner] = useState<Owner>();
+  const [vet, setVet] = useState<Vet>();
 
   useEffect(() => {
     if (value) {
-      const currentOwner = owners.find((owner) => owner.id === value);
+      const currentVet = vets.find((vet) => vet.id === value);
 
-      setOwner(currentOwner);
+      setVet(currentVet);
     }
   }, [value]);
 
@@ -89,10 +89,10 @@ export default function ControlledCombobox<T extends FieldValues>({
           <FormControl>
             <div className="flex w-full items-center justify-between">
               <div className="flex items-center gap-3">
-                {owner?.imageUrl ? (
+                {vet?.imageUrl ? (
                   <Image
                     className="h-[30px] w-[30px] flex-none rounded-full bg-cerulean-950"
-                    src={owner?.imageUrl}
+                    src={vet?.imageUrl}
                     width={30}
                     height={30}
                     alt="Profile picture"
@@ -102,9 +102,7 @@ export default function ControlledCombobox<T extends FieldValues>({
                     <FaUser className="h-[15px] w-[15px] text-cerulean-500/50" />
                   </span>
                 )}
-                {owner
-                  ? `${owner.firstName} ${owner.lastName}`
-                  : "Select Owner"}
+                {vet ? `${vet.firstName} ${vet.lastName}` : "Select vet"}
               </div>
               <ChevronsUpDown
                 id="icon"
@@ -120,38 +118,37 @@ export default function ControlledCombobox<T extends FieldValues>({
           <Command className="rounded-lg border-2 border-cerulean-100/25 bg-cerulean-900 py-1 text-sm">
             <CommandInput
               className="text-gray-200"
-              placeholder="Search Owner..."
+              placeholder="Search Vet..."
             />
             <CommandEmpty className="py-6 text-center text-gray-400">
-              No owner found.
+              No Vet found.
             </CommandEmpty>
             <CommandGroup>
-              {owners.map((owner) => (
+              {vets.map((vet) => (
                 <CommandItem
                   className="rounded-lg hover:bg-cerulean-800 hover:text-gray-200 aria-selected:bg-cerulean-800"
-                  value={`${owner.id}`}
-                  key={owner.id}
+                  value={`${vet.id}`}
+                  key={vet.id}
                   onSelect={() => {
                     setValue(
-                      "ownerId" as Path<T>,
-                      owner.id as PathValue<T, Path<T>>,
+                      "vetId" as Path<T>,
+                      vet.id as PathValue<T, Path<T>>,
                     );
-                    // setOwner(owner);
-                    clearErrors("ownerId" as Path<T>);
+                    clearErrors("vetId" as Path<T>);
                     setDropdownOpen(false);
                   }}
                 >
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4 text-gray-400",
-                      owner.id === value ? "opacity-100" : "opacity-0",
+                      vet.id === value ? "opacity-100" : "opacity-0",
                     )}
                   />
                   <div className="flex items-center gap-3">
-                    {owner?.imageUrl ? (
+                    {vet?.imageUrl ? (
                       <Image
                         className="h-[30px] w-[30px] flex-none rounded-full bg-cerulean-950"
-                        src={owner?.imageUrl}
+                        src={vet?.imageUrl}
                         width={30}
                         height={30}
                         alt="Profile picture"
@@ -161,9 +158,9 @@ export default function ControlledCombobox<T extends FieldValues>({
                         <FaUser className="h-[15px] w-[15px] text-cerulean-500/50" />
                       </span>
                     )}
-                    {owners && (
+                    {vets && (
                       <span className=" text-gray-400">
-                        {owner.firstName} {owner.lastName}
+                        {vet.firstName} {vet.lastName}
                       </span>
                     )}
                   </div>
