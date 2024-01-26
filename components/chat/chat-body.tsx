@@ -1,18 +1,26 @@
+"use client";
+
 import { cn } from "@/lib/utils";
-import React from "react";
-import { number } from "zod";
+import React, { useEffect, useRef } from "react";
 
 export default function ChatBody() {
   const numbers: number[] = [];
+
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    bottomRef?.current?.scrollIntoView();
+  }, []);
 
   for (let i = 0; i < 25; i++) {
     numbers.push(i);
   }
   return (
-    <div className=" flex-1 space-y-2 overflow-y-auto p-4">
-      <div className="m-auto flex w-full max-w-6xl flex-col">
+    <div className=" flex-1 overflow-y-auto p-4">
+      <div className="m-auto flex w-full max-w-6xl flex-col space-y-2">
         {numbers.map((value, index) => (
           <div
+            key={value}
             className={cn("flex w-full", value % 2 === 0 ? "justify-end" : "")}
           >
             <div
@@ -27,6 +35,7 @@ export default function ChatBody() {
           </div>
         ))}
       </div>
+      <div className="" ref={bottomRef} />
     </div>
   );
 }
