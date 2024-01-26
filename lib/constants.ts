@@ -27,7 +27,7 @@ export const sidebarItems: SidebarItemsProp[] = [
   },
   {
     title: "Messages",
-    urlPath: "/app",
+    urlPath: "/app/messages",
     icon: IoChatbox,
   },
   {
