@@ -6,13 +6,19 @@ import Image from "next/image";
 import { FaUser } from "react-icons/fa6";
 import { FullConversation } from "./chat-list";
 import { User } from "@prisma/client";
+import { cn } from "@/lib/utils";
+import { useParams } from "next/navigation";
+import useConversation from "@/lib/hooks/useConversation";
 
 export default function ChatConversation({
   conversation,
+  selected,
 }: {
   conversation: FullConversation;
+  selected: boolean;
 }) {
   const [user, setUser] = useState<User>();
+  const { conversationId } = useConversation();
 
   useEffect(() => {
     if (conversation.userConversation.user) {
@@ -23,7 +29,10 @@ export default function ChatConversation({
   return (
     <Link
       href={`/app/messages/${conversation.id}`}
-      className="flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-cerulean-800"
+      className={cn(
+        "flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-cerulean-800",
+        conversation.id === conversationId ? "bg-cerulean-800" : "",
+      )}
     >
       {user?.image ? (
         <Image

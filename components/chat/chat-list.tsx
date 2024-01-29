@@ -2,15 +2,10 @@
 
 import { Conversation, Owner, User, UserConversation } from "@prisma/client";
 import React, { Suspense, useEffect, useMemo, useState } from "react";
-import { IoAddOutline } from "react-icons/io5";
-import Image from "next/image";
-import { FaUser } from "react-icons/fa6";
 import { cn } from "@/lib/utils";
 import useConversation from "@/lib/hooks/useConversation";
-import Link from "next/link";
 import ChatConversation from "./chat-conversation";
 import ChatAddConversation from "./chat-add-conversation";
-import { useSession } from "next-auth/react";
 
 export interface FullUserConversation {
   id?: number;
@@ -28,7 +23,7 @@ export default function ChatList({
   conversations?: FullConversation[];
   className?: string;
 }) {
-  const { isChatSideBarOpen } = useConversation();
+  const { isChatSideBarOpen, conversationId } = useConversation();
 
   return (
     <aside
@@ -47,6 +42,7 @@ export default function ChatList({
           conversations?.map((conversation) => (
             <ChatConversation
               key={conversation.id}
+              selected={conversation.id === conversationId}
               conversation={conversation}
             />
           ))

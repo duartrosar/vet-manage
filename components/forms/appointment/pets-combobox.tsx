@@ -127,7 +127,7 @@ export default function PetsCombobox<T extends FieldValues>({
               {pets.map((pet) => (
                 <CommandItem
                   className="rounded-lg hover:bg-cerulean-800 hover:text-gray-200 aria-selected:bg-cerulean-800"
-                  value={`${pet.id}`}
+                  value={pet.id + "-" + `${pet.name}`}
                   key={pet.id}
                   onSelect={() => {
                     setValue(

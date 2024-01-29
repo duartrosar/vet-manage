@@ -6,10 +6,10 @@ const useConversation = () => {
 
   const conversationId = useMemo(() => {
     if (!params?.conversationId) {
-      return "";
+      return 0;
     }
 
-    return params.conversationId as string;
+    return parseInt(params.conversationId as string, 10);
   }, [params?.conversationId]);
 
   const isChatSideBarOpen = useMemo(() => !!conversationId, [conversationId]);

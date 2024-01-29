@@ -129,7 +129,9 @@ export default function ControlledCombobox<T extends FieldValues>({
               {owners.map((owner) => (
                 <CommandItem
                   className="rounded-lg hover:bg-cerulean-800 hover:text-gray-200 aria-selected:bg-cerulean-800"
-                  value={`${owner.id}`}
+                  value={
+                    owner.id + "-" + `${owner.firstName} ${owner.lastName}`
+                  }
                   key={owner.id}
                   onSelect={() => {
                     setValue(

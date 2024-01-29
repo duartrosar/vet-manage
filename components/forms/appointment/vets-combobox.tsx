@@ -127,7 +127,7 @@ export default function VetsCombobox<T extends FieldValues>({
               {vets.map((vet) => (
                 <CommandItem
                   className="rounded-lg hover:bg-cerulean-800 hover:text-gray-200 aria-selected:bg-cerulean-800"
-                  value={`${vet.id}`}
+                  value={vet.id + "-" + `${vet.firstName} ${vet.lastName}`}
                   key={vet.id}
                   onSelect={() => {
                     setValue(
