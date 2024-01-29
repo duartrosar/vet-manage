@@ -5,7 +5,13 @@ interface SidebarState {
   active: string;
 }
 
-const initialState: SidebarState = { isOpen: true, active: "Dashboard" };
+// TODO: Change this for a simple context so that we can
+// const sidebarExpanded = localStorage.getItem("sidebarExpanded") === "true";
+
+const initialState: SidebarState = {
+  isOpen: true,
+  active: "Dashboard",
+};
 
 const sidebarSlice = createSlice({
   name: "sidebar",

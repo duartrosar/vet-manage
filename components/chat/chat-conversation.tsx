@@ -6,24 +6,19 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { FaUser } from "react-icons/fa6";
+import { FullConversation } from "./chat-list";
 
 export default function ChatConversation({
   conversation,
 }: {
-  conversation: Conversation;
+  conversation: FullConversation;
 }) {
   const [user, setUser] = useState<User>();
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const user = await getUserByConversationId(conversation.id);
-      if (user) {
-        setUser(user);
-        console.log({ user });
-      }
-    };
-
-    fetchUser();
+    if (conversation.userConversation.user) {
+      setUser(conversation.userConversation.user);
+    }
   }, []);
 
   return (
@@ -34,7 +29,7 @@ export default function ChatConversation({
       {user?.image ? (
         <Image
           className="h-[50px] w-[50px] flex-none rounded-full bg-cerulean-950"
-          src={user?.image}
+          src={user.image}
           width={50}
           height={50}
           alt="Profile picture"
@@ -44,13 +39,15 @@ export default function ChatConversation({
           <FaUser className="h-[30px] w-[30px] text-cerulean-500/50" />
         </span>
       )}
-      <div className="space-y-2">
-        <p className="text-sm font-semibold text-white">{user?.name}</p>
-        <p className="text-xs text-cerulean-100/50">
-          {/* TODO: Get last message */}
-          This was my last message.
-        </p>
-      </div>
+      {user?.name && (
+        <div className="space-y-2">
+          <p className="text-sm font-semibold text-white">{user.name}</p>
+          <p className="text-xs text-cerulean-100/50">
+            {/* TODO: Get last message */}
+            This was my last message.
+          </p>
+        </div>
+      )}
     </Link>
   );
 }

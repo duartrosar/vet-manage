@@ -5,25 +5,28 @@ import { db } from "../prisma";
 import { Message } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
-export async function createConversation(
-  sessionUserId: string,
-  otherUserId: string,
-) {
+export async function createConversation(otherUserId: string) {
   try {
-    const conversation = await db.conversation.create({
-      data: {
-        userConversations: {
-          create: [{ userId: sessionUserId }, { userId: otherUserId }],
-        },
-      },
-      include: {
-        userConversations: {
-          include: { user: true },
-        },
-      },
-    });
+    const session = await auth();
 
-    return conversation;
+    if (session?.user) {
+      const conversation = await db.conversation.create({
+        data: {
+          userConversations: {
+            create: [{ userId: session.user.id }, { userId: otherUserId }],
+          },
+        },
+        include: {
+          userConversations: {
+            include: { user: true },
+          },
+        },
+      });
+
+      revalidatePath("/app/messages");
+
+      return conversation;
+    }
   } catch (error) {}
 }
 
@@ -56,10 +59,38 @@ export async function getConversations() {
             },
           },
         },
-        include: { userConversations: true },
+        orderBy: { createdAt: "desc" },
+        include: {
+          userConversations: {
+            include: {
+              user: true,
+            },
+          },
+        },
       });
 
-      return { conversations: conversations, success: true };
+      // map over the conversations
+      // create a new conversation with every property using the spread operator
+      // in that new conversation, we find the ONLY userConversation where
+      // the userId doesn't match the id of the logged in user
+      // then we return the spreaded userConversation, so that
+      // we get all the values in that userConversation
+      const filteredConversations = conversations.map((conversation) => {
+        const newConversation = {
+          id: conversation.id,
+          createdAt: conversation.createdAt,
+          lastMessageAt: conversation.lastMessageAt,
+          name: conversation.name,
+          userConversation: {
+            ...conversation.userConversations.find((userConversation) => {
+              return userConversation.userId !== session.user.id;
+            }),
+          },
+        };
+        return newConversation;
+      });
+
+      return { conversations: filteredConversations, success: true };
     }
   } catch (error) {}
 }
@@ -116,30 +147,6 @@ export async function getUserByConversationId(conversationId: number) {
       });
 
       return user;
-    }
-  } catch (error) {}
-}
-
-export async function getUserConversations(userId: string) {
-  try {
-    const result = await getConversations();
-
-    if (result?.conversations) {
-      const userConversations = result.conversations.flatMap((conversation) =>
-        conversation.userConversations.filter((uc) => uc.userId !== userId),
-      );
-
-      const userIds = userConversations.map((uc) => uc.userId);
-
-      if (userIds !== null) {
-        const users = await db.user.findMany({
-          where: {
-            id: {
-              in: userIds as string[],
-            },
-          },
-        });
-      }
     }
   } catch (error) {}
 }

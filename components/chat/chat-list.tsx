@@ -1,7 +1,7 @@
 "use client";
 
-import { Conversation, Owner } from "@prisma/client";
-import React, { Suspense, useMemo } from "react";
+import { Conversation, Owner, User, UserConversation } from "@prisma/client";
+import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { IoAddOutline } from "react-icons/io5";
 import Image from "next/image";
 import { FaUser } from "react-icons/fa6";
@@ -9,15 +9,27 @@ import { cn } from "@/lib/utils";
 import useConversation from "@/lib/hooks/useConversation";
 import Link from "next/link";
 import ChatConversation from "./chat-conversation";
+import ChatAddConversation from "./chat-add-conversation";
+import { useSession } from "next-auth/react";
+
+export interface FullUserConversation {
+  id?: number;
+  user?: User;
+}
+
+export interface FullConversation extends Conversation {
+  userConversation: FullUserConversation;
+}
 
 export default function ChatList({
   conversations,
   className,
 }: {
-  conversations?: Conversation[];
+  conversations?: FullConversation[];
   className?: string;
 }) {
   const { isChatSideBarOpen } = useConversation();
+
   return (
     <aside
       className={cn(
@@ -28,18 +40,11 @@ export default function ChatList({
     >
       <div className="flex items-center justify-between pl-4 pr-2 pt-2">
         <h1 className="text-xl text-white">Chats</h1>
-        <button className="rounded-lg p-3 hover:bg-cerulean-800">
-          <IoAddOutline className="h-[20px] w-[20px] cursor-pointer text-white" />
-        </button>
+        <ChatAddConversation />
       </div>
       <div className="space-y-4 p-2 px-2">
         {conversations?.map((conversation) => (
-          <Suspense
-            key={conversation.id}
-            fallback={<div className="bg-red h-12 animate-pulse"></div>}
-          >
-            <ChatConversation conversation={conversation} />
-          </Suspense>
+          <ChatConversation key={conversation.id} conversation={conversation} />
         ))}
       </div>
     </aside>

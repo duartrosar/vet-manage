@@ -10,7 +10,6 @@ import { RegisterProps } from "@/lib/types";
 import { hash } from "bcryptjs";
 import { revalidatePath } from "next/cache";
 import { deleteBlob } from "@/lib/db/actions/blob-actions";
-import { auth } from "@/auth";
 
 export async function createUserWithOwner(userRegister: RegisterProps) {
   try {
@@ -69,8 +68,6 @@ export async function getUser(email: string) {
 }
 
 export async function deleteUser(userId: string, pathToRevalidate: string) {
-  console.log("userId", userId);
-
   try {
     const user = await getUserById(userId);
 
@@ -113,3 +110,18 @@ export const getUserById = async (id: string) => {
     return null;
   }
 };
+
+export async function getUsers(userId: string) {
+  try {
+    const users = await db.user.findMany({
+      where: {
+        NOT: {
+          id: userId,
+        },
+      },
+    });
+    return users;
+  } catch (error) {
+    console.log({ error });
+  }
+}

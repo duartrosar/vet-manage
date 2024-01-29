@@ -15,10 +15,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // registerLicense(
-  //   "Ngo9BigBOggjHTQxAR8/V1NAaF5cWWJCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWX5fd3RcRWdcU0xzV0I=",
-  // );
-
   return (
     <html lang="en">
       <body className={`${inter.className} relative bg-cerulean-950`}>
