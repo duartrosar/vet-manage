@@ -22,6 +22,7 @@ import { createConversation } from "@/lib/db/actions/chat-actions";
 import { useSession } from "next-auth/react";
 
 export default function ChatAddConversation() {
+  const [isOpen, setIsOpen] = useState<boolean>();
   const [users, setUsers] = useState<User[]>();
   const session = useSession();
 
@@ -29,10 +30,11 @@ export default function ChatAddConversation() {
     const fetchUsers = async () => {
       if (!session.data?.user) return;
       const userId = session.data.user.id;
-      const currentUsers = await getUsers(userId);
+      const result = await getUsers(userId);
 
-      if (currentUsers) {
-        setUsers(currentUsers);
+      if (result?.users) {
+        setUsers(result.users);
+        console.log(result.users);
       }
     };
     fetchUsers();
@@ -42,10 +44,16 @@ export default function ChatAddConversation() {
     const userId = value.split("-")[0];
 
     await createConversation(userId);
+
+    const newUsers = users?.filter((user) => user.id !== userId);
+
+    setUsers(newUsers);
+
+    setIsOpen(false);
   };
 
   return (
-    <Popover>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger className="rounded-lg p-3 hover:bg-cerulean-800">
         <IoAddOutline className="h-[20px] w-[20px] cursor-pointer text-white" />
       </PopoverTrigger>

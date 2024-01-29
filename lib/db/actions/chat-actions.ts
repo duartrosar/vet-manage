@@ -23,7 +23,7 @@ export async function createConversation(otherUserId: string) {
         },
       });
 
-      revalidatePath("/app/messages");
+      revalidatePath("/app/messages", "layout");
 
       return conversation;
     }
