@@ -12,6 +12,10 @@ export default function MessagesPage() {
         "h-full bg-cerulean-950 lg:block lg:pl-80",
         isChatSideBarOpen ? "block" : "hidden",
       )}
-    ></div>
+    >
+      <div className="flex h-full flex-col items-center justify-center text-sm text-cerulean-100/50">
+        <p>Select a conversation to start chatting.</p>
+      </div>
+    </div>
   );
 }

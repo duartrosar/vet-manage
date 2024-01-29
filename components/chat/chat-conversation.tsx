@@ -1,12 +1,11 @@
 "use client";
 
-import { getUserByConversationId } from "@/lib/db/actions/chat-actions";
-import { Conversation, User } from "@prisma/client";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { FaUser } from "react-icons/fa6";
 import { FullConversation } from "./chat-list";
+import { User } from "@prisma/client";
 
 export default function ChatConversation({
   conversation,
@@ -28,19 +27,19 @@ export default function ChatConversation({
     >
       {user?.image ? (
         <Image
-          className="h-[50px] w-[50px] flex-none rounded-full bg-cerulean-950"
+          className="h-[45px] w-[45px] flex-none rounded-full bg-cerulean-950"
           src={user.image}
-          width={50}
-          height={50}
+          width={45}
+          height={45}
           alt="Profile picture"
         />
       ) : (
-        <span className="flex h-[50px] w-[50px] items-center justify-center rounded-full bg-cerulean-950">
+        <span className="flex h-[45px] w-[45px] items-center justify-center rounded-full bg-cerulean-950">
           <FaUser className="h-[30px] w-[30px] text-cerulean-500/50" />
         </span>
       )}
       {user?.name && (
-        <div className="space-y-2">
+        <div className="space-y-1">
           <p className="text-sm font-semibold text-white">{user.name}</p>
           <p className="text-xs text-cerulean-100/50">
             {/* TODO: Get last message */}

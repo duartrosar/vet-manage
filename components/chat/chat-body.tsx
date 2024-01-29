@@ -14,7 +14,6 @@ export default function ChatBody({ messages }: { messages?: Message[] }) {
   useEffect(() => {
     if (session?.data) {
       setUserId(session.data.user.id);
-      console.log(session.data.user.id);
     }
   }, [session]);
 
@@ -27,7 +26,7 @@ export default function ChatBody({ messages }: { messages?: Message[] }) {
       <div className="m-auto flex w-full max-w-6xl flex-col space-y-2">
         {messages &&
           userId &&
-          messages.map((message, index) => (
+          messages.map((message) => (
             <ChatMessage key={message.id} message={message} userId={userId} />
           ))}
       </div>

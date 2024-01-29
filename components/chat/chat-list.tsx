@@ -43,9 +43,19 @@ export default function ChatList({
         <ChatAddConversation />
       </div>
       <div className="space-y-4 p-2 px-2">
-        {conversations?.map((conversation) => (
-          <ChatConversation key={conversation.id} conversation={conversation} />
-        ))}
+        {conversations?.length ? (
+          conversations?.map((conversation) => (
+            <ChatConversation
+              key={conversation.id}
+              conversation={conversation}
+            />
+          ))
+        ) : (
+          <div className="flex flex-col items-center text-sm font-normal text-cerulean-100/50">
+            <p>No conversations found. </p>
+            <p>Click the plus sign to add one.</p>
+          </div>
+        )}
       </div>
     </aside>
   );

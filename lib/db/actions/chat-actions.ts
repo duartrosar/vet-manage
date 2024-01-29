@@ -32,15 +32,31 @@ export async function createConversation(otherUserId: string) {
 
 export async function getConversationById(conversationId: number) {
   try {
-    const conversation = await db.conversation.findUnique({
-      where: { id: conversationId },
-      include: {
-        userConversations: { include: { user: true } },
-        messages: true,
-      },
-    });
+    const session = await auth();
+    if (session?.user) {
+      const conversation = await db.conversation.findUnique({
+        where: { id: conversationId },
+        include: {
+          userConversations: { include: { user: true } },
+          messages: true,
+        },
+      });
 
-    return conversation;
+      const filteredConversation = {
+        id: conversation?.id,
+        createdAt: conversation?.createdAt,
+        lastMessageAt: conversation?.lastMessageAt,
+        messages: conversation?.messages,
+        name: conversation?.messages,
+        userConversation: {
+          ...conversation?.userConversations.find((uc) => {
+            return uc.userId !== session.user.id;
+          }),
+        },
+      };
+
+      return { conversation: filteredConversation };
+    }
   } catch (error) {
     console.log({ error });
   }
