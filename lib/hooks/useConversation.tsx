@@ -4,19 +4,20 @@ import { useMemo } from "react";
 const useConversation = () => {
   const params = useParams();
 
-  console.log({ params });
-
-  const conversation = useMemo(() => {
-    if (!params?.conversation) {
+  const conversationId = useMemo(() => {
+    if (!params?.conversationId) {
       return "";
     }
 
-    return params.conversation as string;
-  }, [params?.conversation]);
+    return params.conversationId as string;
+  }, [params?.conversationId]);
 
-  const isOpen = useMemo(() => !!conversation, [conversation]);
+  const isChatSideBarOpen = useMemo(() => !!conversationId, [conversationId]);
 
-  return useMemo(() => ({ isOpen, conversation }), [isOpen, conversation]);
+  return useMemo(
+    () => ({ isChatSideBarOpen, conversationId }),
+    [isChatSideBarOpen, conversationId],
+  );
 };
 
 export default useConversation;

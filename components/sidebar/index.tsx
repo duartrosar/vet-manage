@@ -32,7 +32,6 @@ export default function SideBar() {
   useEffect(() => {
     const pathSegments = pathname.split("/");
     const activePath = pathSegments[pathSegments.length - 1];
-    console.log(activePath);
     dispatch(setActive(activePath));
   }, [pathname]);
 

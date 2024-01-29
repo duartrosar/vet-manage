@@ -10,6 +10,7 @@ import { RegisterProps } from "@/lib/types";
 import { hash } from "bcryptjs";
 import { revalidatePath } from "next/cache";
 import { deleteBlob } from "@/lib/db/actions/blob-actions";
+import { auth } from "@/auth";
 
 export async function createUserWithOwner(userRegister: RegisterProps) {
   try {
