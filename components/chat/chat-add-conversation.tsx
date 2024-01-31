@@ -25,49 +25,34 @@ import {
 } from "../ui/command";
 import { createConversation } from "@/lib/db/actions/chat-actions";
 import { useSession } from "next-auth/react";
+import useFilterUsers from "@/lib/hooks/useFilterUsers";
 
 export default function ChatAddConversation() {
   const [isOpen, setIsOpen] = useState<boolean>();
-  const [employeeUsers, setEmployeeUsers] = useState<User[]>();
-  const [customerUsers, setCustomerUsers] = useState<User[]>();
-  const session = useSession();
+  const { employees, customers, filterUsers, removeUser } = useFilterUsers();
 
   useEffect(() => {
     const fetchUsers = async () => {
-      if (!session.data?.user) return;
-      const user = session.data.user;
-      const userId = session.data.user.id;
+      const response = await fetch("/api/conversations/users", {
+        method: "GET",
+      });
 
-      // TODO: extract this logic into a hook
-      // Add a remove user function to more easily
-      // remove users from the list when we add a new conversation
-      const isCustomer = user.roles.some((role) => role.role === "CUSTOMER");
+      const { users, isCustomer } = await response.json();
 
-      const result = await getEmployeeUsers(userId);
-
-      if (result?.users) {
-        setEmployeeUsers(result.users);
-      }
-
-      if (!isCustomer) {
-        const result = await getAllUsers(userId);
-
-        if (result?.users) {
-          setCustomerUsers(result.users);
-        }
+      if (users) {
+        filterUsers(users, isCustomer);
       }
     };
+
     fetchUsers();
-  }, [session]);
+  }, []);
 
   const onValueChange = async (value: string) => {
     const userId = value.split("-")[0];
 
     await createConversation(userId);
 
-    const newUsers = employeeUsers?.filter((user) => user.id !== userId);
-
-    setEmployeeUsers(newUsers);
+    removeUser(userId);
 
     setIsOpen(false);
   };
@@ -90,9 +75,9 @@ export default function ChatAddConversation() {
             No User found.
           </CommandEmpty>
           <CommandList>
-            {employeeUsers?.length && (
+            {employees?.length && (
               <CommandGroup heading="Vets" className="px-2">
-                {employeeUsers.map((user, index) => (
+                {employees.map((user, index) => (
                   <CommandItem
                     onSelect={onValueChange}
                     key={user.id}
@@ -121,9 +106,9 @@ export default function ChatAddConversation() {
                 ))}
               </CommandGroup>
             )}
-            {customerUsers?.length && (
+            {customers?.length && (
               <CommandGroup heading="Owners" className="px-2">
-                {customerUsers.map((user, index) => (
+                {customers.map((user, index) => (
                   <CommandItem
                     onSelect={onValueChange}
                     key={user.id}
