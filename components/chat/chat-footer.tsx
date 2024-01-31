@@ -25,9 +25,7 @@ export default function ChatFooter() {
   const onSubmit = async (data: MessageFormData) => {
     form.setValue("body", "");
 
-    const convId = parseInt(conversationId, 10);
-
-    data.conversationId = convId;
+    data.conversationId = conversationId;
 
     const message = await createMessage(data as Message);
 

@@ -111,7 +111,7 @@ export const getUserById = async (id: string) => {
   }
 };
 
-export async function getUsers(userId: string) {
+export async function getAllUsers(userId: string) {
   try {
     const conversations = await db.conversation.findMany({
       where: {
@@ -131,6 +131,13 @@ export async function getUsers(userId: string) {
         NOT: {
           id: userId,
         },
+        AND: {
+          roles: {
+            some: {
+              role: "CUSTOMER",
+            },
+          },
+        },
       },
       include: {
         conversations: true,
@@ -145,7 +152,55 @@ export async function getUsers(userId: string) {
 
     const filteredIds = userIds.filter((id) => id !== undefined);
 
-    console.log({ filteredIds });
+    const filteredUsers = users.filter(
+      (user) => !filteredIds.includes(user.id),
+    );
+    return { users: filteredUsers };
+  } catch (error) {
+    console.log({ error });
+  }
+}
+
+export async function getEmployeeUsers(userId: string) {
+  try {
+    const conversations = await db.conversation.findMany({
+      where: {
+        userConversations: {
+          some: {
+            userId: userId,
+          },
+        },
+      },
+      include: {
+        userConversations: true,
+      },
+    });
+
+    const users = await db.user.findMany({
+      where: {
+        NOT: {
+          id: userId,
+        },
+        AND: {
+          roles: {
+            some: {
+              role: "EMPLOYEE",
+            },
+          },
+        },
+      },
+      include: {
+        conversations: true,
+      },
+    });
+
+    const userIds = conversations.flatMap((conversation) =>
+      conversation.userConversations
+        .filter((uc) => uc.userId !== userId)
+        .map((uc) => uc.userId),
+    );
+
+    const filteredIds = userIds.filter((id) => id !== undefined);
 
     const filteredUsers = users.filter(
       (user) => !filteredIds.includes(user.id),

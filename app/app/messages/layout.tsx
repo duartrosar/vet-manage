@@ -14,8 +14,6 @@ export default async function MessagesLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const result = await getConversations();
-
   return (
     <div className="h-full w-full">
       <Suspense fallback={<ChatListSkeleton />}>

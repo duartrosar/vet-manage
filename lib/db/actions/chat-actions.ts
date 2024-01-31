@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth";
 import { db } from "../prisma";
-import { Message } from "@prisma/client";
+import { Conversation, Message } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 export async function createConversation(otherUserId: string) {
@@ -79,7 +79,11 @@ export async function getConversations() {
         include: {
           userConversations: {
             include: {
-              user: true,
+              user: {
+                include: {
+                  roles: true,
+                },
+              },
             },
           },
         },
@@ -98,9 +102,9 @@ export async function getConversations() {
           lastMessageAt: conversation.lastMessageAt,
           name: conversation.name,
           userConversation: {
-            ...conversation.userConversations.find((userConversation) => {
-              return userConversation.userId !== session.user.id;
-            }),
+            ...conversation.userConversations.find(
+              (userConversation) => userConversation.userId !== session.user.id,
+            ),
           },
         };
         return newConversation;
@@ -108,7 +112,9 @@ export async function getConversations() {
 
       return { conversations: filteredConversations, success: true };
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log("🚀 ~ getConversations ~ error:", { error });
+  }
 }
 
 export async function createMessage(data: Message) {
