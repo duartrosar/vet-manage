@@ -3,11 +3,15 @@ import React from "react";
 import ChatList from "./chat-list";
 
 export default async function ChatLayout() {
-  const result = await getConversations();
+  const { conversations } = await getConversations();
+
+  if (!conversations) {
+    return <></>;
+  }
 
   return (
     <>
-      <ChatList conversations={result?.conversations} className="z-10" />
+      <ChatList conversations={conversations} className="z-10" />
     </>
   );
 }

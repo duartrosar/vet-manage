@@ -24,6 +24,7 @@ import {
 import { CommandItem } from "cmdk";
 import ChatCommandItem from "./chat-command-item";
 import dynamic from "next/dynamic";
+import { ConversationWithRelations } from "@/lib/db/extended-types";
 
 // TODO: This is just for testing
 // const LazyAddConversation = dynamic(() => import("./chat-add-conversation"), {
@@ -35,31 +36,17 @@ import dynamic from "next/dynamic";
 //   ),
 // });
 
-export interface FullUser extends User {
-  roles?: UserRole[];
-}
-
-export interface FullUserConversation {
-  id?: number;
-  user?: FullUser;
-  roles?: string[];
-}
-
-export interface FullConversation extends Conversation {
-  userConversation: FullUserConversation;
-}
-
 export default function ChatList({
   conversations,
   className,
 }: {
-  conversations?: FullConversation[];
+  conversations?: ConversationWithRelations[];
   className?: string;
 }) {
   const [customerConversations, setCustomerConversations] =
-    useState<FullConversation[]>();
+    useState<ConversationWithRelations[]>();
   const [employeeConversations, setEmployeeConversations] =
-    useState<FullConversation[]>();
+    useState<ConversationWithRelations[]>();
   const { isChatSideBarOpen, conversationId } = useConversation();
   const { getCustomerConversations, getEmployeeConversations } =
     useFilterConversations(conversations);
@@ -67,8 +54,6 @@ export default function ChatList({
   useEffect(() => {
     const custConversations = getCustomerConversations();
     const empConversations = getEmployeeConversations();
-
-    console.log({ custConversations });
 
     if (custConversations) {
       setCustomerConversations(custConversations);

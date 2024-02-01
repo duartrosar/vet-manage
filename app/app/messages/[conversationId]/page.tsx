@@ -23,10 +23,10 @@ const ConversationPage = async ({
 }) => {
   const conversationId = parseInt(params.conversationId, 10);
 
-  const result = await getConversationById(conversationId);
+  const { conversation } = await getConversationById(conversationId);
   const messages = await getMessages(conversationId);
 
-  if (!result?.conversation) {
+  if (!conversation || !conversation.userConversations[0].user) {
     return (
       <div className="h-full lg:pl-80">
         <div className="flex h-full flex-col items-center justify-center text-sm text-cerulean-100/50">
@@ -40,9 +40,7 @@ const ConversationPage = async ({
   return (
     <>
       <div className="relative flex h-full w-full flex-col lg:pl-80 ">
-        {result?.conversation.userConversation.user && (
-          <ChatHeader user={result?.conversation.userConversation.user} />
-        )}
+        <ChatHeader user={conversation.userConversations[0].user} />
         <ChatBody messages={messages} />
         <ChatFooter />
       </div>

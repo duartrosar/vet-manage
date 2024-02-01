@@ -4,6 +4,11 @@ import { auth } from "@/auth";
 import { db } from "../prisma";
 import { Conversation, Message } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { ConversationWithRelations } from "../extended-types";
+
+interface DashboardConversationsResponse {
+  conversations: ConversationWithRelations[] | null;
+}
 
 export async function createConversation(otherUserId: string) {
   try {
@@ -37,7 +42,18 @@ export async function getConversationById(conversationId: number) {
       const conversation = await db.conversation.findUnique({
         where: { id: conversationId },
         include: {
-          userConversations: { include: { user: true } },
+          userConversations: {
+            where: {
+              user: {
+                isNot: {
+                  id: session.user.id,
+                },
+              },
+            },
+            include: {
+              user: true,
+            },
+          },
           messages: true,
         },
       });
@@ -55,14 +71,61 @@ export async function getConversationById(conversationId: number) {
         },
       };
 
-      return { conversation: filteredConversation };
+      return { conversation };
     }
+    return { converstation: null };
   } catch (error) {
     console.log({ error });
+    return { converstation: null };
   }
 }
 
-export async function getConversations() {
+export async function getConversations(): Promise<DashboardConversationsResponse> {
+  try {
+    const session = await auth();
+
+    console.log({ session });
+
+    if (session) {
+      const conversations = await db.conversation.findMany({
+        where: {
+          userConversations: {
+            some: {
+              userId: session.user.id,
+            },
+          },
+        },
+        include: {
+          messages: {
+            orderBy: {
+              createdAt: "desc",
+            },
+            take: 1,
+          },
+          userConversations: {
+            where: {
+              user: {
+                isNot: {
+                  id: session.user.id,
+                },
+              },
+            },
+            include: {
+              user: { include: { roles: true } },
+            },
+          },
+        },
+      });
+
+      return { conversations };
+    }
+    return { conversations: null };
+  } catch (error) {
+    return { conversations: null };
+  }
+}
+
+export async function getConversationsOld() {
   try {
     const session = await auth();
 

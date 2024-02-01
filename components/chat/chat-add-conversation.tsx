@@ -24,7 +24,6 @@ import {
   CommandList,
 } from "../ui/command";
 import { createConversation } from "@/lib/db/actions/chat-actions";
-import { useSession } from "next-auth/react";
 import useFilterUsers from "@/lib/hooks/useFilterUsers";
 
 export default function ChatAddConversation() {
@@ -40,12 +39,19 @@ export default function ChatAddConversation() {
       const { users, isCustomer } = await response.json();
 
       if (users) {
+        console.log({ users });
+
         filterUsers(users, isCustomer);
       }
     };
 
     fetchUsers();
   }, []);
+
+  useEffect(() => {
+    // console.log({ employees });
+    // console.log({ customers });
+  }, [employees, customers]);
 
   const onValueChange = async (value: string) => {
     const userId = value.split("-")[0];

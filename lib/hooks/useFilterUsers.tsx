@@ -1,15 +1,15 @@
-import { FullUser } from "@/components/chat/chat-list";
 import { User } from "@prisma/client";
 import { Users } from "lucide-react";
 import React, { useState } from "react";
+import { UserWithRoles } from "../db/extended-types";
 
 const useFilterUsers = () => {
-  const [allUsers, setAllUsers] = useState<FullUser[]>();
+  const [allUsers, setAllUsers] = useState<UserWithRoles[]>();
   const [isCustomer, setIsCutomer] = useState<boolean>(false);
   const [employeeUsers, setEmployeeUsers] = useState<User[]>();
   const [customerUsers, setCustomerUsers] = useState<User[]>();
 
-  const filterUsers = (users: FullUser[], isUserCustomer: boolean) => {
+  const filterUsers = (users: UserWithRoles[], isUserCustomer: boolean) => {
     setIsCutomer(isCustomer);
     setAllUsers(users);
     const employees = getEmployees(users);
@@ -29,7 +29,7 @@ const useFilterUsers = () => {
     }
   };
 
-  const getEmployees = (users: FullUser[]) => {
+  const getEmployees = (users: UserWithRoles[]) => {
     const employees = users.filter(
       (user) => user.roles?.some((role) => role.role === "EMPLOYEE"),
     );
@@ -37,7 +37,7 @@ const useFilterUsers = () => {
     return employees;
   };
 
-  const getCustomers = (users: FullUser[]) => {
+  const getCustomers = (users: UserWithRoles[]) => {
     const customers = users.filter(
       (user) => user.roles?.some((role) => role.role === "CUSTOMER"),
     );

@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db/prisma";
+import { Prisma } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
@@ -17,28 +18,37 @@ export async function GET(request: Request) {
       where: {
         userConversations: {
           some: {
-            userId: user.id,
+            userId: session.user.id,
           },
         },
       },
-      include: {
-        userConversations: true,
+      select: {
+        id: true,
       },
     });
 
-    const users = await getUsers(user.id);
+    const conversationsIds = conversations.map((id) => id.id);
+    console.log({ conversations });
+    // type x = Prisma.UserConversationListRelationFilter
+    const users = await db.user.findMany({
+      where: {
+        id: {
+          not: session.user.id, // Exclude the session user by their ID
+        },
+      },
+      include: {
+        roles: true,
+        conversations: true,
+      },
+    });
+
     const isCustomer = user.roles.some((role) => role.role === "CUSTOMER");
 
-    const userIds = conversations.flatMap((conversation) =>
-      conversation.userConversations
-        .filter((uc) => uc.userId !== user.id)
-        .map((uc) => uc.userId),
-    );
-
-    const filteredIds = userIds.filter((id) => id !== undefined);
-
     const filteredUsers = users.filter(
-      (user) => !filteredIds.includes(user.id),
+      (user) =>
+        !user.conversations.some((conversation) =>
+          conversationsIds.includes(conversation.conversationId),
+        ),
     );
 
     return NextResponse.json({ users: filteredUsers, isCustomer });

@@ -1,16 +1,16 @@
 import React from "react";
-import { FullConversation } from "./chat-list";
 import { CommandItem } from "../ui/command";
 import ChatConversation from "./chat-conversation";
+import { ConversationWithRelations } from "@/lib/db/extended-types";
 
 export default function ChatCommandItem({
   conversation,
   conversationId,
 }: {
-  conversation: FullConversation;
+  conversation: ConversationWithRelations;
   conversationId: number;
 }) {
-  const user = conversation.userConversation.user;
+  const user = conversation.userConversations[0].user;
 
   return (
     <CommandItem

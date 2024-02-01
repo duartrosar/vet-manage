@@ -1,12 +1,13 @@
-import { FullConversation } from "@/components/chat/chat-list";
 import React from "react";
-import { getEmployeeUsers } from "../db/actions/user-actions";
+import { ConversationWithRelations } from "../db/extended-types";
 
-const useFilterConversations = (conversations?: FullConversation[]) => {
+const useFilterConversations = (
+  conversations?: ConversationWithRelations[],
+) => {
   const getCustomerConversations = React.useCallback(() => {
     const customerUsers = conversations
       ?.filter((conversation) => {
-        const roles = conversation.userConversation.user?.roles?.flatMap(
+        const roles = conversation.userConversations[0].user?.roles?.flatMap(
           (role) => role.role as string,
         );
 
@@ -20,7 +21,7 @@ const useFilterConversations = (conversations?: FullConversation[]) => {
   const getEmployeeConversations = React.useCallback(() => {
     const employeeUsers = conversations
       ?.filter((conversation) => {
-        const roles = conversation.userConversation.user?.roles?.flatMap(
+        const roles = conversation.userConversations[0].user?.roles?.flatMap(
           (role) => role.role as string,
         );
 

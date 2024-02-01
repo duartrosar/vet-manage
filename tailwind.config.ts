@@ -23,18 +23,6 @@ const config = {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
       },
       colors: {
-        ceruleanOld: {
-          100: "#CEE9F7",
-          200: "#9CCFEA",
-          300: "#6AB4DC",
-          400: "#519BC2",
-          500: "#3881A8",
-          600: "#33678C",
-          700: "#2E4D70",
-          800: "#00283D",
-          900: "#00121C",
-          950: "#000D14",
-        },
         cerulean: {
           100: "#CDE3F8", // 5% more purple
           200: "#97CAEB", // 5% more purple

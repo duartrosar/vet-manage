@@ -17,7 +17,7 @@ export const genderOptions: string[] = ["Prefer not to say", "Female", "Male"];
 export const sidebarItems: SidebarItemsProp[] = [
   {
     title: "Dashboard",
-    urlPath: "/app",
+    urlPath: "/app/dashboard",
     icon: IoGrid,
   },
   {
