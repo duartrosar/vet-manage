@@ -1,6 +1,5 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db/prisma";
-import { Prisma } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
@@ -52,21 +51,12 @@ export async function GET(request: Request) {
     );
 
     return NextResponse.json({ users: filteredUsers, isCustomer });
-  } catch (error) {}
-}
-
-async function getUsers(userId: string) {
-  const users = await db.user.findMany({
-    where: {
-      NOT: {
-        id: userId,
+  } catch (error) {
+    return new NextResponse(
+      JSON.stringify({ error: "Internal Server Error" }),
+      {
+        status: 500,
       },
-    },
-    include: {
-      conversations: true,
-      roles: true,
-    },
-  });
-
-  return users;
+    );
+  }
 }
