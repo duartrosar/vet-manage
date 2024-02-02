@@ -4,6 +4,7 @@ import { appointmentSchema } from "@/lib/zod/zodSchemas";
 import { Appointment } from "@prisma/client";
 import { db } from "../prisma";
 import { revalidatePath } from "next/cache";
+import { auth } from "@/auth";
 
 export async function getAppoinments() {
   try {
@@ -61,5 +62,25 @@ export async function deleteAppointment(appointmentId: number) {
     console.error("deleteAppointment", error);
 
     return { success: false };
+  }
+}
+
+export async function getUpcomingAppointments() {
+  try {
+    const session = await auth();
+
+    if (session) {
+      const appointments = await db.appointment.findMany({
+        include: {
+          pet: true,
+        },
+        take: 5,
+      });
+
+      return { appointments };
+    }
+    return { appointments: null };
+  } catch (error) {
+    return { appointments: null };
   }
 }
