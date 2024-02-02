@@ -127,3 +127,17 @@ export async function updateVet(data: Vet, vetId: number) {
     console.log("updateVet", error);
   }
 }
+
+export async function getVetByUserId(userId: string) {
+  try {
+    const vet = await db.vet.findUnique({
+      where: {
+        userId: userId,
+      },
+    });
+
+    return { vet };
+  } catch (error) {
+    return { vet: null };
+  }
+}

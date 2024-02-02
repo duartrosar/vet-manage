@@ -127,3 +127,20 @@ export async function updateOwner(data: Owner, ownerId: number) {
     console.log("updateOwner", error);
   }
 }
+
+export async function getOwnerByUserId(userId: string) {
+  try {
+    const owner = await db.owner.findUnique({
+      where: {
+        userId: userId,
+      },
+      include: {
+        pets: true,
+      },
+    });
+
+    return { owner };
+  } catch (error) {
+    return { owner: null };
+  }
+}

@@ -5,7 +5,7 @@ import React, { Suspense } from "react";
 
 export default function DashBoardPage() {
   return (
-    <div className="w-full gap-4 space-y-4 bg-cerulean-950 p-4 md:grid md:grid-cols-2 md:space-y-0 lg:grid-cols-3 lg:grid-rows-[repeat(5,minmax(200px,1fr))] lg:space-y-0">
+    <div className="w-full gap-4 space-y-4 bg-cerulean-950 p-4 md:grid md:grid-cols-2 md:space-y-0 lg:grid-cols-3 lg:grid-rows-[repeat(4,minmax(200px,1fr))] lg:space-y-0">
       <DashBoardCard className="order-1 row-span-2 px-2 py-4 lg:col-span-1">
         <Suspense
           fallback={
