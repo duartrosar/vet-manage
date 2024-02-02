@@ -117,6 +117,8 @@ export async function getConversations(): Promise<DashboardConversationsResponse
         },
       });
 
+      console.log({ conversations });
+
       return { conversations };
     }
     return { conversations: null };

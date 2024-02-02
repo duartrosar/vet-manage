@@ -1,5 +1,6 @@
 import DashBoardCard from "@/components/dashboard/dashboard-card";
 import DashboardConversations from "@/components/dashboard/dashboard-conversations";
+import DashBoardEntitiesAmount from "@/components/dashboard/dashboard-entities-amount";
 import DashboardUpcomingAppointments from "@/components/dashboard/dashboard-upcoming-appointments";
 import React, { Suspense } from "react";
 
@@ -25,23 +26,17 @@ export default function DashBoardPage() {
           Appointments
         </h2>
       </DashBoardCard>
-
-      <DashBoardCard className="order-3">
-        <h2 className="text-lg font-medium tracking-wide text-gray-200">
-          Vets
-        </h2>
-      </DashBoardCard>
-      <DashBoardCard className="order-4">
-        <h2 className="text-lg font-medium tracking-wide text-gray-200">
-          Pets
-        </h2>
-      </DashBoardCard>
-
-      <DashBoardCard className="order-6">
-        <h2 className="text-lg font-medium tracking-wide text-gray-200">
-          Owners
-        </h2>
-      </DashBoardCard>
+      <div className="row-span-2 flex flex-col gap-4 md:order-4 md:col-span-2 md:flex-row lg:order-3 lg:col-span-1 lg:flex-col ">
+        <DashBoardCard className="flex-grow">
+          <DashBoardEntitiesAmount type="vet" title="Vets" />
+        </DashBoardCard>
+        <DashBoardCard className="flex-grow">
+          <DashBoardEntitiesAmount type="pet" title="Pets" />
+        </DashBoardCard>
+        <DashBoardCard className="flex-grow">
+          <DashBoardEntitiesAmount type="owner" title="Owners" />
+        </DashBoardCard>
+      </div>
       {/* <DashBoardCard className="order-7 lg:col-span-1 row-span-2">
         <h2 className="text-lg font-medium tracking-wide text-gray-200">
           Messages

@@ -141,3 +141,13 @@ export async function getVetByUserId(userId: string) {
     return { vet: null };
   }
 }
+
+export async function getVetsAmount() {
+  try {
+    const amount = await db.vet.count();
+
+    return { amount };
+  } catch (error) {
+    return { amount: null };
+  }
+}

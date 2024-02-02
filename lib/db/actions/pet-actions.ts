@@ -83,3 +83,13 @@ export async function deletePet(petId: number) {
     return { success: false };
   }
 }
+
+export async function getPetsAmount() {
+  try {
+    const amount = await db.pet.count();
+
+    return { amount };
+  } catch (error) {
+    return { amount: null };
+  }
+}

@@ -144,3 +144,13 @@ export async function getOwnerByUserId(userId: string) {
     return { owner: null };
   }
 }
+
+export async function getOwnersAmount() {
+  try {
+    const amount = await db.owner.count();
+
+    return { amount };
+  } catch (error) {
+    return { amount: null };
+  }
+}
