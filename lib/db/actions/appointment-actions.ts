@@ -18,10 +18,10 @@ export async function getAppoinments() {
   try {
     const appointments = await db.appointment.findMany();
 
-    return { appointments: appointments, success: true };
+    return { appointments, success: true };
   } catch (error) {
     console.log("🚀 ~ getAppoinments ~ error:", error);
-    return { success: false };
+    return { appointments: null, success: false };
   }
 }
 

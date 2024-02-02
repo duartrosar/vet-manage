@@ -1,3 +1,4 @@
+import DashboardAppointments from "@/components/dashboard/dashboard-appointments";
 import DashBoardCard from "@/components/dashboard/dashboard-card";
 import DashboardConversations from "@/components/dashboard/dashboard-conversations";
 import DashBoardEntitiesAmount from "@/components/dashboard/dashboard-entities-amount";
@@ -21,10 +22,8 @@ export default function DashBoardPage() {
           <DashboardUpcomingAppointments />
         </Suspense>
       </DashBoardCard>
-      <DashBoardCard className="row-span-2 md:order-3 md:col-span-2 lg:order-5">
-        <h2 className="text-lg font-medium tracking-wide text-gray-200">
-          Appointments
-        </h2>
+      <DashBoardCard className="row-span-2 py-4 md:order-3 md:col-span-2 lg:order-5">
+        <DashboardAppointments />
       </DashBoardCard>
       <div className="row-span-2 flex flex-col gap-4 md:order-4 md:col-span-2 md:flex-row lg:order-3 lg:col-span-1 lg:flex-col ">
         <DashBoardCard className="flex-grow">
@@ -37,11 +36,6 @@ export default function DashBoardPage() {
           <DashBoardEntitiesAmount type="owner" title="Owners" />
         </DashBoardCard>
       </div>
-      {/* <DashBoardCard className="order-7 lg:col-span-1 row-span-2">
-        <h2 className="text-lg font-medium tracking-wide text-gray-200">
-          Messages
-        </h2>
-      </DashBoardCard> */}
     </div>
   );
 }

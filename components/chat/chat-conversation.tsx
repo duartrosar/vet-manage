@@ -29,21 +29,21 @@ export default function ChatConversation({
     <Link
       href={`/app/messages/${conversation.id}`}
       className={cn(
-        "flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-cerulean-800",
+        "flex cursor-pointer items-center gap-2 rounded-lg p-2 shadow-xl hover:bg-cerulean-800",
         conversation.id === conversationId ? "bg-cerulean-800" : "",
       )}
     >
       {user?.image ? (
         <Image
-          className="h-[45px] w-[45px] flex-none rounded-full bg-cerulean-950"
+          className="h-[40px] w-[40px] flex-none rounded-full bg-cerulean-950"
           src={user.image}
-          width={45}
-          height={45}
+          width={40}
+          height={40}
           alt="Profile picture"
         />
       ) : (
-        <span className="flex h-[45px] w-[45px] items-center justify-center rounded-full bg-cerulean-950">
-          <FaUser className="h-[30px] w-[30px] text-cerulean-500/50" />
+        <span className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-cerulean-950">
+          <FaUser className="h-[25px] w-[25px] text-cerulean-500/50" />
         </span>
       )}
       {user?.name && (

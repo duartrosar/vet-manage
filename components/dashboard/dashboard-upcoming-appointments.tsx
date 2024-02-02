@@ -31,20 +31,20 @@ export default async function DashboardUpcomingAppointments() {
           key={appointment.id}
           href={`/app/messages/${appointment.id}`}
           className={cn(
-            "flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-cerulean-800",
+            "flex cursor-pointer items-center gap-2 rounded-xl p-2 shadow-lg hover:bg-cerulean-800",
           )}
         >
           {appointment.pet?.imageUrl ? (
             <Image
-              className="h-[45px] w-[45px] flex-none rounded-full bg-cerulean-950"
+              className="h-[40px] w-[40px] flex-none rounded-full bg-cerulean-950"
               src={appointment.pet?.imageUrl}
-              width={45}
-              height={45}
+              width={40}
+              height={40}
               alt="Profile picture"
             />
           ) : (
-            <span className="flex h-[45px] w-[45px] items-center justify-center rounded-full bg-cerulean-950">
-              <FaPaw className="h-[30px] w-[30px] text-cerulean-500/50" />
+            <span className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-cerulean-950">
+              <FaPaw className="h-[25px] w-[25px] text-cerulean-500/50" />
             </span>
           )}
           {appointment.pet.name && (

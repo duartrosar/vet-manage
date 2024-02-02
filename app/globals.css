@@ -33,6 +33,10 @@
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-cerulean-500;
   }
+
+  .fill-primary {
+    color: #2f648e;
+  }
 }
 
 .SelectContent {
