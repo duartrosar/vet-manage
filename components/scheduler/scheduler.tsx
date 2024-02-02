@@ -53,7 +53,7 @@ const eventSettings: EventSettingsModel = {
 export default function Scheduler({
   appointments,
 }: {
-  appointments?: Appointment[];
+  appointments?: Appointment[] | null;
 }) {
   const { setIsOpen, setAppointmentData, schedulerRef } =
     useContext(SchedulerContext);
@@ -62,7 +62,7 @@ export default function Scheduler({
   // const schedulerRef = useRef<ScheduleComponent>(null);
   const workingDays: number[] = [0, 1, 2, 3, 4, 5, 6];
 
-  eventSettings.dataSource = appointments;
+  eventSettings.dataSource = appointments ?? undefined;
 
   function onPopupOpen(event: PopupOpenEventArgs): void {
     event.cancel = true;
