@@ -2,6 +2,7 @@ import DashboardAppointments from "@/components/dashboard/dashboard-appointments
 import DashBoardCard from "@/components/dashboard/dashboard-card";
 import DashboardConversations from "@/components/dashboard/dashboard-conversations";
 import DashBoardEntitiesAmount from "@/components/dashboard/dashboard-entities-amount";
+import DashboardProfile from "@/components/dashboard/dashboard-profile";
 import DashboardUpcomingAppointments from "@/components/dashboard/dashboard-upcoming-appointments";
 import React, { Suspense } from "react";
 
@@ -36,6 +37,9 @@ export default function DashBoardPage() {
           <DashBoardEntitiesAmount type="owner" title="Owners" />
         </DashBoardCard>
       </div>
+      <DashBoardCard className="row-span-2 px-2 py-4 md:order-6 lg:col-span-1">
+        <DashboardProfile />
+      </DashBoardCard>
     </div>
   );
 }

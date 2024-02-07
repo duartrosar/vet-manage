@@ -155,3 +155,21 @@ export async function getVetsAmount() {
     return { amount: null };
   }
 }
+
+export async function getVetDataByUserId(userId: string) {
+  try {
+    const vet = await db.vet.findUnique({
+      where: {
+        userId: userId,
+      },
+      select: {
+        dateOfBirth: true,
+        mobileNumber: true,
+      },
+    });
+
+    return { vet };
+  } catch (error) {
+    return { vet: null };
+  }
+}

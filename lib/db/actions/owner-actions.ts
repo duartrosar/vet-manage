@@ -154,3 +154,21 @@ export async function getOwnersAmount() {
     return { amount: null };
   }
 }
+
+export async function getOwnerDataByUserId(userId: string) {
+  try {
+    const owner = await db.owner.findUnique({
+      where: {
+        userId: userId,
+      },
+      select: {
+        dateOfBirth: true,
+        mobileNumber: true,
+      },
+    });
+
+    return { owner };
+  } catch (error) {
+    return { owner: null };
+  }
+}
