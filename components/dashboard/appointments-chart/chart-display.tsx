@@ -1,9 +1,10 @@
 "use client";
 
 import { Appointment } from "@prisma/client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { MONTHS } from "@/components/date-picker/constants";
+import { ChartContext } from "./chart-context";
 
 interface AppointmentChartData {
   amount: number;
@@ -15,8 +16,9 @@ export default function AppointmentsChartDisplay({
 }: {
   appointments: Appointment[];
 }) {
+  const { year } = useContext(ChartContext);
+
   const data = useMemo(() => {
-    const year = 2024;
     const monthlyCount = Array(12).fill(0);
 
     appointments.forEach((appointment) => {
@@ -31,19 +33,19 @@ export default function AppointmentsChartDisplay({
       amount: count,
       month: MONTHS[index],
     }));
-  }, [appointments]);
+  }, [appointments, year]);
 
   return (
-    <div className="h-full">
-      <h2 className="ml-4 text-lg font-medium tracking-wide text-gray-200">
-        Appointments
-      </h2>
-      <div className="flex h-full items-center px-2">
+    <>
+      <div className="flex h-full items-center px-4">
         {data && (
-          <ResponsiveContainer width="100%" height={400}>
+          <ResponsiveContainer
+            // width="100%"
+            height={400}
+          >
             <BarChart
-              data={data}
               margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
+              data={data}
             >
               <XAxis
                 dataKey="month"
@@ -53,6 +55,8 @@ export default function AppointmentsChartDisplay({
                 axisLine={false}
               />
               <YAxis
+                allowDecimals={false}
+                width={20}
                 stroke="#888888"
                 fontSize={12}
                 tickLine={false}
@@ -69,6 +73,6 @@ export default function AppointmentsChartDisplay({
           </ResponsiveContainer>
         )}
       </div>
-    </div>
+    </>
   );
 }
