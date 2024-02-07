@@ -7,13 +7,17 @@ import { generateVerificationToken } from "./token-actions";
 import { sendVerificationEmail } from "@/lib/mail";
 import { revalidatePath } from "next/cache";
 
-export async function getVets() {
+interface VetsResponse {
+  vets: Vet[] | null;
+}
+
+export async function getVets(): Promise<VetsResponse> {
   try {
     const vets = await db.vet.findMany();
-    return { vets: vets, success: true };
+    return { vets: vets };
   } catch (error) {
     console.log("getVets", error);
-    return { success: false };
+    return { vets: null };
   }
 }
 

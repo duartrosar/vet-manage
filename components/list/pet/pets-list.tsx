@@ -20,7 +20,7 @@ import {
 } from "@/lib/redux/slices/form-slice";
 import { IoPaw, IoPencil, IoTrash } from "react-icons/io5";
 
-export default function PetsList({ pets }: { pets?: Pet[] }) {
+export default function PetsList({ pets }: { pets: Pet[] | null }) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {

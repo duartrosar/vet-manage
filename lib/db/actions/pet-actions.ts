@@ -6,14 +6,18 @@ import { revalidatePath } from "next/cache";
 import { Pet } from "@prisma/client";
 import { deleteBlob } from "@/lib/db/actions/blob-actions";
 
-export async function getPets() {
+interface PetsResponse {
+  pets: Pet[] | null;
+}
+
+export async function getPets(): Promise<PetsResponse> {
   try {
     const pets = await db.pet.findMany();
 
-    return { pets: pets, success: true };
+    return { pets: pets };
   } catch (error) {
     console.log("getPets", error);
-    return { success: false };
+    return { pets: null };
   }
 }
 

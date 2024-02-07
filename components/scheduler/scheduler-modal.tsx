@@ -9,6 +9,7 @@ import AppointmentForm from "../forms/appointment/appointment-form";
 import { Pet, Vet } from "@prisma/client";
 import { getPets } from "@/lib/db/actions/pet-actions";
 import { getVets } from "@/lib/db/actions/vet-actions";
+import { useParams } from "next/navigation";
 
 export interface AppointmentData {
   id: number;
@@ -23,22 +24,20 @@ export interface AppointmentData {
 }
 
 export default function SchedulerModal() {
+  const params = useParams();
   const { isOpen, setIsOpen } = useContext(SchedulerContext);
   const [pets, setPets] = useState<Pet[] | null>();
   const [vets, setVets] = useState<Vet[] | null>();
 
   useEffect(() => {
+    console.log({ params });
     const fetchData = async () => {
       try {
-        const petsResponse = await getPets();
-        const vetsResponse = await getVets();
-        if (petsResponse.success && vetsResponse.success) {
-          setPets(petsResponse.pets);
-          setVets(vetsResponse.vets);
-        } else {
-          setVets(null);
-          setPets(null);
-        }
+        const { pets } = await getPets();
+        const { vets } = await getVets();
+
+        setPets(pets);
+        setVets(vets);
       } catch (error) {
         console.error("Error fetching data", error);
       }

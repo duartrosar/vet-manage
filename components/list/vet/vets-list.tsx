@@ -21,7 +21,7 @@ import {
 import { FaUser } from "react-icons/fa6";
 import { TableHeading } from "@/lib/types";
 
-export default function VetsList({ vets }: { vets?: Vet[] }) {
+export default function VetsList({ vets }: { vets: Vet[] | null }) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
