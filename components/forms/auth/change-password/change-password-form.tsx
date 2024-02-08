@@ -15,7 +15,13 @@ interface PasswordFormData {
   confirmPassword: string;
 }
 
-export default function ChangePasswordForm({ token }: { token?: string }) {
+export default function ChangePasswordForm({
+  token,
+  isReset = false,
+}: {
+  token?: string;
+  isReset?: boolean;
+}) {
   const router = useRouter();
   const form = useForm<PasswordFormData>({
     defaultValues: { password: "", confirmPassword: "" },
@@ -36,7 +42,15 @@ export default function ChangePasswordForm({ token }: { token?: string }) {
 
       if (result.success) {
         toast.custom((t) => (
-          <Toast t={t} message="Password created successfully" type="success" />
+          <Toast
+            t={t}
+            message={
+              isReset
+                ? "Your password was updated."
+                : "Password created successfully."
+            }
+            type="success"
+          />
         ));
 
         router.push("/login");
@@ -46,7 +60,11 @@ export default function ChangePasswordForm({ token }: { token?: string }) {
       toast.custom((t) => (
         <Toast
           t={t}
-          message="There was an error creating your password."
+          message={
+            isReset
+              ? "There was an error updating your password."
+              : "There was an error creating your password."
+          }
           type="danger"
         />
       ));

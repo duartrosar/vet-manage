@@ -4,7 +4,7 @@ import { LoginProps } from "@/lib/types";
 import { loginSchema } from "@/lib/zod/zodSchemas";
 import { getUserByEmail } from "@/lib/db/actions/user-actions";
 import { generateVerificationToken } from "./token-actions";
-import { sendVerificationEmail } from "@/lib/mail";
+import { sendResetPassword, sendVerificationEmail } from "@/lib/mail";
 import { signIn } from "@/auth";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { AuthError } from "next-auth";
@@ -59,4 +59,34 @@ export async function login(data: LoginProps) {
 
 export async function logout() {
   await signOut();
+}
+
+export async function resetPassword(
+  email: string,
+): Promise<{ message: string; success: boolean }> {
+  try {
+    const user = await getUserByEmail(email);
+
+    if (!user || !user.email || !user.password) {
+      return { success: false, message: "Account does not exist" };
+    }
+
+    if (!user.emailVerified) {
+      return {
+        success: false,
+        message: "Your account has not been confirmed.",
+      };
+    }
+
+    const verificationToken = await generateVerificationToken(user.email);
+
+    await sendResetPassword(verificationToken.email, verificationToken.token);
+
+    return { success: true, message: "Password reset email sent successfully" };
+  } catch (error) {
+    return {
+      success: false,
+      message: "There was an error sending your confirmation email.",
+    };
+  }
 }

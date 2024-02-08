@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "prisma/seed.mjs", "lib/**/*.ts", "lib/**/*.d.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "prisma/seed.mjs", "lib/**/*.ts", "lib/**/*.d.ts", "components/forms/auth/reset-password", "components/forms/auth/confirm-email"],
   "exclude": ["node_modules"]
 }

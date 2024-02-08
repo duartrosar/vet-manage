@@ -15,7 +15,7 @@ export default function Login() {
       <div className="flex w-full flex-col items-center gap-2">
         <Link
           className="text-center text-sm text-cerulean-400"
-          href={"/reset-password"}
+          href={"/auth/reset/email"}
         >
           Forgot your password?
         </Link>
