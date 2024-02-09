@@ -15,7 +15,7 @@ import ControlledTextInput from "../../inputs/controlled-text-input";
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/app";
+  const callbackUrl = searchParams.get("callbackUrl");
   console.log("callbackUrl: ", callbackUrl);
   const [loginError, setLoginError] = useState("");
   const { pending } = useFormStatus();
@@ -28,9 +28,9 @@ export default function LoginForm() {
   });
 
   const processForm: SubmitHandler<LoginProps> = async (data: LoginProps) => {
-    console.log("Loggin in...");
+    console.log({ callbackUrl });
 
-    const result = await login(data);
+    const result = await login(data, callbackUrl);
 
     if (result?.error) {
       toast.custom((t) => <Toast t={t} message={result.error} type="danger" />);

@@ -4,10 +4,13 @@ import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { signIn } from "next-auth/react";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { useSearchParams } from "next/navigation";
 
 export default function GoogleSignin({ text }: { text: string }) {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl");
   const onClick = () => {
-    signIn("google", { callbackUrl: DEFAULT_LOGIN_REDIRECT });
+    signIn("google", { callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT });
   };
 
   return (

@@ -10,7 +10,7 @@ import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { AuthError } from "next-auth";
 import { signOut } from "next-auth/react";
 
-export async function login(data: LoginProps) {
+export async function login(data: LoginProps, callbackUrl?: string | null) {
   const validatedFields = loginSchema.safeParse(data);
 
   if (!validatedFields.success) {
@@ -37,11 +37,12 @@ export async function login(data: LoginProps) {
     return { success: "Confirmation email sent!" };
   }
 
+  console.log({ callbackUrlFromServer: callbackUrl });
   try {
     await signIn("credentials", {
       email,
       password,
-      redirectTo: DEFAULT_LOGIN_REDIRECT,
+      redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
     });
   } catch (error) {
     if (error instanceof AuthError) {

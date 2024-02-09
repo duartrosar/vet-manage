@@ -1,6 +1,7 @@
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+const domain = process.env.MAIL_DOMAIN;
 
 export const sendVerificationEmail = async (
   email: string,
@@ -17,7 +18,7 @@ export const sendVerificationEmail = async (
   console.log(isPasswordSet ? 1 : 0);
 
   const { data, error } = await resend.emails.send({
-    from: "onboarding@resend.dev",
+    from: "mail@vetmanage.uk",
     to: email,
     subject: "Confirm your email",
     html: `<p>Click <a href="${confirmLink}">here</a> to confirm email.</p>`,
@@ -25,10 +26,10 @@ export const sendVerificationEmail = async (
 };
 
 export const sendResetPassword = async (email: string, token: string) => {
-  const confirmLink = `${process.env.MAIL_DOMAIN}/auth/reset/password?token=${token}`;
+  const confirmLink = `${domain}/auth/reset/password?token=${token}`;
 
   const { data, error } = await resend.emails.send({
-    from: "onboarding@resend.dev",
+    from: "mail@vetmanage.uk",
     to: email,
     subject: "Reset your password",
     html: `<p>Click <a href="${confirmLink}">here</a> to reset your password.</p>`,
