@@ -1,33 +1,27 @@
-import ContainerSkeleton from "@/components/container-skeleton";
-import SideBar from "@/components/sidebar";
+import SideBar from "@/components/sidebar/sidebar";
 import { Providers } from "@/components/providers";
-import React, { Suspense } from "react";
+import React from "react";
 import Navbar from "@/components/navbar";
 import Container from "@/components/container";
-import { Toaster } from "sonner";
+import { getSessionRoles } from "@/lib/auth/session-helpers";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const roles = await getSessionRoles();
+
+  if (!roles) {
+    // Some error page
+    return <></>;
+  }
+
   return (
     <Providers>
       <Navbar />
       <div className="flex h-screen w-screen bg-cerulean-950">
-        {/* <Toaster
-          closeButton
-          expand
-          toastOptions={{
-            unstyled: true,
-            classNames: {
-              toast: "absolute right-0 z-[100]",
-              closeButton: "fixed right-0 top-0",
-            },
-          }}
-          duration={200000}
-        /> */}
-        <SideBar />
+        <SideBar roles={roles} />
         <Container>{children}</Container>
       </div>
     </Providers>

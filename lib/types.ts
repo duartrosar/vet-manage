@@ -37,7 +37,7 @@ export interface RegisterProps {
   // confirmPassword: string;
 }
 
-export interface SidebarItemsProp {
+export interface SidebarItemProps {
   title: string;
   urlPath: string;
   icon: IconType;

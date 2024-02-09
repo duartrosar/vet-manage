@@ -1,6 +1,6 @@
 "use client";
 
-import { SidebarItemsProp } from "@/lib/types";
+import { SidebarItemProps } from "@/lib/types";
 import Link from "next/link";
 import React, { ReactNode } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
@@ -13,7 +13,7 @@ export default function SidebarItem({
   urlPath,
   icon,
   displayTitle = true,
-}: SidebarItemsProp) {
+}: SidebarItemProps) {
   const isOpen = useAppSelector((state) => state.sidebar.isOpen);
   const active = useAppSelector((state) => state.sidebar.active);
   const dispatch = useAppDispatch();

@@ -1,4 +1,4 @@
-import { SidebarItemsProp } from "./types";
+import { SidebarItemProps } from "./types";
 import {
   IoCalendar,
   IoGrid,
@@ -14,36 +14,52 @@ import { MdHealthAndSafety } from "react-icons/md";
 
 export const genderOptions: string[] = ["Prefer not to say", "Female", "Male"];
 
-export const sidebarItems: SidebarItemsProp[] = [
+interface SidebarItem extends SidebarItemProps {
+  rolesAllowed: string[];
+}
+
+export const sidebarItems: SidebarItem[] = [
   {
     title: "Dashboard",
     urlPath: "/app/dashboard",
     icon: IoGrid,
+    rolesAllowed: ["ADMIN", "EMPLOYEE", "CUSTOMER"],
   },
   {
     title: "Appointments",
     urlPath: "/app/appointments",
     icon: IoCalendar,
+    rolesAllowed: ["ADMIN", "EMPLOYEE", "CUSTOMER"],
   },
   {
     title: "Messages",
     urlPath: "/app/messages",
     icon: IoChatbox,
+    rolesAllowed: ["ADMIN", "EMPLOYEE", "CUSTOMER"],
   },
   {
     title: "Owners",
     urlPath: "/app/owners",
     icon: IoPeople,
+    rolesAllowed: ["ADMIN", "EMPLOYEE"],
   },
   {
     title: "Pets",
     urlPath: "/app/pets",
     icon: IoPaw,
+    rolesAllowed: ["ADMIN", "EMPLOYEE", "CUSTOMER"],
   },
-  { title: "Vets", urlPath: "/app/vets", icon: MdHealthAndSafety },
+  {
+    title: "Vets",
+    urlPath: "/app/vets",
+    icon: MdHealthAndSafety,
+    rolesAllowed: ["ADMIN", "EMPLOYEE"],
+  },
+
   {
     title: "Settings",
     urlPath: "/app",
     icon: IoSettings,
+    rolesAllowed: ["ADMIN", "EMPLOYEE", "CUSTOMER"],
   },
 ];

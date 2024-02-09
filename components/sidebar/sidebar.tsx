@@ -18,7 +18,7 @@ const kanit = Kanit({
   weight: ["600", "700", "800", "900"],
 });
 
-export default function SideBar() {
+export default function SideBar({ roles }: { roles: string[] }) {
   const [sidebarExpanded, setSidebarExpanded] = useLocalStorage(
     "sidebarExpanded",
     true,
@@ -52,6 +52,10 @@ export default function SideBar() {
       setSidebarExpanded(false);
     }
   }, [size.width]);
+
+  function checkRoles(rolesToCheck: string[]): boolean {
+    return rolesToCheck.some((role) => roles.includes(role));
+  }
 
   return (
     <>
@@ -87,7 +91,8 @@ export default function SideBar() {
               <span className="space-y-3">
                 {sidebarItems.map(
                   (item, index) =>
-                    index !== sidebarItems.length - 1 && (
+                    index !== sidebarItems.length - 1 &&
+                    checkRoles(item.rolesAllowed) && (
                       <SidebarItem
                         key={index}
                         title={item.title}
