@@ -17,6 +17,8 @@ import clsx from "clsx";
 import { usePathname } from "next/navigation";
 import { checkRoles } from "@/lib/auth/session-helpers";
 import { IoSettings, IoGrid } from "react-icons/io5";
+import SettingsButton from "../settings/settings-button";
+import Settings from "../settings/settings";
 
 const lalezar = Lalezar({ subsets: ["latin"], weight: "400" });
 const kanit = Kanit({
@@ -124,12 +126,7 @@ export default function SideBar({
                   ))}
               </span>
               <span>
-                <SidebarItem
-                  title="Settings"
-                  urlPath="/app"
-                  pathName="settings"
-                  icon={IoSettings}
-                />
+                <Settings />
               </span>
             </ul>
           </div>
