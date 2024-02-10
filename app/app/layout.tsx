@@ -13,7 +13,7 @@ export default async function DashboardLayout({
   const roles = await getSessionRoles();
 
   if (!roles) {
-    // Some error page
+    //TODO: Some error page
     return <></>;
   }
 
