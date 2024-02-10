@@ -12,7 +12,7 @@ export default function SidebarItem({
   title,
   urlPath,
   icon,
-  displayTitle = true,
+  pathName,
 }: SidebarItemProps) {
   const isOpen = useAppSelector((state) => state.sidebar.isOpen);
   const active = useAppSelector((state) => state.sidebar.active);
@@ -20,7 +20,7 @@ export default function SidebarItem({
   const size = useWindowSize();
 
   const handleClick = () => {
-    dispatch(setActive(title.toLowerCase()));
+    dispatch(setActive(pathName));
 
     if (size.width && size.width <= 1024) {
       dispatch(setIsOpen(false));
@@ -31,15 +31,14 @@ export default function SidebarItem({
     <li
       className={clsx(
         "group w-full rounded-lg transition duration-75 hover:bg-cerulean-800 hover:shadow-md",
-        active === title.toLowerCase() && "bg-cerulean-800",
-        !displayTitle && "max-w-[44px]",
+        active === pathName && "bg-cerulean-800",
       )}
     >
       <Link
         href={urlPath}
         className={clsx(
           "flex h-10 items-center justify-start gap-3 px-3 group-hover:text-gray-200",
-          active === title.toLowerCase() ? "text-gray-200" : "text-gray-400",
+          active === pathName ? "text-gray-200" : "text-gray-400",
         )}
         onClick={handleClick}
       >
@@ -48,7 +47,7 @@ export default function SidebarItem({
             className: "h-[20px] w-[20px] text-cerulean-500",
           })}
         </span>
-        {isOpen && displayTitle && title}
+        {isOpen && title}
       </Link>
     </li>
   );

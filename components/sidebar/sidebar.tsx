@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, Fragment } from "react";
-import { sidebarItems } from "@/lib/constants";
+import {
+  ownerSideBarItems,
+  commonSidebarItems,
+  employeeSidebarItems,
+} from "@/lib/constants";
 import { Lalezar, Kanit } from "next/font/google";
 import { Transition } from "@headlessui/react";
 import { useLocalStorage } from "usehooks-ts";
@@ -12,6 +16,7 @@ import SidebarItem from "./sidebar-item";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
 import { checkRoles } from "@/lib/auth/session-helpers";
+import { IoSettings, IoGrid } from "react-icons/io5";
 
 const lalezar = Lalezar({ subsets: ["latin"], weight: "400" });
 const kanit = Kanit({
@@ -19,11 +24,16 @@ const kanit = Kanit({
   weight: ["600", "700", "800", "900"],
 });
 
-export default function SideBar({ roles }: { roles: string[] }) {
+export default function SideBar({
+  roles,
+}: {
+  roles: ("ADMIN" | "EMPLOYEE" | "CUSTOMER")[];
+}) {
   const [sidebarExpanded, setSidebarExpanded] = useLocalStorage(
     "sidebarExpanded",
     true,
   );
+  const isEmployee = roles.includes("ADMIN") || roles.includes("EMPLOYEE");
 
   const size = useWindowSize();
   const isOpen = useAppSelector((state) => state.sidebar.isOpen);
@@ -86,24 +96,39 @@ export default function SideBar({ roles }: { roles: string[] }) {
               className={`${kanit.className} flex h-full w-full flex-col justify-between pb-3 text-base font-semibold`}
             >
               <span className="space-y-3">
-                {sidebarItems.map(
-                  (item, index) =>
-                    index !== sidebarItems.length - 1 &&
-                    checkRoles(roles, item.rolesAllowed) && (
-                      <SidebarItem
-                        key={index}
-                        title={item.title}
-                        urlPath={item.urlPath}
-                        icon={item.icon}
-                      />
-                    ),
-                )}
+                <SidebarItem
+                  title={"Dashboard"}
+                  urlPath="/app/dashboard"
+                  icon={IoGrid}
+                  pathName="dashboard"
+                />
+                {isEmployee &&
+                  employeeSidebarItems.map((item, index) => (
+                    <SidebarItem
+                      key={index}
+                      title={item.title}
+                      urlPath={item.urlPath}
+                      icon={item.icon}
+                      pathName={item.pathName}
+                    />
+                  ))}
+                {roles.includes("CUSTOMER") &&
+                  ownerSideBarItems.map((item, index) => (
+                    <SidebarItem
+                      key={index}
+                      title={item.title}
+                      urlPath={item.urlPath}
+                      icon={item.icon}
+                      pathName={item.pathName}
+                    />
+                  ))}
               </span>
               <span>
                 <SidebarItem
-                  title={sidebarItems[sidebarItems.length - 1].title}
-                  urlPath={sidebarItems[sidebarItems.length - 1].urlPath}
-                  icon={sidebarItems[sidebarItems.length - 1].icon}
+                  title="Settings"
+                  urlPath="/app"
+                  pathName="settings"
+                  icon={IoSettings}
                 />
               </span>
             </ul>

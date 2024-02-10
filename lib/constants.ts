@@ -18,48 +18,59 @@ interface SidebarItem extends SidebarItemProps {
   rolesAllowed: string[];
 }
 
-export const sidebarItems: SidebarItem[] = [
+export const commonSidebarItems: SidebarItemProps[] = [
   {
     title: "Dashboard",
     urlPath: "/app/dashboard",
     icon: IoGrid,
-    rolesAllowed: ["ADMIN", "EMPLOYEE", "CUSTOMER"],
+    pathName: "dashboard",
   },
+];
+
+export const employeeSidebarItems: SidebarItemProps[] = [
   {
     title: "Appointments",
     urlPath: "/app/appointments",
     icon: IoCalendar,
-    rolesAllowed: ["ADMIN", "EMPLOYEE"],
+    pathName: "appointments",
   },
   {
     title: "Messages",
     urlPath: "/app/messages",
     icon: IoChatbox,
-    rolesAllowed: ["ADMIN", "EMPLOYEE", "CUSTOMER"],
+    pathName: "messages",
   },
   {
     title: "Owners",
     urlPath: "/app/owners",
     icon: IoPeople,
-    rolesAllowed: ["ADMIN", "EMPLOYEE"],
+    pathName: "owners",
   },
   {
     title: "Pets",
     urlPath: "/app/pets",
     icon: IoPaw,
-    rolesAllowed: ["ADMIN", "EMPLOYEE"],
+    pathName: "pets",
   },
   {
     title: "Vets",
     urlPath: "/app/vets",
     icon: MdHealthAndSafety,
-    rolesAllowed: ["ADMIN", "EMPLOYEE"],
+    pathName: "vets",
   },
+];
 
+export const ownerSideBarItems: SidebarItemProps[] = [
   {
-    title: "Settings",
-    urlPath: "/app",
-    icon: IoSettings,
-    rolesAllowed: ["ADMIN", "EMPLOYEE", "CUSTOMER"],
+    title: "Messages",
+    urlPath: "/app/messages",
+    icon: IoChatbox,
+    pathName: "messages",
+  },
+  {
+    title: "My Pets",
+    urlPath: "/app/my-pets",
+    icon: IoPaw,
+    pathName: "my-pets",
   },
 ];
