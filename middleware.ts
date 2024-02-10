@@ -11,6 +11,7 @@ import {
 } from "@/routes";
 
 export default auth((req) => {
+  console.log(req.auth);
   // req.auth
   const { nextUrl } = req;
   const isLoggedin = !!req.auth;

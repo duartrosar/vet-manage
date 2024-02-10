@@ -11,6 +11,7 @@ import { setActive, setIsOpen } from "@/lib/redux/slices/sidebar-slice";
 import SidebarItem from "./sidebar-item";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
+import { checkRoles } from "@/lib/auth/session-helpers";
 
 const lalezar = Lalezar({ subsets: ["latin"], weight: "400" });
 const kanit = Kanit({
@@ -53,10 +54,6 @@ export default function SideBar({ roles }: { roles: string[] }) {
     }
   }, [size.width]);
 
-  function checkRoles(rolesToCheck: string[]): boolean {
-    return rolesToCheck.some((role) => roles.includes(role));
-  }
-
   return (
     <>
       <div className="relative z-30">
@@ -92,7 +89,7 @@ export default function SideBar({ roles }: { roles: string[] }) {
                 {sidebarItems.map(
                   (item, index) =>
                     index !== sidebarItems.length - 1 &&
-                    checkRoles(item.rolesAllowed) && (
+                    checkRoles(roles, item.rolesAllowed) && (
                       <SidebarItem
                         key={index}
                         title={item.title}

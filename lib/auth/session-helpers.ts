@@ -34,3 +34,10 @@ export async function getSessionRoles(): Promise<string[] | null> {
 
   return roles;
 }
+
+export function checkRoles(
+  rolesAllowed: string[],
+  rolesToCheck: string[],
+): boolean {
+  return rolesToCheck.some((role) => rolesAllowed.includes(role));
+}

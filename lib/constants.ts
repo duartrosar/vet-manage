@@ -29,7 +29,7 @@ export const sidebarItems: SidebarItem[] = [
     title: "Appointments",
     urlPath: "/app/appointments",
     icon: IoCalendar,
-    rolesAllowed: ["ADMIN", "EMPLOYEE", "CUSTOMER"],
+    rolesAllowed: ["ADMIN", "EMPLOYEE"],
   },
   {
     title: "Messages",
@@ -47,7 +47,7 @@ export const sidebarItems: SidebarItem[] = [
     title: "Pets",
     urlPath: "/app/pets",
     icon: IoPaw,
-    rolesAllowed: ["ADMIN", "EMPLOYEE", "CUSTOMER"],
+    rolesAllowed: ["ADMIN", "EMPLOYEE"],
   },
   {
     title: "Vets",
