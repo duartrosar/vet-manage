@@ -9,6 +9,8 @@ import { signIn } from "@/auth";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { AuthError } from "next-auth";
 import { signOut } from "next-auth/react";
+import { compare } from "bcryptjs";
+import { db } from "../prisma";
 
 export async function login(data: LoginProps, callbackUrl?: string | null) {
   const validatedFields = loginSchema.safeParse(data);
@@ -37,7 +39,6 @@ export async function login(data: LoginProps, callbackUrl?: string | null) {
     return { success: "Confirmation email sent!" };
   }
 
-  console.log({ callbackUrlFromServer: callbackUrl });
   try {
     await signIn("credentials", {
       email,
@@ -89,5 +90,18 @@ export async function resetPassword(
       success: false,
       message: "There was an error sending your confirmation email.",
     };
+  }
+}
+
+export async function validatePassword(
+  currentPasswordHash: string,
+  currentPassword: string,
+): Promise<boolean> {
+  try {
+    const isMatch = await compare(currentPassword, currentPasswordHash);
+    return isMatch;
+  } catch (error) {
+    console.error("Error validating password:", error);
+    return false;
   }
 }

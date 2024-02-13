@@ -19,8 +19,8 @@ export default function ChangePasswordForm({
   token,
   isReset = false,
 }: {
-  token?: string;
-  isReset?: boolean;
+  token: string;
+  isReset: boolean;
 }) {
   const router = useRouter();
   const form = useForm<PasswordFormData>({

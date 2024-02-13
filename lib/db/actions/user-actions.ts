@@ -210,3 +210,33 @@ export async function getEmployeeUsers(userId: string) {
     console.log({ error });
   }
 }
+
+export async function getPasswordHash(
+  userId: string,
+): Promise<{ hash: string | null | undefined }> {
+  try {
+    const select = await db.user.findUnique({
+      where: { id: userId },
+      select: { password: true },
+    });
+
+    return { hash: select?.password };
+  } catch (error) {
+    return { hash: "" };
+  }
+}
+
+export async function setNewPassword(userId: string, password: string) {
+  try {
+    const passwordHash = await hash(password, 12);
+
+    await db.user.update({
+      where: { id: userId },
+      data: { password: passwordHash },
+    });
+
+    return { success: true };
+  } catch (error) {
+    return { success: false };
+  }
+}

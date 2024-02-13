@@ -1,6 +1,6 @@
 import React from "react";
 import Logo from "../logo";
-import ProfileMenu from "../user-profile";
+import ProfileMenu from "../user/user-popup";
 import SidebarButton from "../sidebar/button";
 import { auth } from "@/auth";
 
