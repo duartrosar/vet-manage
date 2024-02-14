@@ -72,7 +72,7 @@ export default function PetForm({ owners }: { owners?: Owner[] | null }) {
 
     if (!success || !pet) {
       // throw new Error("Something went wrong");
-      console.log("Pet was not created.");
+      ("Pet was not created.");
       toast.custom((t) => (
         <Toast t={t} message="Pet was not created." type="danger" />
       ));

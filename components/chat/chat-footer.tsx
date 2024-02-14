@@ -28,8 +28,6 @@ export default function ChatFooter() {
     data.conversationId = conversationId;
 
     const message = await createMessage(data as Message);
-
-    console.log({ message });
   };
 
   return (

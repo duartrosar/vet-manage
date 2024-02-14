@@ -5,10 +5,6 @@ import { getPets } from "@/lib/db/actions/pet-actions";
 import { getVets } from "@/lib/db/actions/vet-actions";
 
 export default async function AppHome() {
-  const session = await auth();
-  const { pets } = await getPets();
-  const { vets } = await getVets();
-
   return (
     <div className="flex  h-full w-full flex-col items-start justify-center gap-10 bg-cerulean-900 px-8">
       {/* <div className="space-x-3">

@@ -43,7 +43,7 @@ export default function OwnersList({ owners }: { owners?: Owner[] }) {
         if (value instanceof Date) {
           // Convert date to string representation
           const dateString = format(value, "dd/MM/yyyy");
-          console.log(dateString);
+          dateString;
           return dateString.toLowerCase().includes(searchTerm);
         }
 

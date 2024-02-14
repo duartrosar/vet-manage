@@ -11,7 +11,7 @@ const useFilterConversations = (
           (role) => role.role as string,
         );
 
-        return roles?.includes("CUSTOMER");
+        return roles?.includes("OWNER");
       })
       .map((conversation) => conversation);
 
@@ -25,7 +25,7 @@ const useFilterConversations = (
           (role) => role.role as string,
         );
 
-        return roles?.includes("EMPLOYEE");
+        return roles?.includes("VET");
       })
       .map((conversation) => conversation);
 

@@ -29,13 +29,13 @@ const kanit = Kanit({
 export default function SideBar({
   roles,
 }: {
-  roles: ("ADMIN" | "EMPLOYEE" | "CUSTOMER")[];
+  roles: ("ADMIN" | "VET" | "OWNER")[];
 }) {
   const [sidebarExpanded, setSidebarExpanded] = useLocalStorage(
     "sidebarExpanded",
     true,
   );
-  const isEmployee = roles.includes("ADMIN") || roles.includes("EMPLOYEE");
+  const isEmployee = roles.includes("ADMIN") || roles.includes("VET");
 
   const size = useWindowSize();
   const isOpen = useAppSelector((state) => state.sidebar.isOpen);
@@ -114,7 +114,7 @@ export default function SideBar({
                       pathName={item.pathName}
                     />
                   ))}
-                {roles.includes("CUSTOMER") &&
+                {roles.includes("OWNER") &&
                   ownerSideBarItems.map((item, index) => (
                     <SidebarItem
                       key={index}

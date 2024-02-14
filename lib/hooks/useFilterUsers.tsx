@@ -31,7 +31,7 @@ const useFilterUsers = () => {
 
   const getEmployees = (users: UserWithRoles[]) => {
     const employees = users.filter(
-      (user) => user.roles?.some((role) => role.role === "EMPLOYEE"),
+      (user) => user.roles?.some((role) => role.role === "VET"),
     );
 
     return employees;
@@ -39,7 +39,7 @@ const useFilterUsers = () => {
 
   const getCustomers = (users: UserWithRoles[]) => {
     const customers = users.filter(
-      (user) => user.roles?.some((role) => role.role === "CUSTOMER"),
+      (user) => user.roles?.some((role) => role.role === "OWNER"),
     );
     return customers;
   };

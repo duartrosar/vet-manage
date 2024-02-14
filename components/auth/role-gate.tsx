@@ -6,7 +6,7 @@ export default async function RoleGate({
   rolesAllowed,
 }: {
   children: React.ReactNode;
-  rolesAllowed: ("ADMIN" | "EMPLOYEE" | "CUSTOMER")[];
+  rolesAllowed: ("ADMIN" | "VET" | "OWNER")[];
 }) {
   const roles = await getSessionRoles();
 

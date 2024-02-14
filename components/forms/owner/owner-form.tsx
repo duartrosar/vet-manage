@@ -78,8 +78,6 @@ export default function OwnerForm() {
     let { user } = await getUser(data.email);
 
     if (user) {
-      console.log("Existing User: ", user);
-
       form.setError("email", {
         type: "custom",
         message: "That email is already being used",
@@ -99,7 +97,7 @@ export default function OwnerForm() {
     const { ownerUser, success, owner } = await createOwnerWithUser(data);
 
     if (!success || !ownerUser || !owner) {
-      console.log("Owner was not created.");
+      ("Owner was not created.");
       toast.custom((t) => (
         <Toast t={t} message="Owner was not created." type="danger" />
       ));

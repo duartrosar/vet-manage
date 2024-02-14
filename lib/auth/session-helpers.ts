@@ -18,7 +18,7 @@ export async function getSessionUser(): Promise<User | null> {
 }
 
 export async function getSessionRoles(): Promise<
-  ("ADMIN" | "CUSTOMER" | "EMPLOYEE")[] | null
+  ("ADMIN" | "OWNER" | "VET")[] | null
 > {
   const session = await auth();
 

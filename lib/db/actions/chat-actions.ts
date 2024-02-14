@@ -75,7 +75,7 @@ export async function getConversationById(conversationId: number) {
     }
     return { converstation: null };
   } catch (error) {
-    console.log({ error });
+    ({ error });
     return { converstation: null };
   }
 }
@@ -84,7 +84,7 @@ export async function getConversations(): Promise<DashboardConversationsResponse
   try {
     const session = await auth();
 
-    console.log({ session });
+    ({ session });
 
     if (session) {
       const conversations = await db.conversation.findMany({
@@ -117,7 +117,7 @@ export async function getConversations(): Promise<DashboardConversationsResponse
         },
       });
 
-      console.log({ conversations });
+      ({ conversations });
 
       return { conversations };
     }
@@ -177,9 +177,7 @@ export async function getConversationsOld() {
 
       return { conversations: filteredConversations, success: true };
     }
-  } catch (error) {
-    console.log("🚀 ~ getConversations ~ error:", { error });
-  }
+  } catch (error) {}
 }
 
 export async function createMessage(data: Message) {
@@ -191,12 +189,12 @@ export async function createMessage(data: Message) {
         data: data,
       });
 
-      console.log({ message });
+      ({ message });
       revalidatePath(`/app/messages/${data.conversationId}`);
       return message;
     }
   } catch (error) {
-    console.log({ error });
+    ({ error });
   }
 }
 

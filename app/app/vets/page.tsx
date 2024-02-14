@@ -7,7 +7,7 @@ import { Suspense } from "react";
 export default function VetsHome() {
   return (
     <>
-      <RoleGate rolesAllowed={["ADMIN", "EMPLOYEE"]}>
+      <RoleGate rolesAllowed={["ADMIN", "VET"]}>
         <VetsListHeader />
         <Suspense fallback={<ListSkeleton />}>
           <Vets />

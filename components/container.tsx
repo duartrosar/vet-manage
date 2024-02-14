@@ -6,6 +6,7 @@ import { useWindowSize } from "@uidotdev/usehooks";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setIsOpen } from "@/lib/redux/slices/sidebar-slice";
 import clsx from "clsx";
+import { generateAppointments } from "@/prisma/seed-data";
 
 export default function Container({
   children,

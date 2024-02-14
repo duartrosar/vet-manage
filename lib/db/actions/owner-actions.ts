@@ -12,7 +12,6 @@ export async function getOwners() {
     const owners = await db.owner.findMany();
     return { owners: owners, success: true };
   } catch (error) {
-    console.log("getOwners", error);
     return { success: false };
   }
 }
@@ -27,7 +26,6 @@ export async function getOwner(ownerId: number) {
 
     return { owner };
   } catch (error) {
-    console.log("getOwner", error);
     return { error };
   }
 }
@@ -44,7 +42,7 @@ export async function createOwnerWithUser(data: Owner) {
           image: data.imageUrl,
           hasEntity: true,
           roles: {
-            create: { role: "CUSTOMER" },
+            create: { role: "OWNER" },
           },
           owner: {
             create: {
@@ -75,10 +73,9 @@ export async function createOwnerWithUser(data: Owner) {
       return { ownerUser, success: true, owner };
     }
 
-    console.log(result.error.format());
+    result.error.format();
     return { ownerUser: data, success: false };
   } catch (error) {
-    console.log("createOwnerWithUser", error);
     return { success: false };
   }
 }
@@ -117,15 +114,13 @@ export async function updateOwner(data: Owner, ownerId: number) {
         message: "Owner was updated sucessfully",
       };
     }
-    console.log(result.error.format());
+    result.error.format();
     return {
       updatedOwner: data,
       success: false,
       message: "An error ocurred atempting to create the owner",
     };
-  } catch (error) {
-    console.log("updateOwner", error);
-  }
+  } catch (error) {}
 }
 
 export async function getOwnerByUserId(userId: string) {

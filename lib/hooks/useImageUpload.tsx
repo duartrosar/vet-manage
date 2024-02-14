@@ -14,7 +14,7 @@ export const useImageUpload = () => {
       body: JSON.stringify({ filename: file.name, contentType: file.type }),
     });
 
-    console.log({ response });
+    ({ response });
 
     if (response.ok) {
       const { url, fields } = await response.json();
@@ -54,7 +54,7 @@ export const useImageUpload = () => {
       body: JSON.stringify({ imageUrl: imageUrl }),
     });
 
-    console.log({ response });
+    ({ response });
   }, []);
 
   return { upload, deleteImage };

@@ -6,7 +6,7 @@ import RoleGate from "@/components/auth/role-gate";
 
 export default function OwnersHome() {
   return (
-    <RoleGate rolesAllowed={["ADMIN", "EMPLOYEE"]}>
+    <RoleGate rolesAllowed={["ADMIN", "VET"]}>
       <OwnersListHeader />
       <Suspense fallback={<ListSkeleton />}>
         <Owners />

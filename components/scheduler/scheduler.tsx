@@ -67,7 +67,7 @@ export default function Scheduler({
   function onPopupOpen(event: PopupOpenEventArgs): void {
     event.cancel = true;
     setIsOpen(true);
-    console.log({ event });
+    ({ event });
 
     if (!event.data) return;
 
@@ -129,7 +129,7 @@ export default function Scheduler({
 
     const result = await updateAppointment(appointment);
 
-    console.log({ result });
+    ({ result });
 
     if (!result.success) {
       toast.custom((t) => (

@@ -30,7 +30,7 @@ export default function SchedulerModal() {
   const [vets, setVets] = useState<Vet[] | null>();
 
   useEffect(() => {
-    console.log({ params });
+    ({ params });
     const fetchData = async () => {
       try {
         const { pets } = await getPets();

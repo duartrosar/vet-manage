@@ -20,10 +20,8 @@ export default function Dropdown({ children }: { children: React.ReactNode }) {
 
   const togglerChildren = React.Children.map(children, (child) => {
     if (React.isValidElement(child) && child.type === DropDownToggler) {
-      //   console.log("Hello");
-      return React.cloneElement(child as React.ReactElement<any>, {
-        onClick: () => console.log("Hello"),
-      });
+      //   ("Hello");
+      return React.cloneElement(child as React.ReactElement<any>, {});
     }
     return null;
   });

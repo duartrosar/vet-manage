@@ -20,7 +20,6 @@ export async function getAppoinments() {
 
     return { appointments, success: true };
   } catch (error) {
-    console.log("🚀 ~ getAppoinments ~ error:", error);
     return { appointments: null, success: false };
   }
 }
@@ -34,8 +33,6 @@ export async function createAppointment(data: Appointment) {
     revalidatePath("/app/appointments");
     return { appointment, success: true };
   } catch (error) {
-    console.log("hello");
-    console.log("createAppointment", error);
     return { success: false };
   }
 }
@@ -52,8 +49,6 @@ export async function updateAppointment(data: Appointment) {
     revalidatePath("/app/appointments");
     return { appointment, success: true };
   } catch (error) {
-    console.error("updateAppointment", error);
-
     return { success: false };
   }
 }
@@ -67,8 +62,6 @@ export async function deleteAppointment(appointmentId: number) {
     });
     return { success: true };
   } catch (error) {
-    console.error("deleteAppointment", error);
-
     return { success: false };
   }
 }
@@ -79,11 +72,11 @@ export async function getUpcomingAppointments(): Promise<UpcomingAppointmentsRes
 
     if (session) {
       const roles = session.user.roles.flatMap((role) => role.role as string);
-      console.log(session.user.roles);
+      session.user.roles;
 
-      if (roles.includes("ADMIN") || roles.includes("EMPLOYEE")) {
+      if (roles.includes("ADMIN") || roles.includes("VET")) {
         const { vet } = await getVetByUserId(session.user.id);
-        console.log({ vet });
+        ({ vet });
 
         if (!vet) {
           const { appointments } = await getAdminAppointments();

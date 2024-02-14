@@ -16,7 +16,6 @@ import ControlledTextInput from "../../inputs/controlled-text-input";
 export default function LoginForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
-  console.log("callbackUrl: ", callbackUrl);
   const [loginError, setLoginError] = useState("");
   const { pending } = useFormStatus();
   const form = useForm<LoginProps>({
@@ -28,7 +27,7 @@ export default function LoginForm() {
   });
 
   const processForm: SubmitHandler<LoginProps> = async (data: LoginProps) => {
-    console.log({ callbackUrl });
+    ({ callbackUrl });
 
     const result = await login(data, callbackUrl);
 
@@ -46,7 +45,7 @@ export default function LoginForm() {
           type="success"
         />
       ));
-      console.log("Logged in...");
+      ("Logged in...");
       return;
     }
   };

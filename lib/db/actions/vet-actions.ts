@@ -16,7 +16,6 @@ export async function getVets(): Promise<VetsResponse> {
     const vets = await db.vet.findMany();
     return { vets: vets };
   } catch (error) {
-    console.log("getVets", error);
     return { vets: null };
   }
 }
@@ -31,7 +30,6 @@ export async function getVet(vetId: number) {
 
     return { vet };
   } catch (error) {
-    console.log("getVet", error);
     return { error };
   }
 }
@@ -48,7 +46,7 @@ export async function createVetWithUser(data: Vet) {
           image: data.imageUrl,
           hasEntity: true,
           roles: {
-            create: { role: "EMPLOYEE" },
+            create: { role: "VET" },
           },
           vet: {
             create: {
@@ -79,10 +77,9 @@ export async function createVetWithUser(data: Vet) {
       return { vetUser, success: true, vet };
     }
 
-    console.log(result.error.format());
+    result.error.format();
     return { vetUser: data, success: false };
   } catch (error) {
-    console.log("createVetWithUser", error);
     return { success: false };
   }
 }
@@ -121,15 +118,13 @@ export async function updateVet(data: Vet, vetId: number) {
         message: "Vet was updated sucessfully",
       };
     }
-    console.log(result.error.format());
+    result.error.format();
     return {
       updatedvet: data,
       success: false,
       message: "An error ocurred atempting to create the Vet",
     };
-  } catch (error) {
-    console.log("updateVet", error);
-  }
+  } catch (error) {}
 }
 
 export async function getVetByUserId(userId: string) {

@@ -39,8 +39,6 @@ export default function ChatAddConversation() {
       const { users, isCustomer } = await response.json();
 
       if (users) {
-        console.log({ users });
-
         filterUsers(users, isCustomer);
       }
     };
@@ -49,8 +47,8 @@ export default function ChatAddConversation() {
   }, []);
 
   useEffect(() => {
-    // console.log({ employees });
-    // console.log({ customers });
+    // ({ employees });
+    // ({ customers });
   }, [employees, customers]);
 
   const onValueChange = async (value: string) => {

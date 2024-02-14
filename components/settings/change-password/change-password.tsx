@@ -26,7 +26,7 @@ export default function ChangePasswordForm({ user }: { user: User }) {
   });
 
   const onSubmit = async (data: PasswordFormData) => {
-    console.log({ data });
+    ({ data });
 
     const { hash } = await getPasswordHash(user.id);
 

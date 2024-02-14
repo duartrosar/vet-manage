@@ -15,7 +15,7 @@ export const sendVerificationEmail = async (
     isResetPassword ? "&is-reset-password=1" : ""
   }`;
 
-  console.log(isPasswordSet ? 1 : 0);
+  isPasswordSet ? 1 : 0;
 
   const { data, error } = await resend.emails.send({
     from: "mail@vetmanage.uk",

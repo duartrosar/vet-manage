@@ -16,7 +16,6 @@ export async function getPets(): Promise<PetsResponse> {
 
     return { pets: pets };
   } catch (error) {
-    console.log("getPets", error);
     return { pets: null };
   }
 }
@@ -38,7 +37,6 @@ export async function createPet(data: Pet) {
 
     return { pet: data, success: false };
   } catch (error) {
-    console.log("createPet", error);
     return { success: false };
   }
 }
@@ -61,7 +59,6 @@ export async function updatePet(data: Pet) {
 
     return { updatedPet: data, success: false };
   } catch (error) {
-    console.log("updatePet", error);
     return { success: false };
   }
 }
@@ -83,7 +80,6 @@ export async function deletePet(petId: number) {
     });
     revalidatePath("/app/pets");
   } catch (error) {
-    console.log("deletePet", error);
     return { success: false };
   }
 }

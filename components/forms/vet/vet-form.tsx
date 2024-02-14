@@ -78,8 +78,6 @@ export default function VetForm() {
     let { user } = await getUser(data.email);
 
     if (user) {
-      console.log("Existing User: ", user);
-
       form.setError("email", {
         type: "custom",
         message: "That email is already being used",
@@ -99,7 +97,7 @@ export default function VetForm() {
     const { vetUser, success, vet } = await createVetWithUser(data);
 
     if (!success || !vetUser || !vet) {
-      console.log("Vet was not created.");
+      ("Vet was not created.");
       toast.custom((t) => (
         <Toast t={t} message="Vet was not created." type="danger" />
       ));
@@ -132,7 +130,7 @@ export default function VetForm() {
     const result = await updateVet(data, data.id);
 
     if (!result?.success) {
-      console.log("Vet could not be updated");
+      ("Vet could not be updated");
 
       toast.custom((t) => (
         <Toast t={t} message="Vet could not be updated" type="danger" />

@@ -10,7 +10,9 @@ export default async function DashboardConversations() {
   // await fetchData();
   // await getData();
 
-  if (!conversations) {
+  console.log({ conversations });
+
+  if (!conversations?.length) {
     return (
       <div className="space-y-4 pl-2">
         <h2 className="text-lg font-medium tracking-wide text-gray-200">

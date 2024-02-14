@@ -58,8 +58,6 @@ export default function AppointmentForm({ vets, pets }: AppointmentFormProps) {
   useEffect(() => {
     if (!appointmentData) return;
 
-    console.log({ appointmentData });
-
     form.setValue("startTime", format(appointmentData.startTime, "HH:mm"));
     form.setValue("endTime", format(appointmentData.endTime, "HH:mm"));
     form.setValue("subject", appointmentData.subject);
@@ -69,8 +67,6 @@ export default function AppointmentForm({ vets, pets }: AppointmentFormProps) {
   }, []);
 
   const onSubmit = async (data: AppointmentFormData) => {
-    console.log({ appointmentData });
-
     if (!appointmentData) return;
 
     const appointment = {

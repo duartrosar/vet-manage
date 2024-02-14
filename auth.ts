@@ -47,12 +47,11 @@ export const {
       });
     },
     async linkAccount({ user }) {
-      console.log("From linkAccount: ", user);
       await db.user.update({
         where: { id: user.id },
         data: {
           emailVerified: new Date(),
-          roles: { create: { role: "CUSTOMER" } },
+          roles: { create: { role: "OWNER" } },
         },
       });
     },

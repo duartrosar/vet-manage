@@ -21,7 +21,6 @@ export default function DashboardEntitiesDisplay({
       toast.custom((t) => (
         <Toast t={t} message="Copied to clipboard" type="success" />
       ));
-      console.log("Text copied to clipboard");
     } catch (err) {
       toast.custom((t) => (
         <Toast t={t} message="Could not copy to clipboard" type="danger" />

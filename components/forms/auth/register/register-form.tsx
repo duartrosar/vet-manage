@@ -32,7 +32,7 @@ export default function RegisterForm() {
     data: RegisterProps,
   ) => {
     // const isPasswordMatch = data.password === data.confirmPassword;
-    // console.log("Owner data: ", data);
+    // ("Owner data: ", data);
 
     // if (!isPasswordMatch) {
     //   setPasswordError("Passwords do not match");
@@ -42,7 +42,6 @@ export default function RegisterForm() {
     let { user } = await getUser(data.email);
 
     if (user) {
-      console.log("Existing User: ", user);
       setRegisterError("That email is already being used.");
       return;
     }

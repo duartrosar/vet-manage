@@ -30,7 +30,7 @@ export default async function DashboardProfile() {
   let dateOfbirth: Date | null = new Date();
   let mobileNumber: string | null = "No mobile number found";
 
-  if (roles.includes("CUSTOMER")) {
+  if (roles.includes("OWNER")) {
     // get owner dateofbirth and phone number
     const { owner } = await getOwnerDataByUserId(user.id);
 
@@ -55,8 +55,6 @@ export default async function DashboardProfile() {
 
     return firstLetter + lower;
   }
-
-  console.log(user.roles);
 
   return (
     <div className="flex h-full flex-col space-y-4 ">

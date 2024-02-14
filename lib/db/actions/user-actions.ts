@@ -23,7 +23,7 @@ export async function createUserWithOwner(userRegister: RegisterProps) {
         isActive: true,
         hasEntity: true,
         roles: {
-          create: { role: "CUSTOMER" },
+          create: { role: "OWNER" },
         },
         owner: {
           create: {
@@ -47,7 +47,6 @@ export async function createUserWithOwner(userRegister: RegisterProps) {
 
     return { user: user, success: true };
   } catch (error) {
-    console.log("registerCustomerUser", error);
     return { success: false };
   }
 }
@@ -62,7 +61,6 @@ export async function getUser(email: string) {
 
     return { user, success: true };
   } catch (error) {
-    console.log("getUser", error);
     return { success: false };
   }
 }
@@ -83,7 +81,6 @@ export async function deleteUser(userId: string, pathToRevalidate: string) {
 
     revalidatePath(pathToRevalidate);
   } catch (error) {
-    console.log("deleteUser", error);
     return { success: false };
   }
 }
@@ -134,7 +131,7 @@ export async function getAllUsers(userId: string) {
         AND: {
           roles: {
             some: {
-              role: "CUSTOMER",
+              role: "OWNER",
             },
           },
         },
@@ -157,7 +154,7 @@ export async function getAllUsers(userId: string) {
     );
     return { users: filteredUsers };
   } catch (error) {
-    console.log({ error });
+    ({ error });
   }
 }
 
@@ -184,7 +181,7 @@ export async function getEmployeeUsers(userId: string) {
         AND: {
           roles: {
             some: {
-              role: "EMPLOYEE",
+              role: "VET",
             },
           },
         },
@@ -207,7 +204,7 @@ export async function getEmployeeUsers(userId: string) {
     );
     return { users: filteredUsers };
   } catch (error) {
-    console.log({ error });
+    ({ error });
   }
 }
 

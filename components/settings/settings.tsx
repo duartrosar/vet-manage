@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import UserDisplay from "../user/user-display";
 import ChangePasswordForm from "./change-password/change-password";
 import { useCurrentUser } from "@/lib/hooks/useCurrentUser";
+import OwnerForm from "../forms/owner/owner-form";
 
 export default function Settings() {
   const user = useCurrentUser();
@@ -30,8 +31,8 @@ export default function Settings() {
             >
               <TabsList className="flex h-full flex-col items-start justify-start space-y-2 whitespace-nowrap border-r-2 border-cerulean-700/25 p-2 text-gray-400">
                 <UserDisplay className="mb-4" />
-                <TabsTrigger className="w-full justify-start" value="account">
-                  Account
+                <TabsTrigger className="w-full justify-start" value="profile">
+                  Profile
                 </TabsTrigger>
                 <TabsTrigger className="w-full justify-start" value="email">
                   Email
@@ -44,9 +45,9 @@ export default function Settings() {
                 </TabsTrigger>
               </TabsList>
               <div className="w-full bg-cerulean-900">
-                <TabsContent className="h-full" value="account">
+                <TabsContent className="h-full" value="profile">
                   <div className="flex h-full items-center justify-center overflow-y-auto">
-                    Make changes to your account here.
+                    <OwnerForm />
                   </div>
                 </TabsContent>
                 <TabsContent className="h-full" value="email">

@@ -50,7 +50,7 @@ export default function ConfirmEmailPage() {
             You must create a password to confirm your email
           </p>
           <div>
-            <ChangePasswordForm token={token ? token : ""} />
+            <ChangePasswordForm isReset={false} token={token ? token : ""} />
           </div>
         </>
       )}

@@ -21,7 +21,7 @@ export default async function DashboardAppointments() {
     <ChartProvider>
       <div className="h-full">
         <AppointmentsChartHeader />
-        <AppointmentsChartDisplay appointments={appointments} />;
+        <AppointmentsChartDisplay appointments={appointments} />
       </div>
     </ChartProvider>
   );

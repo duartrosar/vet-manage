@@ -8,7 +8,7 @@ export default async function AppointmentsPaget() {
   const { appointments } = await getAppoinments();
 
   return (
-    <RoleGate rolesAllowed={["ADMIN", "EMPLOYEE"]}>
+    <RoleGate rolesAllowed={["ADMIN", "VET"]}>
       <div className="flex h-full flex-col bg-cerulean-950 p-3">
         <SchedulerProvider>
           <Scheduler appointments={appointments} />

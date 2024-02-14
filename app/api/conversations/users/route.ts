@@ -27,7 +27,6 @@ export async function GET(request: Request) {
     });
 
     const conversationsIds = conversations.map((id) => id.id);
-    console.log({ conversations });
     // type x = Prisma.UserConversationListRelationFilter
     const users = await db.user.findMany({
       where: {
@@ -41,7 +40,7 @@ export async function GET(request: Request) {
       },
     });
 
-    const isCustomer = user.roles.some((role) => role.role === "CUSTOMER");
+    const isCustomer = user.roles.some((role) => role.role === "OWNER");
 
     const filteredUsers = users.filter(
       (user) =>

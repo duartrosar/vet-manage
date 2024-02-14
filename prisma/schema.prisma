@@ -23,8 +23,8 @@ model UserRole {
 
 enum Roles {
   ADMIN
-  CUSTOMER
-  EMPLOYEE
+  OWNER
+  VET
 }
 
 model User {
