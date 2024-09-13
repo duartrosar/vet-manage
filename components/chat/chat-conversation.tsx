@@ -29,29 +29,35 @@ export default function ChatConversation({
     <Link
       href={`/app/messages/${conversation.id}`}
       className={cn(
-        "flex cursor-pointer items-center gap-2 rounded-lg p-2 shadow-xl hover:bg-cerulean-800",
-        conversation.id === conversationId ? "bg-cerulean-800" : "",
+        "flex cursor-pointer items-center gap-2 rounded-lg p-2 shadow-md hover:bg-gray-100 dark:shadow-xl dark:hover:bg-cerulean-800",
+        conversation.id === conversationId
+          ? "bg-gray-100 dark:bg-cerulean-800"
+          : "",
       )}
     >
       {user?.image ? (
         <Image
-          className="h-[40px] w-[40px] flex-none rounded-full bg-cerulean-950"
+          className="h-[40px] w-[40px] flex-none rounded-full dark:bg-cerulean-950"
           src={user.image}
           width={40}
           height={40}
           alt="Profile picture"
         />
       ) : (
-        <span className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-cerulean-950">
+        <span className="flex h-[40px] w-[40px] items-center justify-center rounded-full dark:bg-cerulean-950">
           <FaUser className="h-[25px] w-[25px] text-cerulean-500/50" />
         </span>
       )}
       {user?.name && (
         <div className="space-y-1">
-          <p className="text-sm font-semibold text-white">{user.name}</p>
-          <p className="text-xs text-cerulean-100/50">
+          <p className="text-sm font-semibold text-cerulean-900 dark:text-white">
+            {user.name}
+          </p>
+          <p className="text-xs text-gray-500 dark:text-cerulean-100/50">
             {/* TODO: Get last message */}
-            {conversation.messages[0].body}
+            {conversation.messages[0]?.body
+              ? conversation.messages[0].body
+              : "No messages"}
           </p>
         </div>
       )}

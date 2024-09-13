@@ -28,24 +28,12 @@ export default function Container({
   return (
     <div
       className={clsx(
-        `relative flex h-full w-full items-center justify-center overflow-y-auto bg-cerulean-950 pt-[78px] backdrop-blur-2xl lg:pb-0 lg:pr-0`,
+        `relative flex h-full w-full items-center justify-center overflow-y-auto pt-[78px] backdrop-blur-2xl lg:pb-0 lg:pr-0`,
         isOpen ? "lg:pl-64" : "lg:pl-[68px]",
       )}
-      // style={{
-      //   paddingTop: "104px",
-      // }}
-      // animate={{
-      //   paddingLeft:
-      //     isOpen && size.width! >= 1024
-      //       ? "256px"
-      //       : size.width! < 1024
-      //         ? "0px"
-      //         : "68px",
-      // }}
-      // transition={{ ease: "linear", duration: isOpen ? 0.025 : 0.01 }}
     >
       <main
-        className={`h-full w-full bg-cerulean-950 font-bold shadow-xl ${className}`}
+        className={`h-full w-full bg-gray-100 font-bold shadow-xl dark:bg-cerulean-950 ${className}`}
       >
         {children}
       </main>

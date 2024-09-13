@@ -14,21 +14,16 @@ export default async function DashboardConversations() {
 
   if (!conversations?.length) {
     return (
-      <div className="space-y-4 pl-2">
-        <h2 className="text-lg font-medium tracking-wide text-gray-200">
-          Messages
-        </h2>
-        <p className="text-sm font-medium tracking-wide text-gray-400">
+      <>
+        <p className="pl-2 text-sm font-medium tracking-wide text-gray-600 dark:text-gray-400">
           No conversations found
         </p>
-      </div>
+      </>
     );
   }
+
   return (
-    <div className="space-y-4">
-      <h2 className="pl-2 text-lg font-medium tracking-wide text-gray-200">
-        Messages
-      </h2>
+    <>
       {conversations.map((conversation, index) => (
         <ChatConversation
           key={conversation.id}
@@ -36,6 +31,6 @@ export default async function DashboardConversations() {
           selected={false}
         />
       ))}
-    </div>
+    </>
   );
 }

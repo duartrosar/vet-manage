@@ -40,6 +40,8 @@ export default async function DashBoardEntitiesAmount({
   }
 
   return (
-    <div className="text-xl text-white">There are no {title} at the moment</div>
+    <div className="text-xl text-gray-800 dark:text-white">
+      There are no {title} at the moment
+    </div>
   );
 }

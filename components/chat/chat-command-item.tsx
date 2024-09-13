@@ -14,7 +14,7 @@ export default function ChatCommandItem({
 
   return (
     <CommandItem
-      className="block w-full bg-cerulean-900 px-0 aria-selected:bg-cerulean-900"
+      className="block w-full px-0 dark:bg-cerulean-900 dark:aria-selected:bg-cerulean-900"
       key={conversation.id}
       value={user?.id + "-" + user?.name}
     >

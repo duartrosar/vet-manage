@@ -35,27 +35,27 @@ export default function DashboardEntitiesDisplay({
     >
       <div className="space-y-2 px-2">
         <div className="flex items-center">
-          <p className="text-md text-gray-200">
+          <p className="text-md text-gray-800 dark:text-gray-200">
             {amount} {title}
           </p>
           <button
-            className="p-2 text-gray-400 hover:text-gray-200"
+            className="p-2 text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
             onClick={() => copyToClipboard(amount + "")}
           >
             <FaCopy className="w-3 " />
           </button>
         </div>
-        <p className="text-sm text-gray-400">
+        <p className="text-sm font-normal text-gray-500 dark:text-gray-400">
           There are currently {amount} {title} in your clinic.
         </p>
       </div>
       <Link
         href={urlPath}
         target="_blank"
-        className="group flex gap-1 self-start whitespace-nowrap p-2 text-xs text-cerulean-400 transition hover:rounded-md hover:bg-cerulean-800 hover:text-cerulean-200"
+        className="group flex gap-1 self-start whitespace-nowrap p-2 text-xs text-cerulean-500 transition hover:rounded-md hover:bg-gray-100 dark:text-cerulean-400 dark:hover:bg-cerulean-800 dark:hover:text-cerulean-200"
       >
         Manage {title.toLowerCase()}{" "}
-        <MdOutlineLaunch className="w-3 text-gray-200 group-hover:text-cerulean-200" />
+        <MdOutlineLaunch className="w-3 dark:text-gray-200 dark:group-hover:text-cerulean-200" />
       </Link>
     </div>
   );

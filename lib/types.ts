@@ -41,7 +41,6 @@ export interface SidebarItemProps {
   title: string;
   urlPath: string;
   icon: IconType;
-  pathName: string;
 }
 
 export interface TableHeading {

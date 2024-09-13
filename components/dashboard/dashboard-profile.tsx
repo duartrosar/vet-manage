@@ -7,6 +7,7 @@ import { MdOutlineLaunch } from "react-icons/md";
 import { getOwnerDataByUserId } from "@/lib/db/actions/owner-actions";
 import { getVetDataByUserId } from "@/lib/db/actions/vet-actions";
 import { format } from "date-fns";
+import Avatar from "../avatar/avatar";
 
 export default async function DashboardProfile() {
   const session = await auth();
@@ -57,43 +58,39 @@ export default async function DashboardProfile() {
   }
 
   return (
-    <div className="flex h-full flex-col space-y-4 ">
-      <h2 className="text-lg font-medium tracking-wide text-gray-200">
-        About you
-      </h2>
+    <>
       <div className="flex flex-1 flex-col justify-between gap-4">
         <div className="space-y-4 pl-2">
-          {user?.image ? (
-            <Image
-              className="h-[40px] w-[40px] flex-none rounded-full bg-cerulean-950"
-              src={user.image}
-              width={40}
-              height={40}
-              alt="Profile picture"
-            />
-          ) : (
-            <span className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-cerulean-950">
-              <FaUser className="h-[25px] w-[25px] text-cerulean-500/50" />
-            </span>
-          )}
+          <Avatar imageUrl={user?.image} width={40} height={40} type="user" />
           <div className="flex flex-col gap-1">
-            <span className="text-xs text-gray-400">Name</span>
-            <span className="text-sm text-gray-200">{user.name}</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              Name
+            </span>
+            <span className="text-sm text-gray-800 dark:text-gray-200">
+              {user.name}
+            </span>
           </div>
           {dateOfbirth && (
             <div className="flex flex-col gap-1">
-              <span className="text-xs text-gray-400">Date Of Birth</span>
-              <span className="text-sm text-gray-200">
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                Date Of Birth
+              </span>
+              <span className="text-sm text-gray-800 dark:text-gray-200">
                 {format(dateOfbirth, "dd/MM/yyyy")}
               </span>
             </div>
           )}
           <div className="flex flex-col gap-1">
-            <span className="text-xs text-gray-400">Roles</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              Roles
+            </span>
             <div>
               {roles.map((role) => (
-                <span key={role} className="text-sm text-gray-200">
-                  {capitalize(role)}{" "}
+                <span
+                  key={role}
+                  className="text-sm text-gray-800 dark:text-gray-200"
+                >
+                  {capitalize(role)}
                   {roles.indexOf(role) < roles.length - 1 ? ", " : ""}
                 </span>
               ))}
@@ -101,24 +98,32 @@ export default async function DashboardProfile() {
           </div>
           {mobileNumber && (
             <div className="flex flex-col gap-1">
-              <span className="text-xs text-gray-400">Phone Number</span>
-              <span className="text-sm text-gray-200">{mobileNumber}</span>
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                Phone Number
+              </span>
+              <span className="text-sm text-gray-800 dark:text-gray-200">
+                {mobileNumber}
+              </span>
             </div>
           )}
           <div className="flex flex-col gap-1">
-            <span className="text-xs text-gray-400">Email</span>
-            <span className="text-sm text-gray-200">{user.email}</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              Email
+            </span>
+            <span className="text-sm text-gray-800 dark:text-gray-200">
+              {user.email}
+            </span>
           </div>
         </div>
         <Link
           href={"/app/dashboard"}
           target="_blank"
-          className="group flex justify-center gap-1 rounded-md border border-cerulean-100/25 p-2 text-xs text-cerulean-400 transition hover:rounded-md hover:bg-cerulean-800 hover:text-cerulean-200"
+          className="group flex justify-center gap-1 rounded-md border border-cerulean-700/25 p-2 text-xs text-cerulean-500  shadow-md transition hover:rounded-md hover:bg-gray-100 dark:text-cerulean-400 dark:hover:bg-cerulean-800 dark:hover:text-cerulean-200"
         >
           Edit Profile
           {/* <MdOutlineLaunch className="w-3 text-gray-200 group-hover:text-cerulean-200" /> */}
         </Link>
       </div>
-    </div>
+    </>
   );
 }

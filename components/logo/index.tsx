@@ -32,7 +32,7 @@ export default function Logo({
       <div className="relative rounded-full ">
         <GiCrossedBones
           className={clsx(
-            "absolute  rotate-45 text-cerulean-400 duration-1000",
+            "absolute  rotate-45 text-cerulean-800 duration-1000 dark:text-cerulean-400",
             size === "sm" && "h-8 w-10",
             size === "md" && "h-16 w-20",
             size === "lg" && "h-28 w-[140px]",
@@ -40,7 +40,7 @@ export default function Logo({
         />
         <GiCrossedBones
           className={clsx(
-            "scale-90 rounded-full text-white",
+            "scale-90 rounded-full text-cerulean-500 dark:text-white",
             size === "sm" && "h-8 w-10",
             size === "md" && "h-16 w-20",
             size === "lg" && "h-28 w-[140px]",
@@ -52,14 +52,16 @@ export default function Logo({
       {logotype && (
         <p
           className={clsx(
-            "translate-y-[2px] text-3xl font-black lowercase shadow-2xl",
+            "translate-y-[2px] text-3xl font-black lowercase dark:shadow-2xl",
             size === "md" && "text-xl",
             size === "lg" && "text-7xl",
           )}
           // style={pacifico.style}
         >
-          <span className="italic text-white">Vet</span>
-          <span className="italic text-cerulean-400">Wise</span>
+          <span className="italic text-cerulean-500 dark:text-white">Vet</span>
+          <span className="italic text-cerulean-800 dark:text-cerulean-400">
+            Wise
+          </span>
         </p>
       )}
     </div>

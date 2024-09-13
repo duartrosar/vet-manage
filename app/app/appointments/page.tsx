@@ -9,7 +9,7 @@ export default async function AppointmentsPaget() {
 
   return (
     <RoleGate rolesAllowed={["ADMIN", "VET"]}>
-      <div className="flex h-full flex-col bg-cerulean-950 p-3">
+      <div className="flex h-full flex-col p-3 dark:bg-cerulean-950">
         <SchedulerProvider>
           <Scheduler appointments={appointments} />
         </SchedulerProvider>

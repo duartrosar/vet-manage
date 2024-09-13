@@ -48,8 +48,8 @@ export default function ScheduleHeader({
   );
 
   return (
-    <div className="w-full">
-      <div className="mb-3 flex w-full items-center justify-between rounded-lg border border-cerulean-700/25 bg-cerulean-900 px-3 py-3">
+    <div className="w-ful">
+      <div className="mb-3 flex w-full items-center justify-between rounded-lg border border-gray-300 bg-white px-3 py-3 dark:border-cerulean-700/25 dark:bg-cerulean-900">
         <div className="space-x-1">
           <NavigationButton
             name="Prev"
@@ -64,7 +64,7 @@ export default function ScheduleHeader({
         </div>
         <div>
           <DateDisplayer
-            className="text-sm text-gray-200"
+            className="text-sm text-gray-600 dark:text-gray-200"
             view={selectedView}
             date={selectedDate}
           />
@@ -96,9 +96,9 @@ function ViewButton({ view, selectedView, navigateToView }: ViewButtonProps) {
     <button
       onClick={() => navigateToView(view)}
       className={clsx(
-        "rounded px-4 py-1 text-sm transition duration-75 hover:bg-cerulean-800 hover:text-gray-200 hover:shadow-md",
+        "rounded px-4 py-1 text-sm transition duration-75 hover:bg-gray-200 hover:text-gray-600 hover:shadow-md dark:hover:bg-cerulean-800 dark:hover:text-gray-200",
         view === selectedView
-          ? "bg-cerulean-800 text-gray-200"
+          ? "bg-gray-200 text-gray-600 dark:bg-cerulean-800 dark:text-gray-200"
           : "text-gray-400",
       )}
     >
@@ -115,7 +115,7 @@ function NavigationButton({
   return (
     <button
       onClick={() => handleClick(direction)}
-      className="rounded px-4 py-1 text-sm text-gray-400 transition duration-75 hover:bg-cerulean-800 hover:text-gray-200 hover:shadow-md"
+      className="rounded px-4 py-1 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-600 hover:shadow-md dark:hover:bg-cerulean-800 dark:hover:text-gray-200"
     >
       {name}
     </button>

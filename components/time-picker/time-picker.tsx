@@ -47,21 +47,19 @@ export default function TimePicker({
       <Select onValueChange={(value) => onValueChange(value)} value={value}>
         <FormControl>
           <SelectTrigger
-            className={clsx(
-              "w-full rounded-lg border-2 border-cerulean-100/25 bg-transparent px-3 py-0 font-semibold text-gray-400 hover:bg-cerulean-800 focus:border-cerulean-600 focus:outline-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cerulean-600",
-            )}
+            className={clsx("w-full rounded-lg px-3 py-0 font-semibold ")}
           >
             <span>{value}</span>
           </SelectTrigger>
         </FormControl>
-        <SelectContent className="SelectContentNoHeight z-50 max-h-52 rounded-lg border-2 border-cerulean-100/25 bg-cerulean-900 py-1 text-sm">
+        <SelectContent className="SelectContentNoHeight z-50 max-h-52 rounded-lg py-1 text-sm">
           <SelectGroup>
             <div className="space-y-1 pl-1 pr-2">
               {timeSlots.map((value, index) => (
                 <SelectItem
                   key={format(value, "HH:mm")}
                   value={format(value, "HH:mm")}
-                  className="cursor-pointer justify-end rounded-md py-2 pr-4 text-right font-semibold text-gray-400 transition hover:bg-cerulean-800 hover:text-gray-200 hover:shadow-md"
+                  className="cursor-pointer justify-end rounded-md py-2 pr-4 text-right font-semibold"
                 >
                   {format(value, "HH:mm")}
                 </SelectItem>

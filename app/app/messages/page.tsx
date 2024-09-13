@@ -9,11 +9,11 @@ export default function MessagesPage() {
   return (
     <div
       className={cn(
-        "h-full bg-cerulean-950 lg:block lg:pl-80",
+        "h-full lg:block lg:pl-80",
         isChatSideBarOpen ? "block" : "hidden",
       )}
     >
-      <div className="flex h-full flex-col items-center justify-center text-sm text-cerulean-100/50">
+      <div className="flex h-full flex-col items-center justify-center text-sm text-gray-800 dark:text-cerulean-100/50">
         <p>Select a conversation to start chatting.</p>
       </div>
     </div>

@@ -6,7 +6,7 @@ import { getVets } from "@/lib/db/actions/vet-actions";
 
 export default async function AppHome() {
   return (
-    <div className="flex  h-full w-full flex-col items-start justify-center gap-10 bg-cerulean-900 px-8">
+    <div className="gap-10px-8  flex h-full w-full flex-col items-start justify-center">
       {/* <div className="space-x-3">
         <LogoutButton />
       </div>
@@ -18,7 +18,9 @@ export default async function AppHome() {
         <h2 className="text-2xl text-white">Client Call</h2>
         <User />
       </div> */}
-      <h2 className="text-2xl text-white">Client Call</h2>
+      <h2 className="text-2xl text-cerulean-800 dark:text-white">
+        Client Call
+      </h2>
       <div className="w-60 space-y-3"></div>
     </div>
   );

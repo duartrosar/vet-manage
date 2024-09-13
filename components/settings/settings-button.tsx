@@ -17,11 +17,11 @@ export default function SettingsButton({
     <button
       onClick={() => setIsDialogOpen(!isDialogOpen)}
       className={clsx(
-        "group flex h-10 w-full items-center justify-start gap-3 rounded-lg px-3 text-gray-400 transition duration-75 hover:bg-cerulean-800 hover:text-gray-200 hover:shadow-md",
+        "group flex h-10 w-full items-center justify-start gap-3 rounded-lg px-3 font-normal text-gray-600 transition duration-75 hover:bg-gray-100 hover:text-cerulean-900 hover:shadow-sm dark:text-gray-400 dark:hover:bg-cerulean-800 dark:hover:text-gray-200",
       )}
     >
       <span>
-        <IoSettings className="h-[20px] w-[20px] text-cerulean-500" />
+        <IoSettings className="h-[20px] w-[20px] text-cerulean-500 group-hover:text-cerulean-500 dark:text-cerulean-500" />
       </span>
       {isOpen && "Settings"}
     </button>

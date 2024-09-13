@@ -60,6 +60,7 @@
 *                                       *
 *****************************************/
 :root {
+  /*TODO: Fix light colour scheme*/
   --cerulean-100: 205 227 248;
   --cerulean-200: 151 202 235;
   --cerulean-300: 101 176 221;
@@ -68,13 +69,31 @@
   --cerulean-600: 47 100 142;
   --cerulean-700: 42 74 114;
   --cerulean-800: 0 31 63;
-  --cerulean-900: 0 14 30;
-  --cerulean-950: 0 9 21;
+  --cerulean-900: 255 255 255;
+  --cerulean-950: 255 255 255;
 
   --primary: #fff;
   --primary-text-color: #000;
   --secondary-bg-color: #1f2937;
   --secondary-text-color: #fff;
+}
+
+[data-theme="dark"] {
+  --cerulean-100: 183 200 212; /* Adjust these values for dark theme */
+  --cerulean-200: 126 175 193;
+  --cerulean-300: 87 145 176;
+  --cerulean-400: 64 108 146;
+  --cerulean-500: 37 78 106;
+  --cerulean-600: 32 62 85;
+  --cerulean-700: 28 49 69;
+  --cerulean-800: 0 21 40;
+  --cerulean-900: 0 9 20;
+  --cerulean-950: 0 5 14;
+
+  --primary: #333;
+  --primary-text-color: #eee;
+  --secondary-bg-color: #374151;
+  --secondary-text-color: #f1f5f9;
 }
 
 .e-schedule {

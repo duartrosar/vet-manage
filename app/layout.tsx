@@ -3,7 +3,10 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/components/auth/auth-provider";
 import { Toaster } from "sonner";
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,7 +20,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} relative bg-cerulean-950`}>
+      <body
+        className={`${inter.className} relative bg-slate-100 dark:bg-cerulean-950`}
+      >
         <Toaster
           closeButton
           expand

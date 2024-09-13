@@ -11,7 +11,7 @@ export default function DashBoardCard({
   return (
     <div
       className={clsx(
-        "rounded-lg border-2 border-cerulean-700/25 bg-cerulean-900 shadow-xl",
+        "rounded-lg border-2 border-cerulean-700/25 bg-gray-100 shadow-xl dark:bg-cerulean-900",
         className,
       )}
     >

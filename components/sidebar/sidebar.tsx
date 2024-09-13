@@ -11,19 +11,16 @@ import { Transition } from "@headlessui/react";
 import { useLocalStorage } from "usehooks-ts";
 import { useWindowSize } from "@uidotdev/usehooks";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { setActive, setIsOpen } from "@/lib/redux/slices/sidebar-slice";
+import { setIsOpen } from "@/lib/redux/slices/sidebar-slice";
 import SidebarItem from "./sidebar-item";
 import clsx from "clsx";
-import { usePathname } from "next/navigation";
-import { checkRoles } from "@/lib/auth/session-helpers";
-import { IoSettings, IoGrid } from "react-icons/io5";
-import SettingsButton from "../settings/settings-button";
+import { IoGrid } from "react-icons/io5";
 import Settings from "../settings/settings";
 
 const lalezar = Lalezar({ subsets: ["latin"], weight: "400" });
 const kanit = Kanit({
   subsets: ["latin"],
-  weight: ["600", "700", "800", "900"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
 export default function SideBar({
@@ -40,13 +37,6 @@ export default function SideBar({
   const size = useWindowSize();
   const isOpen = useAppSelector((state) => state.sidebar.isOpen);
   const dispatch = useAppDispatch();
-  const pathname = usePathname();
-
-  useEffect(() => {
-    const pathSegments = pathname.split("/");
-    const activePath = pathSegments[pathSegments.length - 1];
-    dispatch(setActive(activePath));
-  }, [pathname]);
 
   const setMenu = (value: boolean) => {
     dispatch(setIsOpen(value));
@@ -89,7 +79,7 @@ export default function SideBar({
 
         <aside
           className={clsx(
-            "fixed bottom-0 left-0 top-0 -translate-x-full border-r-2 border-cerulean-700/25 bg-cerulean-950 lg:translate-x-0",
+            "fixed bottom-0 left-0 top-0 -translate-x-full border-r-2 border-gray-300 dark:border-r dark:border-cerulean-700/25 dark:bg-cerulean-900 lg:translate-x-0",
             isOpen ? "w-64 translate-x-0" : "",
           )}
         >
@@ -102,7 +92,6 @@ export default function SideBar({
                   title={"Dashboard"}
                   urlPath="/app/dashboard"
                   icon={IoGrid}
-                  pathName="dashboard"
                 />
                 {isEmployee &&
                   employeeSidebarItems.map((item, index) => (
@@ -111,7 +100,6 @@ export default function SideBar({
                       title={item.title}
                       urlPath={item.urlPath}
                       icon={item.icon}
-                      pathName={item.pathName}
                     />
                   ))}
                 {roles.includes("OWNER") &&
@@ -121,7 +109,6 @@ export default function SideBar({
                       title={item.title}
                       urlPath={item.urlPath}
                       icon={item.icon}
-                      pathName={item.pathName}
                     />
                   ))}
               </span>

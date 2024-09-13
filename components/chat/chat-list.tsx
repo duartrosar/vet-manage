@@ -23,8 +23,8 @@ import {
 } from "../ui/command";
 import { CommandItem } from "cmdk";
 import ChatCommandItem from "./chat-command-item";
-import dynamic from "next/dynamic";
 import { ConversationWithRelations } from "@/lib/db/extended-types";
+import { CardTitle } from "../card/card";
 
 // TODO: This is just for testing
 // const LazyAddConversation = dynamic(() => import("./chat-add-conversation"), {
@@ -66,26 +66,23 @@ export default function ChatList({
   return (
     <aside
       className={cn(
-        "fixed inset-y-0 h-full w-80 overflow-hidden border-r-2 border-cerulean-700/25 bg-cerulean-900 pb-14 pt-20 lg:block lg:w-80",
+        "fixed inset-y-0 h-full w-80 overflow-hidden border-r-2 border-cerulean-700/25 bg-white pb-14 pt-20 dark:bg-cerulean-900 lg:block lg:w-80",
         className,
         isChatSideBarOpen ? "hidden" : "block w-full",
       )}
     >
       <div className="flex items-center justify-between pl-4 pr-2 pt-2">
-        <h1 className="text-xl text-white">Chats</h1>
+        <CardTitle className="text-xl">Chats</CardTitle>
         {/* TODO: This is just for testing */}
         <ChatAddConversation />
       </div>
-      <Command className="space-y-2 overflow-y-hidden rounded-lg bg-cerulean-900 text-sm">
-        <CommandInput
-          className="px-2 text-gray-200"
-          placeholder="Search User..."
-        />
-        <CommandEmpty className="py-6 text-center text-gray-400">
+      <Command className="space-y-2 overflow-y-hidden rounded-lg text-sm">
+        <CommandInput className="px-2" placeholder="Search User..." />
+        <CommandEmpty className="py-6 text-center text-gray-600">
           No conversations found.
         </CommandEmpty>
-        <CommandList className="max-h- max-h-fit">
-          {employeeConversations?.length && (
+        <CommandList className="max-h-fit">
+          {(employeeConversations?.length ?? 0) > 0 && (
             <CommandGroup heading="Vets" className="space-y-4 p-2 px-2">
               {employeeConversations?.map((conversation) => (
                 <ChatCommandItem
@@ -96,7 +93,7 @@ export default function ChatList({
               ))}
             </CommandGroup>
           )}
-          {customerConversations?.length && (
+          {(customerConversations?.length ?? 0) > 0 && (
             <CommandGroup heading="Owners">
               {customerConversations?.map((conversation) => (
                 <ChatCommandItem

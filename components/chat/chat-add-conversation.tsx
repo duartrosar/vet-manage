@@ -25,6 +25,8 @@ import {
 } from "../ui/command";
 import { createConversation } from "@/lib/db/actions/chat-actions";
 import useFilterUsers from "@/lib/hooks/useFilterUsers";
+import { Button } from "../ui/button";
+import Avatar from "../avatar/avatar";
 
 export default function ChatAddConversation() {
   const [isOpen, setIsOpen] = useState<boolean>();
@@ -63,19 +65,18 @@ export default function ChatAddConversation() {
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
-      <PopoverTrigger className="rounded-lg p-3 hover:bg-cerulean-800">
-        <IoAddOutline className="h-[20px] w-[20px] cursor-pointer text-white" />
+      <PopoverTrigger className="rounded-lg">
+        <Button>
+          <IoAddOutline className="h-[20px] w-[20px] cursor-pointer" />
+        </Button>
       </PopoverTrigger>
-      <PopoverContent align="start" className="border-0 bg-cerulean-900 p-0">
+      <PopoverContent align="start" className="p-0">
         <Command
           onValueChange={onValueChange}
-          className="z-50 space-y-2 overflow-y-auto rounded-lg border-2 border-cerulean-100/25 bg-cerulean-900 py-2 text-sm"
+          className="z-50 space-y-2 overflow-y-auto rounded-lg py-2 text-sm"
         >
-          <CommandInput
-            className="px-2 text-gray-200"
-            placeholder="Search User..."
-          />
-          <CommandEmpty className="py-6 text-center text-gray-400">
+          <CommandInput className="px-2" placeholder="Search User..." />
+          <CommandEmpty className="py-6 text-center text-gray-600">
             No User found.
           </CommandEmpty>
           <CommandList>
@@ -86,23 +87,16 @@ export default function ChatAddConversation() {
                     onSelect={onValueChange}
                     key={user.id}
                     value={user.id + "-" + `${user.name}`}
-                    className="flex w-full cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-cerulean-800 aria-selected:bg-cerulean-800"
+                    className="flex w-full cursor-pointer items-center gap-2 rounded-lg p-2 "
                   >
-                    <div className="flex h-11 w-11 items-center justify-center rounded-full border border-cerulean-100/10">
-                      {user.image ? (
-                        <Image
-                          className="h-11 w-11 flex-none rounded-full"
-                          src={user.image}
-                          width={50}
-                          height={50}
-                          alt="Profile picture"
-                        />
-                      ) : (
-                        <FaUser className="h-[20px] w-[20px] text-cerulean-500/50" />
-                      )}
-                    </div>
+                    <Avatar
+                      imageUrl={user.image}
+                      width={45}
+                      height={45}
+                      type="user"
+                    />
                     <div className="space-y-2">
-                      <p className="text-sm font-semibold text-white">
+                      <p className="text-sm font-semibold text-gray-800 dark:text-white">
                         {user?.name}
                       </p>
                     </div>
@@ -117,23 +111,16 @@ export default function ChatAddConversation() {
                     onSelect={onValueChange}
                     key={user.id}
                     value={user.id + "-" + `${user.name}`}
-                    className="flex w-full cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-cerulean-800 aria-selected:bg-cerulean-800"
+                    className="flex w-full cursor-pointer items-center gap-2 rounded-lg p-2"
                   >
-                    <div className="flex h-11 w-11 items-center justify-center rounded-full border border-cerulean-100/10">
-                      {user.image ? (
-                        <Image
-                          className="h-11 w-11 flex-none rounded-full"
-                          src={user.image}
-                          width={50}
-                          height={50}
-                          alt="Profile picture"
-                        />
-                      ) : (
-                        <FaUser className="h-[20px] w-[20px] text-cerulean-500/50" />
-                      )}
-                    </div>
+                    <Avatar
+                      imageUrl={user.image}
+                      width={45}
+                      height={45}
+                      type="user"
+                    />
                     <div className="space-y-2">
-                      <p className="text-sm font-semibold text-white">
+                      <p className="text-sm font-semibold text-gray-800 dark:text-white">
                         {user?.name}
                       </p>
                     </div>
