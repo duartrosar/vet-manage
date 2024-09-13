@@ -23,7 +23,7 @@ export const commonSidebarItems: SidebarItemProps[] = [
     title: "Dashboard",
     urlPath: "/app/dashboard",
     icon: IoGrid,
-    pathName: "dashboard",
+    // pathName: "dashboard",
   },
 ];
 
@@ -32,31 +32,31 @@ export const employeeSidebarItems: SidebarItemProps[] = [
     title: "Appointments",
     urlPath: "/app/appointments",
     icon: IoCalendar,
-    pathName: "appointments",
+    // pathName: "appointments",
   },
   {
     title: "Messages",
     urlPath: "/app/messages",
     icon: IoChatbox,
-    pathName: "messages",
+    // pathName: "messages",
   },
   {
     title: "Owners",
     urlPath: "/app/owners",
     icon: IoPeople,
-    pathName: "owners",
+    // pathName: "owners",
   },
   {
     title: "Pets",
     urlPath: "/app/pets",
     icon: IoPaw,
-    pathName: "pets",
+    // pathName: "pets",
   },
   {
     title: "Vets",
     urlPath: "/app/vets",
     icon: MdHealthAndSafety,
-    pathName: "vets",
+    // pathName: "vets",
   },
 ];
 
@@ -65,12 +65,12 @@ export const ownerSideBarItems: SidebarItemProps[] = [
     title: "Messages",
     urlPath: "/app/messages",
     icon: IoChatbox,
-    pathName: "messages",
+    // pathName: "messages",
   },
   {
     title: "My Pets",
     urlPath: "/app/my-pets",
     icon: IoPaw,
-    pathName: "my-pets",
+    // pathName: "my-pets",
   },
 ];
