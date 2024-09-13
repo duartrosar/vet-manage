@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/components/auth/auth-provider";
 import { Toaster } from "sonner";
+import { Suspense } from "react";
 const inter = Inter({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -35,7 +36,9 @@ export default function RootLayout({
           }}
           duration={200000}
         />
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <Suspense>{children}</Suspense>
+        </AuthProvider>
       </body>
     </html>
   );
